@@ -19,6 +19,17 @@
             <artifactId>org.eclipse.jgit</artifactId>
             <version>5.11.0.202103091610-r</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-util-ajax</artifactId>
+            <version>9.4.46.v20220331</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version> <!-- Aggiorna alla versione più recente se necessario -->
+        </dependency>
+
     </dependencies>
 
 

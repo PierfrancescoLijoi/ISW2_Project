@@ -1,4 +1,4 @@
-package org.example.models;
+package org.isw2_project.models;
 import org.eclipse.jgit.revwalk.RevCommit; //utile per elavorare le metriche
 
 /*La classe RevCommit in Java è parte della libreria JGit.

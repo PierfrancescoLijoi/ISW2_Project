@@ -1,4 +1,4 @@
-package org.example.models;
+package org.isw2_project.models;
 
 import java.time.LocalDate;
 

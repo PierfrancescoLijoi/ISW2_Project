@@ -1,4 +1,4 @@
-package org.example.models;
+package org.isw2_project.models;
 
 public class Metric {
     private final LOCMetric removedLOCMetrics;

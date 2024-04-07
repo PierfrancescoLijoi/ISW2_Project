@@ -9,8 +9,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
-public class JsonOperation {
-    private JsonOperation(){}
+public class JsonOperations {
+    private JsonOperations(){}
     private static String readFile(Reader reader) throws IOException {
         StringBuilder strings= new StringBuilder();
         int asciiValue;

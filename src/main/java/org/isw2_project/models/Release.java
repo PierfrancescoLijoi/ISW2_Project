@@ -13,6 +13,13 @@ public class Release {
         this.releaseDate = releaseDate;
         //ogni realese è composto da una lsita di commit, inizalizza
     }
+    public Release(int id, String releaseName, LocalDate releaseDate) {
+        this.releaseId = id;
+        this.releaseName = releaseName;
+        this.releaseDate = releaseDate;
+        //ogni realese è composto da una lsita di commit, inizalizza
+    }
+
     public void setReleaseId(int id) {
         this.releaseId=id;
     }

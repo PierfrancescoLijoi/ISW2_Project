@@ -1,7 +1,10 @@
 package org.isw2_project.controllers;
 
-import org.isw2_project.commonFunctions.JsonOperation;
+import org.isw2_project.commonFunctions.JsonOperations;
+import org.isw2_project.commonFunctions.ReleaseOperations;
+import org.isw2_project.commonFunctions.TicketOperations;
 import org.isw2_project.models.Release;
+import org.isw2_project.models.Ticket;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
@@ -18,11 +21,11 @@ public class ExtractInfoJira {
         this.projName = projName.toUpperCase();
     }
 
-    public List<Release> extractAllReleases(){ //voglio estrarre TUTTE le realese del progetto
-        List<Release> ListRelease=new ArrayList<>();
+    public List<Release> extractAllReleases(){ //voglio estrarre TUTTE le realese e le ordino del progetto
+        List<Release> ReleasesList =new ArrayList<>();
         int i;
         String UrlProjectJira= "https://issues.apache.org/jira/rest/api/latest/project/"+projName; //rest service
-        JSONObject jsonAll = JsonOperation.readJsonFromUrl(UrlProjectJira); //contiene tutto quello mostrato dal url in un singolo oggetto Json
+        JSONObject jsonAll = JsonOperations.readJsonFromUrl(UrlProjectJira); //contiene tutto quello mostrato dal url in un singolo oggetto Json
         System.out.println(jsonAll.toString());
         JSONArray versions = jsonAll.getJSONArray("versions"); //creo lista di oggetti json di version item
 
@@ -34,17 +37,17 @@ public class ExtractInfoJira {
             if (releaseJsonObject.has("releaseDate") && releaseJsonObject.has("name")) {
                 releaseDate = releaseJsonObject.get("releaseDate").toString();
                 releaseName = releaseJsonObject.get("name").toString();
-                ListRelease.add(new Release(releaseName, LocalDate.parse(releaseDate)) );
+                ReleasesList.add(new Release(releaseName, LocalDate.parse(releaseDate)) );
             }
         }
 
-        ListRelease.sort(Comparator.comparing(Release::getReleaseDate));
+        ReleasesList.sort(Comparator.comparing(Release::getReleaseDate));
 
-        if (!ListRelease.isEmpty()){
-            System.out.println("non è vuota la lista delle release");
+        if (!ReleasesList.isEmpty()){
+            System.out.println("non è vuota la lista di tutte le release del progetto "+ projName);
         }
         int j=0;
-        for (Release release : ListRelease) {
+        for (Release release : ReleasesList) {
             j++;
             release.setReleaseId(j);
             String releaseId= String.valueOf(release.getReleaseId());
@@ -53,6 +56,65 @@ public class ExtractInfoJira {
             System.out.println("è presente: " + releaseName + ", " + releaseDate + ", " + releaseId);
         }
 
-        return ListRelease;
+        return ReleasesList;
+    }
+
+    public List<Ticket> extractAllTicketsForEachRelease(List<Release> releasesList)  { //dalla lista di realese, prendi tutti i ticket creati per ogni realese
+        List<Ticket> ticketsList = getTickets(releasesList);
+        List<Ticket> fixedTicketsList;
+        fixedTicketsList = TicketOperations.fixTicketList(ticketsList, releasesList, projName);
+        fixedTicketsList.sort(Comparator.comparing(Ticket::getResolutionDate));
+        return fixedTicketsList;
+    }
+    public List<Ticket> getTickets(List<Release> releasesList)  { //prendi tutti start ticket dalla specifica realese
+        int maxResults= 1000, start = 0,total;
+        List<Ticket> ticketsList = new ArrayList<>();
+        do { //recupero tutti i possibili ticket
+            maxResults = maxResults+ start ;
+            String url = "https://issues.apache.org/jira/rest/api/2/search?jql=project=%22"
+                    + this.projName + "%22AND%22issueType%22=%22Bug%22AND" +
+                    "(%22status%22=%22Closed%22OR%22status%22=%22Resolved%22)" +
+                    "AND%22resolution%22=%22Fixed%22&fields=key,versions,created,resolutiondate&startAt="
+                    + start + "&maxResults=" + maxResults; //prendo tutti i ticket bug,risolti,delle versioni delle realese
+
+            System.out.println(url);
+            JSONObject json = JsonOperations.readJsonFromUrl(url);
+
+            JSONArray issues = json.getJSONArray("issues");
+            total = json.getInt("total");
+
+            while (start < total && start < maxResults) { // scorro tutti i ticket
+
+                String ticketKey = issues.getJSONObject(start %1000).get("key").toString();
+                JSONObject fields = issues.getJSONObject(start %1000).getJSONObject("fields");
+
+                String creationDateString = fields.get("created").toString();
+                String resolutionDateString = fields.get("resolutiondate").toString();
+
+                LocalDate creationDate = LocalDate.parse(creationDateString.substring(0,10));//dalla stringa, prende start primi 10 char e li converte alla data effettiva localdate parse
+                LocalDate resolutionDate = LocalDate.parse(resolutionDateString.substring(0,10));
+
+                JSONArray affectedVersionArray = fields.getJSONArray("versions"); ///(==release) per la dimenisone di AV= IV-OV
+
+                Release openingVersion = ReleaseOperations.getReleaseAfterOrEqualDate(creationDate, releasesList); //verifica che OV è dopo della creazione
+                Release fixedVersion =  ReleaseOperations.getReleaseAfterOrEqualDate(resolutionDate, releasesList);//verifica che FV è dopo della creazione
+
+                List<Release> affectedVersionList = ReleaseOperations.returnValidAffectedVersions(affectedVersionArray, releasesList); //lista delle realese IV
+                if(!affectedVersionList.isEmpty()
+                        && openingVersion !=null
+                        && fixedVersion !=null
+                        && (!affectedVersionList.get(0).getReleaseDate().isBefore(openingVersion.getReleaseDate())  || openingVersion.getReleaseDate().isAfter(fixedVersion.getReleaseDate()))){
+                    continue;
+                }
+                if(openingVersion != null && fixedVersion != null && openingVersion.getReleaseId()!=releasesList.get(0).getReleaseId()){ //l'OV non può conincidere con il suo rilascio
+                    ticketsList.add(new Ticket(ticketKey, creationDate, resolutionDate, openingVersion, fixedVersion, affectedVersionList));
+                }
+
+                start++;
+            }
+
+        } while (start < total);
+        ticketsList.sort(Comparator.comparing(Ticket::getResolutionDate));
+        return ticketsList;
     }
 }

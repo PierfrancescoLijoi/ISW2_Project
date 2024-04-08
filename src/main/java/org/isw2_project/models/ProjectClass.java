@@ -16,7 +16,6 @@ public class ProjectClass {
         this.metric=metric;
 
     }
-
     public Metric getMetric() {
         return metric;
     }

@@ -32,7 +32,6 @@ public class ExtractInfoJira {
         for (i=0; i < versions.length(); i++) {
             String releaseName=null;
             String releaseDate=null;
-            Integer releaseId = null;
             JSONObject releaseJsonObject = versions.getJSONObject(i); //considero il singolo oggetto
             if (releaseJsonObject.has("releaseDate") && releaseJsonObject.has("name")) {
                 releaseDate = releaseJsonObject.get("releaseDate").toString();
@@ -67,14 +66,15 @@ public class ExtractInfoJira {
         return fixedTicketsList;
     }
     public List<Ticket> getTickets(List<Release> releasesList)  { //prendi tutti start ticket dalla specifica realese
-        int maxResults= 1000, start = 0,total;
+        int maxResults, start = 0,total;
         List<Ticket> ticketsList = new ArrayList<>();
         do { //recupero tutti i possibili ticket
-            maxResults = maxResults+ start ;
+            //Only gets a max of 1000 at a time, so must do this multiple times if bugs >1000
+            System.out.println("inizio loop");
+            maxResults = 1000+ start ;
             String url = "https://issues.apache.org/jira/rest/api/2/search?jql=project=%22"
-                    + this.projName + "%22AND%22issueType%22=%22Bug%22AND" +
-                    "(%22status%22=%22Closed%22OR%22status%22=%22Resolved%22)" +
-                    "AND%22resolution%22=%22Fixed%22&fields=key,versions,created,resolutiondate&startAt="
+                    + projName + "%22AND%22issueType%22=%22Bug%22AND(%22status%22=%22closed%22OR"
+                    + "%22status%22=%22resolved%22)AND%22resolution%22=%22fixed%22&fields=key,resolutiondate,affectedVersion,versions,created&startAt="
                     + start + "&maxResults=" + maxResults; //prendo tutti i ticket bug,risolti,delle versioni delle realese
 
             System.out.println(url);
@@ -83,8 +83,9 @@ public class ExtractInfoJira {
             JSONArray issues = json.getJSONArray("issues");
             total = json.getInt("total");
 
-            while (start < total && start < maxResults) { // scorro tutti i ticket
-
+            for (; start < total && start < maxResults; start++){ // scorro tutti i ticket
+                System.out.println("sotto loop");
+                System.out.println(start);
                 String ticketKey = issues.getJSONObject(start %1000).get("key").toString();
                 JSONObject fields = issues.getJSONObject(start %1000).getJSONObject("fields");
 
@@ -101,20 +102,21 @@ public class ExtractInfoJira {
 
                 List<Release> affectedVersionList = ReleaseOperations.returnValidAffectedVersions(affectedVersionArray, releasesList); //lista delle realese IV
                 if(!affectedVersionList.isEmpty()
-                        && openingVersion !=null
-                        && fixedVersion !=null
-                        && (!affectedVersionList.get(0).getReleaseDate().isBefore(openingVersion.getReleaseDate())  || openingVersion.getReleaseDate().isAfter(fixedVersion.getReleaseDate()))){
+                        && openingVersion!=null
+                        && fixedVersion!=null
+                        && (!affectedVersionList.get(0).getReleaseDate().isBefore(openingVersion.getReleaseDate())
+                        || openingVersion.getReleaseDate().isAfter(fixedVersion.getReleaseDate()))){
                     continue;
                 }
                 if(openingVersion != null && fixedVersion != null && openingVersion.getReleaseId()!=releasesList.get(0).getReleaseId()){ //l'OV non può conincidere con il suo rilascio
                     ticketsList.add(new Ticket(ticketKey, creationDate, resolutionDate, openingVersion, fixedVersion, affectedVersionList));
                 }
 
-                start++;
             }
-
+            System.out.println("fine sotto loop");
         } while (start < total);
         ticketsList.sort(Comparator.comparing(Ticket::getResolutionDate));
+        System.out.println("ticket list");
         return ticketsList;
     }
 }

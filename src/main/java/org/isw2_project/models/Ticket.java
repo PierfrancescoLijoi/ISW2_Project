@@ -18,11 +18,13 @@ public class Ticket {
         this.creationDate = creationDate;
 
        this.resolutionDate = resolutionDate;
+
         if(affectedVersions.isEmpty()){
             injectedVersion = null;
         }else{
             injectedVersion = affectedVersions.get(0);
         }
+
         this.openingVersion = openingVersion;
         this.fixedVersion = fixedVersion;
         this.affectedVersions = affectedVersions;

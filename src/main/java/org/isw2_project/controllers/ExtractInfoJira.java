@@ -8,6 +8,7 @@ import org.isw2_project.models.Ticket;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -58,11 +59,15 @@ public class ExtractInfoJira {
         return ReleasesList;
     }
 
-    public List<Ticket> extractAllTicketsForEachRelease(List<Release> releasesList)  { //dalla lista di realese, prendi tutti i ticket creati per ogni realese
+    public List<Ticket> extractAllTicketsForEachRelease(List<Release> releasesList) throws IOException { //dalla lista di realese, prendi tutti i ticket creati per ogni realese
+        System.out.println("Estraggo tutti i ticket per la release");
         List<Ticket> ticketsList = getTickets(releasesList);
         List<Ticket> fixedTicketsList;
+        System.out.println("Chiamo la fix ticket");
         fixedTicketsList = TicketOperations.fixTicketList(ticketsList, releasesList, projName);
-        fixedTicketsList.sort(Comparator.comparing(Ticket::getResolutionDate));
+
+        fixedTicketsList.sort(Comparator.comparing(Ticket::getResolutionDate)); //ordino in base alla data di risoluzione
+
         return fixedTicketsList;
     }
     public List<Ticket> getTickets(List<Release> releasesList)  { //prendi tutti start ticket dalla specifica realese
@@ -70,14 +75,13 @@ public class ExtractInfoJira {
         List<Ticket> ticketsList = new ArrayList<>();
         do { //recupero tutti i possibili ticket
             //Only gets a max of 1000 at a time, so must do this multiple times if bugs >1000
-            System.out.println("inizio loop");
+
             maxResults = 1000+ start ;
+
             String url = "https://issues.apache.org/jira/rest/api/2/search?jql=project=%22"
                     + projName + "%22AND%22issueType%22=%22Bug%22AND(%22status%22=%22closed%22OR"
                     + "%22status%22=%22resolved%22)AND%22resolution%22=%22fixed%22&fields=key,resolutiondate,affectedVersion,versions,created&startAt="
                     + start + "&maxResults=" + maxResults; //prendo tutti i ticket bug,risolti,delle versioni delle realese
-
-            System.out.println(url);
             JSONObject json = JsonOperations.readJsonFromUrl(url);
 
             JSONArray issues = json.getJSONArray("issues");
@@ -86,7 +90,7 @@ public class ExtractInfoJira {
             for (; start < total && start < maxResults; start++){ // scorro tutti i ticket
                 System.out.println("sotto loop");
                 System.out.println(start);
-                String ticketKey = issues.getJSONObject(start %1000).get("key").toString();
+                String ticketKey = issues.getJSONObject(start %1000).get("key").toString(); //chiave ticket in jira
                 JSONObject fields = issues.getJSONObject(start %1000).getJSONObject("fields");
 
                 String creationDateString = fields.get("created").toString();
@@ -113,10 +117,12 @@ public class ExtractInfoJira {
                 }
 
             }
-            System.out.println("fine sotto loop");
+
         } while (start < total);
+
         ticketsList.sort(Comparator.comparing(Ticket::getResolutionDate));
-        System.out.println("ticket list");
+
+
         return ticketsList;
     }
 }

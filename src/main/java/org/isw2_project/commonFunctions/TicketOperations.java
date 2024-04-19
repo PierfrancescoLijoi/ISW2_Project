@@ -5,6 +5,7 @@ import org.isw2_project.models.Release;
 import org.isw2_project.models.Ticket;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -13,14 +14,16 @@ import static java.lang.Math.max;
 
 public class TicketOperations {
     private TicketOperations(){}
-    public static List<Ticket> fixTicketList(List<Ticket> ticketsList, List<Release> releasesList, String projName) throws IOException {
+    public static List<Ticket> fixTicketList(List<Ticket> ticketsList, List<Release> releasesList, String projName) throws IOException, URISyntaxException {
         List<Ticket> ticketsForProportionList = new ArrayList<>();
         List<Ticket> finalTicketsListWithAffectedVersion = new ArrayList<>();
         float proportionCalculated;
         for (Ticket ticket: ticketsList){ //per avere una stima realistica, devo stimare il valore fino al quel momento non considerando quelli dopo
             if (ticketNeedFix(ticket)){
-              //  System.out.println("ticketsForProportionList dimensione lista: " + ticketsForProportionList.size());
-                proportionCalculated= CalculatePropotion.estimatePropotion(ticketsForProportionList, projName, ticket);//calcola propotion
+                System.out.println("KKKK ticketsForProportionList dimensione lista: " + ticketsForProportionList.size());
+
+                proportionCalculated= CalculatePropotion.EstimateProportion(ticketsForProportionList,projName, ticket, true);//calcola propotion
+
                 fixTicketWithProportionCalculated(ticket, releasesList, proportionCalculated); // con il risultato ottenuto(con propotion) stima la IV
                 UpdateAffectedVersionsListWithPropotion(ticket, releasesList );
             }else{
@@ -31,13 +34,6 @@ public class TicketOperations {
         }
         finalTicketsListWithAffectedVersion.sort(Comparator.comparing(Ticket::getResolutionDate));
 
-        /*for (Ticket ticket : finalTicketsListWithAffectedVersion) {
-
-            String affectedVersion= String.valueOf(ticket.getAffectedVersions());
-            String ticketID= String.valueOf(ticket.getTicketKey());
-            String releaseDate= String.valueOf(ticket.getFixedVersion());
-            System.out.println("è presente nella lista dei ticket: " + ticketID + ", " + releaseDate + ", " + affectedVersion);
-        }*/
 
         return finalTicketsListWithAffectedVersion;
     }
@@ -85,5 +81,14 @@ public class TicketOperations {
         ticket.setAffectedVersions(completeAffectedVersionsList);
 
     }
-
+    public static List<Ticket> returnCorrectTickets(List<Ticket> ticketsList){
+        List<Ticket> correctTickets = new ArrayList<>();
+        for (Ticket ticket : ticketsList) {
+            if (!ticketNeedFix(ticket)) {
+                correctTickets.add(ticket);
+            }
+        }
+        correctTickets.sort(Comparator.comparing(Ticket::getResolutionDate));
+        return correctTickets;
+    }
 }

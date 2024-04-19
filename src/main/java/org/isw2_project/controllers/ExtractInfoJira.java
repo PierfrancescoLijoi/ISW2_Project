@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -59,7 +60,7 @@ public class ExtractInfoJira {
         return ReleasesList;
     }
 
-    public List<Ticket> extractAllTicketsForEachRelease(List<Release> releasesList) throws IOException { //dalla lista di realese, prendi tutti i ticket creati per ogni realese
+    public List<Ticket> extractAllTicketsForEachRelease(List<Release> releasesList) throws IOException, URISyntaxException { //dalla lista di realese, prendi tutti i ticket creati per ogni realese
         System.out.println("Estraggo tutti i ticket per la release");
         List<Ticket> ticketsList = getTickets(releasesList);
         List<Ticket> fixedTicketsList;
@@ -105,6 +106,7 @@ public class ExtractInfoJira {
                 Release fixedVersion =  ReleaseOperations.getReleaseAfterOrEqualDate(resolutionDate, releasesList);//verifica che FV è dopo della creazione
 
                 List<Release> affectedVersionList = ReleaseOperations.returnValidAffectedVersions(affectedVersionArray, releasesList); //lista delle realese IV
+
                 if(!affectedVersionList.isEmpty()
                         && openingVersion!=null
                         && fixedVersion!=null
@@ -112,7 +114,7 @@ public class ExtractInfoJira {
                         || openingVersion.getReleaseDate().isAfter(fixedVersion.getReleaseDate()))){
                     continue;
                 }
-                if(openingVersion != null && fixedVersion != null && openingVersion.getReleaseId()!=releasesList.get(0).getReleaseId()){ //l'OV non può conincidere con il suo rilascio
+                if(openingVersion != null && fixedVersion != null && openingVersion.getReleaseId()!=releasesList.get(0).getReleaseId()){ //ultima condizione dell'if,senno avremmo OV==IV, e sarebbe incosistente!
                     ticketsList.add(new Ticket(ticketKey, creationDate, resolutionDate, openingVersion, fixedVersion, affectedVersionList));
                 }
 

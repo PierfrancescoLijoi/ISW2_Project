@@ -40,8 +40,11 @@ public class Release {
         return releaseDate;
     }
 
-   /* public void addCommit(Commit newCommit) {
-    }*/
+    public void addCommit(Commit newCommit) {
+        if(!commitList.contains(newCommit)){
+            commitList.add(newCommit);
+        }
+    }
 
     public List<Commit> getCommitList(){
         return commitList;

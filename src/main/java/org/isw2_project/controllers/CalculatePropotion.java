@@ -129,7 +129,7 @@ public class CalculatePropotion {
         }
         outputToFile.append("MEDIAN PROPORTION OUT OF ALL PROJECTS FOR COLD START: ").append(median).append("\n")
                 .append("-----------------------------------------------------------------\n\n\n")
-                .append("COLD-START PROPORTION COMPUTATION ENDED ===================\n\n");
+                .append("COLD-START PROPORTION ESTIMATE ENDED ===================\n\n");
         coldStartComputedProportion = median;
         return median;
     }

@@ -29,6 +29,11 @@
             <artifactId>json</artifactId>
             <version>20210307</version> <!-- Aggiorna alla versione più recente se necessario -->
         </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version> <!-- Sostituisci con l'ultima versione disponibile -->
+        </dependency>
 
     </dependencies>
 

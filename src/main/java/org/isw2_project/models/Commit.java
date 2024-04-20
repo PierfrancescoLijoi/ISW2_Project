@@ -33,6 +33,6 @@ public final class Commit {
     public Release getRelease() {
         return release;
     }
-    
+
 
 }

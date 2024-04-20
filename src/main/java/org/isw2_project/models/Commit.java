@@ -13,7 +13,7 @@ public final class Commit {
     private final Release release;
 
     public Commit(RevCommit revCommit, Release release) {
-        this.revCommit = revCommit;
+        this.revCommit = revCommit; // Revcommit contiene informazioni relative a un commit specifico
         this.release = release;
         ticket = null;
     }
@@ -33,5 +33,6 @@ public final class Commit {
     public Release getRelease() {
         return release;
     }
+    
 
 }

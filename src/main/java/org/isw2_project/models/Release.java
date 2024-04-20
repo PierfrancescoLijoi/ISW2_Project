@@ -1,10 +1,13 @@
 package org.isw2_project.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Release {
     private int releaseId;
     private final String releaseName;
+    private final List<Commit> commitList;
     private final LocalDate releaseDate;
     //ogni realese è composto da una lsita di commit
 
@@ -12,12 +15,14 @@ public class Release {
         this.releaseName = releaseName;
         this.releaseDate = releaseDate;
         //ogni realese è composto da una lsita di commit, inizalizza
+        commitList = new ArrayList<>();
     }
     public Release(int id, String releaseName, LocalDate releaseDate) {
         this.releaseId = id;
         this.releaseName = releaseName;
         this.releaseDate = releaseDate;
         //ogni realese è composto da una lsita di commit, inizalizza
+        commitList = new ArrayList<>();
     }
 
     public void setReleaseId(int id) {
@@ -33,5 +38,12 @@ public class Release {
 
     public LocalDate getReleaseDate() {
         return releaseDate;
+    }
+
+   /* public void addCommit(Commit newCommit) {
+    }*/
+
+    public List<Commit> getCommitList(){
+        return commitList;
     }
 }

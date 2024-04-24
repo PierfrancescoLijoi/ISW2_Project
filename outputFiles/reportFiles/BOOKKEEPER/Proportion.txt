@@ -36,7 +36,7 @@ MEDIAN PROPORTION OUT OF ALL PROJECTS FOR COLD START: 1.5497165
 -----------------------------------------------------------------
 
 
-COLD-START PROPORTION COMPUTATION ENDED ===================
+COLD-START PROPORTION ESTIMATE ENDED ===================
 
 
 [*]COLD-START RETRIEVED[*]---------------------------------------

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ExtractInfoGit {
     private List<Ticket> ticketList;
@@ -99,4 +100,29 @@ public class ExtractInfoGit {
     public List<Release> getReleaseList() {
         return releaseList;
     }
+    public List<Commit> filterCommitsOfIssues(List<Commit> commitList) {
+        List<Commit> filteredCommits = new ArrayList<>();
+        for (Commit commit : commitList) {
+            for (Ticket ticket : ticketList) {
+                String commitFullMessage = commit.getRevCommit().getFullMessage();
+                String ticketKey = ticket.getTicketKey();
+                if (matchRegex(commitFullMessage, ticketKey)) {
+                    filteredCommits.add(commit);
+                    ticket.addCommit(commit);
+                    commit.setTicket(ticket);
+                }
+            }
+        }
+        ticketList.removeIf(ticket -> ticket.getCommitList().isEmpty());
+        return filteredCommits;
+    }
+
+    //vede la corrispondenza del commit con ogni ticket. E se è presento lo inserisce.
+    public static boolean matchRegex(String stringToMatch, String commitKey) {
+        Pattern pattern = Pattern.compile(commitKey + "\\b");
+        return pattern.matcher(stringToMatch).find();
+    }
+
+
+
 }

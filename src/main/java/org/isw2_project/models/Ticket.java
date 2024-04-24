@@ -1,6 +1,7 @@
 package org.isw2_project.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Ticket {
@@ -11,6 +12,7 @@ public class Ticket {
     private List<Release> affectedVersions;
     private final LocalDate creationDate;
     private final LocalDate resolutionDate;
+    private final List<Commit> commitList;
 
 
     public Ticket(String ticketKey, LocalDate creationDate, LocalDate resolutionDate,Release openingVersion, Release fixedVersion, List<Release> affectedVersions) {
@@ -28,6 +30,8 @@ public class Ticket {
         this.openingVersion = openingVersion;
         this.fixedVersion = fixedVersion;
         this.affectedVersions = affectedVersions;
+        this.commitList = new ArrayList<>();
+
 
     }
 
@@ -64,5 +68,13 @@ public class Ticket {
 
     public void setAffectedVersions(List<Release> affectedVersions) {
         this.affectedVersions = affectedVersions;
+    }
+    public List<Commit> getCommitList(){
+        return commitList;
+    }
+    public void addCommit(Commit newCommit) {
+        if(!commitList.contains(newCommit)){
+            commitList.add(newCommit);
+        }
     }
 }

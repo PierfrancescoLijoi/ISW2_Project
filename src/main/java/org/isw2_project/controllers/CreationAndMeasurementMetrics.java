@@ -7,9 +7,11 @@ import org.isw2_project.models.Ticket;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import static org.isw2_project.controllers.CreateAndWriteReport.generateReportTicketInfo;
 
 public class CreationAndMeasurementMetrics {
     public CreationAndMeasurementMetrics(){}
@@ -33,29 +35,34 @@ public class CreationAndMeasurementMetrics {
 
     //4
         extractInfoGit.setTicketList(resultTicketsList);
-        //List<Commit> filteredCommitsOfIssues = extractInfoGit.filterCommitsOfIssues(resultCommitsList);
+        List<Commit> filteredCommitsOfIssues = extractInfoGit.filterCommitsOfIssues(resultCommitsList);
         resultTicketsList = extractInfoGit.getTicketList();
 
+        for(Ticket ticket : resultTicketsList) {
+            Release injectV=ticket.getInjectedVersion();
+            String inV= injectV.getReleaseName();
+
+            Release openV=ticket.getOpeningVersion();
+            String opV= openV.getReleaseName();
+
+            Release fixV=ticket.getFixedVersion();
+            String fiV= fixV.getReleaseName();
+
+            String name=ticket.getTicketKey();
+
+            List<Release> affV=ticket.getAffectedVersions();
+            String AA= String.valueOf(ticket.getCommitList().size());
+            List<String> listaStringhe = new ArrayList<>();
+            for(Release affversions : affV) {
+                listaStringhe.add(affversions.getReleaseName());
+            }
+            System.out.println("Ticket ID:"+name+"; "+"Inject Version:"+inV+"; "+"Opening Version:"+opV+"; "+"Fixed Version:"+fiV+"; "+"Affected Version:"+listaStringhe+"; "+"N:"+AA);
+
+        }
+        generateReportTicketInfo(ProjectName,resultTicketsList);
     //5
 
        // System.out.println("-----------DIMENSIONE:"+resultTicketsList.size()+"---------------");
-        for (Ticket ticket: resultTicketsList){
-
-            LocalDate A=ticket.getCreationDate();
-            LocalDate B=ticket.getResolutionDate();
-            String k =ticket.getTicketKey();
-            Release ff =ticket.getFixedVersion();
-            String f = ff.getReleaseName();
-            Release of =ticket.getOpeningVersion();
-            String O = of.getReleaseName();
-            Release iF =ticket.getInjectedVersion();
-            String I =iF.getReleaseName();
-            System.out.println("data Creazione: "+A+", resoluzione data: "+B+" ,ticket fixate, key: "+ k+" fixed version: "+f+" open version: "+O+" Inject version: "+I);
-
-
-        }
-
-
 
 
 

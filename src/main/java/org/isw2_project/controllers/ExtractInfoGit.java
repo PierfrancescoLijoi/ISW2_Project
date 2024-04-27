@@ -3,28 +3,34 @@ package org.isw2_project.controllers;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevTree;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.jgit.treewalk.TreeWalk;
+import org.eclipse.jgit.util.io.DisabledOutputStream;
 import org.isw2_project.models.Commit;
+import org.isw2_project.models.ProjectClass;
 import org.isw2_project.models.Release;
 import org.isw2_project.models.Ticket;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class ExtractInfoGit {
     private List<Ticket> ticketList;
-
-    private final   List<Release> releaseList;
+    private final  List<Release> releaseList;
     protected static  Git git;
     private static  Repository repository ;
     public ExtractInfoGit(String projName, String repoURL, List<Release> releaseList) throws IOException, GitAPIException {
@@ -100,13 +106,13 @@ public class ExtractInfoGit {
     public List<Release> getReleaseList() {
         return releaseList;
     }
-    public List<Commit> filterCommitsOfIssues(List<Commit> commitList) {
+    public List<Commit> filterFixedCommits(List<Commit> commitList) {
         List<Commit> filteredCommits = new ArrayList<>();
         for (Commit commit : commitList) {
             for (Ticket ticket : ticketList) {
                 String commitFullMessage = commit.getRevCommit().getFullMessage();
                 String ticketKey = ticket.getTicketKey();
-                if (matchRegex(commitFullMessage, ticketKey)) {
+                if (CommitMatchWithTicketID(commitFullMessage, ticketKey)) {
                     filteredCommits.add(commit);
                     ticket.addCommit(commit);
                     commit.setTicket(ticket);
@@ -118,11 +124,135 @@ public class ExtractInfoGit {
     }
 
     //vede la corrispondenza del commit con ogni ticket. E se è presento lo inserisce.
-    public static boolean matchRegex(String stringToMatch, String commitKey) {
+    public static boolean CommitMatchWithTicketID(String stringToMatch, String commitKey) {
         Pattern pattern = Pattern.compile(commitKey + "\\b");
         return pattern.matcher(stringToMatch).find();
     }
 
+    public List<ProjectClass> extractAllProjectClasses(List<Commit> commitList, int releasesNumber) throws IOException {
+        List<Commit> lastCommitList = new ArrayList<>();
 
+        //estrai tutti i commit da ogni release
+        for(int i = 1; i <= releasesNumber; i++){
+            List<Commit> tempCommits = new ArrayList<>(commitList);
+            int finalI = i;
+            tempCommits.removeIf(commit -> (commit.getRelease().getReleaseId() != finalI)); //Rimozione dei commit non corrispondenti alla release corrente
 
+            if(tempCommits.isEmpty()){//Se dopo la rimozione dei commit non rimane nessun commit nella lista tempCommits, si salta all'iterazione successiva del ciclo con continue.
+                continue;
+            }
+            lastCommitList.add(tempCommits.get(tempCommits.size()-1));//Se invece tempCommits contiene ancora dei commit, viene aggiunto l'ultimo commit della lista (che sarà l'ultimo commit della release corrente) alla lista lastCommitList.
+        }
+        lastCommitList.sort(Comparator.comparing(o -> o.getRevCommit().getCommitterIdent().getWhen())); //Ordinamento di lastCommitList per data
+
+        List<ProjectClass> ListAllProjectClasses = new ArrayList<>();
+        for(Commit lastCommit: lastCommitList){ //itero sulla lista di commit associata ad ogni release
+
+            Map<String, String> nameAndContentOfClasses = getAllClassesNameAndContent(lastCommit.getRevCommit());
+
+            for(Map.Entry<String,String> nameAndContentOfClass : nameAndContentOfClasses.entrySet()){
+                ListAllProjectClasses.add(new ProjectClass(nameAndContentOfClass.getKey(), nameAndContentOfClass.getValue(), lastCommit.getRelease()));
+            }
+        }
+        ClassesBuggyOrNot(ticketList, ListAllProjectClasses); //definisce quali classi erano buggy se era toccata dal commit del ticket fixed
+
+        KnowWhichClassesTouchedByCommit(ListAllProjectClasses, commitList);
+
+        ListAllProjectClasses.sort(Comparator.comparing(ProjectClass::getName));
+
+        return ListAllProjectClasses;
+    }
+    private Map<String, String> getAllClassesNameAndContent(RevCommit revCommit) throws IOException {
+        Map<String, String> allClasses = new HashMap<>();
+        RevTree tree = revCommit.getTree(); // per ottenere l'albero dei file associato al commit fornito.
+
+        TreeWalk treeWalk = new TreeWalk(repository);// per camminare sull'albero dei file.
+        treeWalk.addTree(tree);
+        treeWalk.setRecursive(true); //imposta in modalità ricorsiva per considerare tutti i file e le cartelle
+        while(treeWalk.next()) { //ricorsivamente visito tutto l'albero dei commit
+
+            if(treeWalk.getPathString().contains(".java") && !treeWalk.getPathString().contains("/test/")) { //Se il file è un file ".java" e non si trova nella cartella "/test/"
+
+                allClasses.put(treeWalk.getPathString(), new String(repository.open(treeWalk.getObjectId(0)).getBytes(), StandardCharsets.UTF_8));
+            }
+        }
+        treeWalk.close();
+        return allClasses;
+    }
+
+    public void ClassesBuggyOrNot(List<Ticket> ticketList, List<ProjectClass> allProjectClasses) throws IOException {
+      // logica
+      // obiettivo:L'obiettivo principale del metodo è etichettare le classi come "buggy" (difettose) o meno in base ai commit associati ai ticket e alle date dei ticket.
+    }
+    public void completeClassesInfo(List<Ticket> ticketList, List<ProjectClass> allProjectClasses)  {
+        // logica
+    }
+    private void KnowWhichClassesTouchedByCommit(List<ProjectClass> allProjectClasses, List<Commit> commitList) throws IOException {
+        //obiettivo : è mantenere traccia dei commit che toccano ciascuna classe del progetto.
+       // List<ProjectClass> InitialProjClassesList;
+        for (Commit commit: commitList){ //scorri tutta la list dei commit di tutte le release
+
+            Release release = commit.getRelease(); //ogni commit è associato a una release
+
+            List<ProjectClass> InitialProjClassesList=new ArrayList<>(allProjectClasses); //istanzio nella lista temporanea tutte le classi che riceve in Input
+            InitialProjClassesList.removeIf(InitialProjClassList -> !InitialProjClassList.getRelease().equals(release)); //rimuove dalla lista InitialProjClassList tutte le classi che non appartengono alla stessa release del commit attualmente considerato nell'iterazione
+            List<String> ClassesNamesTouchedByCurrentCommit = RetriveTouchedClassesNamesByCommit(commit.getRevCommit());//inserisce nella lista i nomi delle classi toccate dal commit corrente
+
+            for(String classTouchedByCommit: ClassesNamesTouchedByCurrentCommit){
+                for(ProjectClass projectClass: InitialProjClassesList){
+                    if(projectClass.getName().equals(classTouchedByCommit) && !projectClass.getCommitsThatTouchTheClass().contains(commit)) {
+                        projectClass.addCommitThatTouchesTheClass(commit);
+                    }
+                }
+            }
+
+        }
+
+    }
+    private List<String> RetriveTouchedClassesNamesByCommit(RevCommit commit) throws IOException {
+        List<String> touchedClassesNamesByCommit = new ArrayList<>();
+
+        try(DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE);
+            ObjectReader reader = this.repository.newObjectReader()) {
+
+            CanonicalTreeParser newTreeIter = new CanonicalTreeParser(); //albero associato al commit corrente
+            ObjectId newTree = commit.getTree(); //albero associato al commit corrente
+            newTreeIter.reset(reader, newTree); // utilizza l'id dell'albero per poterlo leggere ed esaminare i file
+
+            RevCommit commitParent = commit.getParent(0);	// commit precedente al commit corrente, quindi quello che lo ha generato
+            CanonicalTreeParser oldTreeIter = new CanonicalTreeParser(); //albero associato al commit precedente
+            ObjectId oldTree = commitParent.getTree(); //Ottine l'ID dell'albero associato al commit genitore (==commit precedente a quello corrente)
+
+            oldTreeIter.reset(reader, oldTree);//Utilizza l'ID dell'albero appena ottenuto e l'oggetto ObjectReader per impostare il parser (oldTreeIter)
+            // In modo che possa analizzare l'albero associato al commit genitore.
+            // Il parser sarà pronto a esaminare i file e le loro differenze presenti nell'albero del commit genitore quando sarà richiesto
+
+            diffFormatter.setRepository(this.repository);
+            //sarà configurato per operare all'interno del repository specificato,
+            // perchè utilizzerà questo repository per ottenere informazioni sui file e sulle differenze tra i commit.
+
+            // Viene eseguita la scansione delle differenze tra l'albero "vecchio" e l'albero "nuovo"
+            // utilizzando diffFormatter.scan(oldTreeIter, newTreeIter).
+            // Questo restituisce una lista di oggetti DiffEntry,
+            // ognuno dei quali rappresenta una differenza tra due file.
+            List<DiffEntry> entries = diffFormatter.scan(oldTreeIter, newTreeIter);
+
+            // Ogni voce contiene informazioni per ogni file coinvolto nel commit
+            // (vecchio nome del percorso, nuovo nome del percorso,
+            // tipo di modifica (che potrebbe essere MODIFY, ADD, RENAME, ecc.))
+            for(DiffEntry entry : entries) {
+                //Conserviamo solo le classi Java che non sono coinvolte nei test
+                if(entry.getChangeType().equals(DiffEntry.ChangeType.MODIFY) && entry.getNewPath().contains(".java") && !entry.getNewPath().contains("/test/")) {
+                    touchedClassesNamesByCommit.add(entry.getNewPath());
+                }
+
+            }
+
+        } catch(ArrayIndexOutOfBoundsException e) {
+            //il commit non ha genitori: salta questo commit, restituisce una lista vuota e vai avanti
+
+        }
+
+        return touchedClassesNamesByCommit;
+    }
 }

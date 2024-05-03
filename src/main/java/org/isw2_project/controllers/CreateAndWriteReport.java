@@ -1,6 +1,7 @@
 package org.isw2_project.controllers;
 
 import org.isw2_project.models.Commit;
+import org.isw2_project.models.ProjectClass;
 import org.isw2_project.models.Release;
 import org.isw2_project.models.Ticket;
 
@@ -135,7 +136,6 @@ public class CreateAndWriteReport {
         }
 
     }
-
     public static void generateReportCommitFilteredInfo(String projName, List<Commit>filteredCommitsOfIssues){
         FileWriter fileWriter = null;
         int numCommits;
@@ -185,6 +185,83 @@ public class CreateAndWriteReport {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public static void generateReportDataSetInfo(String projectName, List<ProjectClass> allProjectClasses){
+        FileWriter fileWriter = null;
+
+        try {
+            File file = new File("outputFiles/DataSet/" + projectName);
+            if (!file.exists()) {
+                boolean created = file.mkdirs();
+                if (!created) {
+                    throw new IOException();
+                }
+            }
+
+            try {
+                String fileTitle = "outputFiles/DataSet/" + projectName + "/" +"DataSet.csv";
+
+                //Name of CSV for output
+                fileWriter = new FileWriter(fileTitle);
+                fileWriter.append("Release ID, Release Name,Size, numberOfRevisions(numNR),numberOfDefectFixes(NumFix),numberOfAuthors(numAuth),CHURN value, CHURN MAX, CHURN Averange,LOC touched value,LOC added MAX,LOC added Averange,LOC deleted MAX,LOC deleted Averange,Is Buggy ");
+                fileWriter.append("\n");
+                //scrittura del dataset iterando su ogni classe
+                for (ProjectClass projectClass: allProjectClasses){
+                    fileWriter.append(String.valueOf(projectClass.getRelease().getReleaseId())); //release ID
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(projectClass.getName()));//name class
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getSize())); //size
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfRevisions())); //numNR
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfDefectFixes())); //NumFix
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfAuthors()));//numAuth
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getChurnMetrics().getVal()));//churn
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getChurnMetrics().getMaxVal()));//churn MAX
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getChurnMetrics().getAvgVal()));//churn Avg
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getTouchedLOCMetrics().getVal()));//LOC touched
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getAddedLOCMetrics().getMaxVal()));//LOC add MAX
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getAddedLOCMetrics().getAvgVal()));//LOC add AVG
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getDelectedLOCMetrics().getMaxVal()));//LOC delected MAX
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getAddedLOCMetrics().getAvgVal()));//LOC delected Avg
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getBuggyness()));//buggy
+
+
+                    fileWriter.append("\n");
+                }
+                /*
+                 removedLOCMetrics = new LOCMetric();
+                 churnMetrics = new LOCMetric();
+                 addedLOCMetrics = new LOCMetric();
+                 touchedLOCMetrics = new LOCMetric();
+                 */
+
+            } catch (Exception e) {
+                Logger.getAnonymousLogger().log(Level.INFO, e.getMessage());
+            } finally {
+                try {
+                    assert fileWriter != null;
+                    fileWriter.flush();
+                    fileWriter.close();
+                } catch (IOException e) {
+                    Logger.getAnonymousLogger().log(Level.INFO, e.getMessage());
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

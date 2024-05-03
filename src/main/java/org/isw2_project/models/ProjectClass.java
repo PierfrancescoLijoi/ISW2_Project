@@ -13,6 +13,8 @@ public class ProjectClass {
     //utile per definire la misurazione delle metriche e i commmit su di lei e
     private final List<Commit> commitsThatTouchTheClass;
 
+    private final List<Integer> lOCAddedByClass;
+    private final List<Integer> lOCRemovedByClass;
 
     public ProjectClass(String name, String contentOfClass, Release release) {
         this.name = name;
@@ -20,6 +22,8 @@ public class ProjectClass {
         this.release = release;
         this.metric= new Metric();
         commitsThatTouchTheClass = new ArrayList<>();
+        lOCAddedByClass = new ArrayList<>();
+        lOCRemovedByClass = new ArrayList<>();
 
     }
     public Metric getMetric() {
@@ -41,6 +45,20 @@ public class ProjectClass {
     }
     public void addCommitThatTouchesTheClass(Commit commit) {
         this.commitsThatTouchTheClass.add(commit);
+    }
+
+    public void addLOCAddedByClass(Integer lOCAddedByEntry) {
+        lOCAddedByClass.add(lOCAddedByEntry);
+    }
+    public List<Integer> getLOCAddedByClass() {
+        return lOCAddedByClass;
+    }
+    public List<Integer> getLOCDeletedByClass() {
+        return lOCRemovedByClass;
+    }
+
+    public void addLOCDeletedByClass(Integer lOCRemovedByEntry) {
+        lOCRemovedByClass.add(lOCRemovedByEntry);
     }
 
 

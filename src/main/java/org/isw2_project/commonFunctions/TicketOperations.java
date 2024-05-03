@@ -18,22 +18,21 @@ public class TicketOperations {
         List<Ticket> ticketsForProportionList = new ArrayList<>();
         List<Ticket> finalTicketsListWithAffectedVersion = new ArrayList<>();
         float proportionCalculated;
+
         for (Ticket ticket: ticketsList){ //per avere una stima realistica, devo stimare il valore fino al quel momento non considerando quelli dopo
             if (ticketNeedFix(ticket)){
-                System.out.println("KKKK ticketsForProportionList dimensione lista: " + ticketsForProportionList.size());
 
                 proportionCalculated= CalculatePropotion.EstimateProportion(ticketsForProportionList,projName, ticket, true);//calcola propotion
 
                 fixTicketWithProportionCalculated(ticket, releasesList, proportionCalculated); // con il risultato ottenuto(con propotion) stima la IV
-                UpdateAffectedVersionsListWithPropotion(ticket, releasesList );
+                UpdateAffectedVersionsListWithPropotion(ticket, releasesList ); // Aggiorna la A.V., inserisce le release tra la F.V. e la I.V, tramite la stima della I.V fatta
             }else{
                 UpdateAffectedVersionsListWithPropotion(ticket, releasesList );
-                ticketsForProportionList.add(ticket);
+                ticketsForProportionList.add(ticket); // Significa che ha gia una I.V. e la usa per stimare le I.V dei tikcet che non ce l'hanno
             }
-            finalTicketsListWithAffectedVersion.add(ticket);
+            finalTicketsListWithAffectedVersion.add(ticket); //ticket con informazioni complete
         }
-        finalTicketsListWithAffectedVersion.sort(Comparator.comparing(Ticket::getResolutionDate));
-
+        finalTicketsListWithAffectedVersion.sort(Comparator.comparing(Ticket::getResolutionDate)); // le sto ordinando in base alla loro I.V, perche nella A.V è presente solo I.V.
 
         return finalTicketsListWithAffectedVersion;
     }
@@ -41,7 +40,7 @@ public class TicketOperations {
         return ticket.getAffectedVersions().isEmpty();
     }
     private static void fixTicketWithProportionCalculated(Ticket ticket, List<Release> releasesList, Float proportionCalculated) {
-       //implementa logica
+
         List<Release> affectedVersionsList = new ArrayList<>();
         int injectedVersionId;
        // IV = max(1; FV-(FV-OV)*P)
@@ -54,6 +53,7 @@ public class TicketOperations {
                     ((ticket.getFixedVersion().getReleaseId()-ticket.getOpeningVersion().getReleaseId())
                             *proportionCalculated)));
         }
+        //cerco la release corrispondente all'I.V stimata e l'aggiungo all A.V.
         for (Release release : releasesList){
             if(release.getReleaseId() == injectedVersionId){
                 affectedVersionsList.add(new Release(release.getReleaseId(), release.getReleaseName(), release.getReleaseDate()));
@@ -61,17 +61,20 @@ public class TicketOperations {
             }
         }
         affectedVersionsList.sort(Comparator.comparing(Release::getReleaseDate));
-        ticket.setAffectedVersions(affectedVersionsList);
-        ticket.setInjectedVersion(affectedVersionsList.get(0));
 
-        System.out.println("called fixTicketWithProportionCalculated");
+        ticket.setAffectedVersions(affectedVersionsList);
+        ticket.setInjectedVersion(affectedVersionsList.get(0)); //setto la I.V come la prima componente nella lista A.V
+
+
     }
     private static void UpdateAffectedVersionsListWithPropotion(Ticket ticket, List<Release> releasesList) {
-        System.out.println("called UpdateAffectedVersionsListWithPropotion");
+
         List<Release> completeAffectedVersionsList = new ArrayList<>();
         for(int i = ticket.getInjectedVersion().getReleaseId(); i < ticket.getFixedVersion().getReleaseId(); i++){
+
             for(Release release : releasesList){
-                if(release.getReleaseId() == i){
+
+                if(release.getReleaseId() == i){ //per ogni release dentro l'intervallo viene aggiunta alla A.V
                     completeAffectedVersionsList.add(new Release(release.getReleaseId(), release.getReleaseName(), release.getReleaseDate()));
                     break;
                 }

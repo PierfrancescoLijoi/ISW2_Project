@@ -40,7 +40,7 @@ public class Metric {
         return size;
     }
 
-    public LOCMetric getRemovedLOCMetrics() {
+    public LOCMetric getDelectedLOCMetrics() {
         return removedLOCMetrics;
     }
 

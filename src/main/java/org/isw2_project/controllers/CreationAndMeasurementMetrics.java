@@ -33,21 +33,30 @@ public class CreationAndMeasurementMetrics {
 
 
     //4
+        System.out.println("4");
         extractInfoGit.setTicketList(resultTicketsList);
         List<Commit> filteredCommitsOfIssues = extractInfoGit.filterFixedCommits(resultCommitsList);
-        generateReportCommitFilteredInfo(ProjectName,filteredCommitsOfIssues);
-
         resultTicketsList = extractInfoGit.getTicketList();
+
+        generateReportCommitFilteredInfo(ProjectName,filteredCommitsOfIssues);
         generateReportTicketInfo(ProjectName,resultTicketsList);
 
         resultReleasesList = extractInfoGit.getReleaseList();
 
     //5
+        System.out.println("5");
         List<ProjectClass> allProjectClasses = extractInfoGit.extractAllProjectClasses(resultCommitsList, resultReleasesList.size());
         ExtractInfoGit.git.getRepository().close();
         generateReportReleaseInfo(ProjectName,resultReleasesList);
 
+
     //6
+        System.out.println("6");
+        ComputeMetrics metricsExtractor = new ComputeMetrics(extractInfoGit, allProjectClasses, filteredCommitsOfIssues);
+        metricsExtractor.computeAllMetrics();
+        //scrittura del dataset.csv
+        generateReportDataSetInfo(ProjectName,allProjectClasses);
+
 
 
 

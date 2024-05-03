@@ -2,9 +2,12 @@ package org.isw2_project.controllers;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
+import org.eclipse.jgit.api.LogCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.diff.Edit;
+import org.eclipse.jgit.diff.RawTextComparator;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
@@ -45,20 +48,41 @@ public class ExtractInfoGit {
         }
         this.releaseList = releaseList;
         this.ticketList = null;
+
     }
     public List<Commit> extractAllCommits() throws IOException, GitAPIException {
         List<Commit> commitList = new ArrayList<>();
         int i = 0;
+        // Lista che conterrà tutti i commit unici recuperati da tutti i rami
         List<RevCommit> revCommitList = new ArrayList<>();
+
+        // Recupera l'elenco di tutti i rami nel repository Git
         List<Ref> branchList = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
+
+        // Itera su tutti i rami
         for (Ref branch : branchList) {
-            Iterable<RevCommit> allRevCommits = git.log().add(repository.resolve(branch.getName())).call();
+
+            // Ottiene l'oggetto LogCommand per recuperare la storia dei commit
+            LogCommand logCommand = git.log();
+
+            // Aggiunge il riferimento del ramo corrente alla lista dei commit da esaminare
+            ObjectId branchObjectId = repository.resolve(branch.getName());
+            logCommand.add(branchObjectId);
+
+            // Esegue il comando per ottenere un iterabile di tutti i commit nel ramo corrente
+            Iterable<RevCommit> allRevCommits = logCommand.call();
+
+
+            // Itera su tutti i commit nel ramo corrente
             for (RevCommit revCommit : allRevCommits) {
+                // Verifica se il commit corrente è già presente nella lista dei commit
                 if (!revCommitList.contains(revCommit)) {
+                    // Se il commit corrente non è già presente, lo aggiunge alla lista dei commit unici
                     revCommitList.add(revCommit);
                 }
             }
         }
+
         revCommitList.sort(Comparator.comparing(o -> o.getCommitterIdent().getWhen())); //ordina le informazioni dei commit,tramite revcommit, in base alle date
 
         for (RevCommit revCommit : revCommitList) {
@@ -88,7 +112,7 @@ public class ExtractInfoGit {
             release.setReleaseId(++i);
         }
         commitList.sort(Comparator.comparing(o -> o.getRevCommit().getCommitterIdent().getWhen()));
-        //confrontare gli oggetti Commit in base alle date dei commit dei committenti.
+        //Confrontare gli oggetti Commit in base alle date dei commit dei committenti.
         // Gli Commit con date di commit più antiche verranno posizionati prima nella lista,
         // mentre quelli con date di commit più recenti verranno posizionati dopo.
 
@@ -123,7 +147,7 @@ public class ExtractInfoGit {
         return filteredCommits;
     }
 
-    //vede la corrispondenza del commit con ogni ticket. E se è presento lo inserisce.
+    // Vede la corrispondenza del commit con ogni ticket. E se è presento lo inserisce.
     public static boolean CommitMatchWithTicketID(String stringToMatch, String commitKey) {
         Pattern pattern = Pattern.compile(commitKey + "\\b");
         return pattern.matcher(stringToMatch).find();
@@ -141,12 +165,13 @@ public class ExtractInfoGit {
             if(tempCommits.isEmpty()){//Se dopo la rimozione dei commit non rimane nessun commit nella lista tempCommits, si salta all'iterazione successiva del ciclo con continue.
                 continue;
             }
-            lastCommitList.add(tempCommits.get(tempCommits.size()-1));//Se invece tempCommits contiene ancora dei commit, viene aggiunto l'ultimo commit della lista (che sarà l'ultimo commit della release corrente) alla lista lastCommitList.
+            lastCommitList.add(tempCommits.get(tempCommits.size()-1));// Se invece non è vuota tempCommits,
+            // viene aggiunto l'ultimo commit della lista (che sarà l'ultimo commit della release corrente) alla lista lastCommitList.
         }
         lastCommitList.sort(Comparator.comparing(o -> o.getRevCommit().getCommitterIdent().getWhen())); //Ordinamento di lastCommitList per data
 
         List<ProjectClass> ListAllProjectClasses = new ArrayList<>();
-        for(Commit lastCommit: lastCommitList){ //itero sulla lista di commit associata ad ogni release
+        for(Commit lastCommit: lastCommitList){ //itero sulla lista di commit associata a ogni release
 
             Map<String, String> nameAndContentOfClasses = getAllClassesNameAndContent(lastCommit.getRevCommit());
 
@@ -156,7 +181,7 @@ public class ExtractInfoGit {
         }
         ClassesBuggyOrNot(ticketList, ListAllProjectClasses); //definisce quali classi erano buggy se era toccata dal commit del ticket fixed
 
-        KnowWhichClassesTouchedByCommit(ListAllProjectClasses, commitList);
+        KnowWhichClassTouchedByCommit(ListAllProjectClasses, commitList); //tiene traccia dei commit che toccano la classe
 
         ListAllProjectClasses.sort(Comparator.comparing(ProjectClass::getName));
 
@@ -174,6 +199,7 @@ public class ExtractInfoGit {
             if(treeWalk.getPathString().contains(".java") && !treeWalk.getPathString().contains("/test/")) { //Se il file è un file ".java" e non si trova nella cartella "/test/"
 
                 allClasses.put(treeWalk.getPathString(), new String(repository.open(treeWalk.getObjectId(0)).getBytes(), StandardCharsets.UTF_8));
+                // il percorso del file come chiave e il suo contenuto come valore.
             }
         }
         treeWalk.close();
@@ -181,15 +207,47 @@ public class ExtractInfoGit {
     }
 
     public void ClassesBuggyOrNot(List<Ticket> ticketList, List<ProjectClass> allProjectClasses) throws IOException {
-      // logica
-      // obiettivo:L'obiettivo principale del metodo è etichettare le classi come "buggy" (difettose) o meno in base ai commit associati ai ticket e alle date dei ticket.
+        // obiettivo:L'obiettivo principale del metodo è etichettare le classi come "buggy" (difettose) o meno in base ai commit associati ai ticket e alle date dei ticket.
+
+        for(ProjectClass projectClass: allProjectClasses){ //prima setta tutte le classi a Buggy=false come detto da Falessi
+            projectClass.getMetric().setBuggyness(false);
+        }
+        for(Ticket ticket: ticketList) { //itera su tutti i Ticket
+
+            List<Commit> commitsContainingTicket = ticket.getCommitList(); // il ticket ha una lista di Commit associati a esso, puo capitare che non ho corrispondenza 1-1
+            Release injectedVersion = ticket.getInjectedVersion(); //ottengo inject version relativa al ticket corrente
+
+            for (Commit commit : commitsContainingTicket) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                RevCommit revCommit = commit.getRevCommit();
+                // Ottiene la data e l'ora del commit come un oggetto Date
+                Date commitDateTime = revCommit.getCommitterIdent().getWhen();
+
+                // Formatta la data e l'ora del commit nel formato desiderato "yyyy-MM-dd"
+                String formattedDateTime = formatter.format(commitDateTime);
+
+                // Converte la data formattata in un oggetto LocalDate
+                LocalDate commitDate = LocalDate.parse(formattedDateTime);
+
+                //controllo consistenza commit associato al ticket
+                if (!commitDate.isAfter(ticket.getResolutionDate()) // se la data del commit NON è dopo quella della risoluzione del ticket
+                        && !commitDate.isBefore(ticket.getCreationDate())) { //la data NOn è prima della creazione del ticket
+
+                    List<String> modifiedClassesNames = RetriveTouchedClassesNamesByCommit(revCommit);
+                    Release releaseOfCommit = commit.getRelease(); //commit associato alla release
+
+                    for (String modifiedClass : modifiedClassesNames) {
+                        labelBuggyClasses(modifiedClass, injectedVersion, releaseOfCommit, allProjectClasses);
+                    }
+                }
+            }
+
+        }
     }
-    public void completeClassesInfo(List<Ticket> ticketList, List<ProjectClass> allProjectClasses)  {
-        // logica
-    }
-    private void KnowWhichClassesTouchedByCommit(List<ProjectClass> allProjectClasses, List<Commit> commitList) throws IOException {
-        //obiettivo : è mantenere traccia dei commit che toccano ciascuna classe del progetto.
-       // List<ProjectClass> InitialProjClassesList;
+
+    private void KnowWhichClassTouchedByCommit(List<ProjectClass> allProjectClasses, List<Commit> commitList) throws IOException {
+        //obiettivo: è mantenere traccia dei commit che toccano ciascuna classe del progetto.
+
         for (Commit commit: commitList){ //scorri tutta la list dei commit di tutte le release
 
             Release release = commit.getRelease(); //ogni commit è associato a una release
@@ -254,5 +312,65 @@ public class ExtractInfoGit {
         }
 
         return touchedClassesNamesByCommit;
+    }
+
+    private static void labelBuggyClasses(String modifiedClass, Release injectedVersion, Release fixedVersion, List<ProjectClass> allProjectClasses) {
+        for(ProjectClass projectClass: allProjectClasses){
+            if(projectClass.getName().equals(modifiedClass)  //la classe modificata è uguale a quella corrente nelle classi del progetto
+                    && projectClass.getRelease().getReleaseId() < fixedVersion.getReleaseId() //classe associata alla release che per avere il bug deve avere id < della F.V
+                    && projectClass.getRelease().getReleaseId() >= injectedVersion.getReleaseId()){ // classe associata alla release che per avere il bug deve avere id >= della I.V.
+                projectClass.getMetric().setBuggyness(true);
+            }
+        }
+    }
+
+    public void computeAddedAndDeletedLOC(ProjectClass projectClass) throws IOException {
+        for(Commit commit : projectClass.getCommitsThatTouchTheClass()) { //itera tutti i commit che hanno toccato la classe
+
+            try(DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE)) { //DiffFormatter per formattare le differenze tra due punti nello storico dei commit, e non voglio che generi output
+                RevCommit revCommit = commit.getRevCommit();//Ottiene le informazioni (RevCommit) corrispondente al commit corrente
+                RevCommit parentComm = revCommit.getParent(0);
+
+                diffFormatter.setRepository(this.repository);
+                diffFormatter.setDiffComparator(RawTextComparator.DEFAULT);
+
+                List<DiffEntry> diffs = diffFormatter.scan(parentComm.getTree(), revCommit.getTree());
+                for(DiffEntry entry : diffs) {
+                    if(entry.getNewPath().equals(projectClass.getName())) {
+                        projectClass.addLOCAddedByClass(getAddedLinesCount(diffFormatter, entry));
+                        projectClass.addLOCDeletedByClass(getDeletedLinesCount(diffFormatter, entry));
+                    }
+
+                }
+            } catch(ArrayIndexOutOfBoundsException ignored) {
+                //il commit non ha genitori: salta questo commit, restituisce una lista vuota e vai avanti
+            }
+
+        }
+
+    }
+
+    private int getAddedLinesCount(DiffFormatter diffFormatter, DiffEntry entry) throws IOException {
+        int addedLines = 0;
+        for(Edit edit : diffFormatter.toFileHeader(entry).toEditList()) { //Itera attraverso ogni modifica (Edit) presente nell'intestazione del file associato alla voce di differenza entry
+            addedLines += edit.getEndB() - edit.getBeginB();
+            //Per ogni modifica, aggiunge al conteggio delle linee aggiunte la differenza tra
+            // la posizione finale (endB()) e quella iniziale (beginB()) della modifica.
+            // Questo è possibile perché endB()
+            // restituisce il numero di linea dopo la fine dell'intervallo di modifiche,
+            // mentre beginB() restituisce il numero di linea all'inizio dell'intervallo di modifiche.
+        }
+        return addedLines;
+    }
+    private int getDeletedLinesCount(DiffFormatter diffFormatter, DiffEntry entry) throws IOException {
+        int deletedLines = 0;
+        for(Edit edit : diffFormatter.toFileHeader(entry).toEditList()) {
+            deletedLines += edit.getEndA() - edit.getBeginA();
+            // Per ogni modifica, aggiunge al conteggio delle linee eliminate
+            // la differenza tra la posizione finale (endA()) e quella iniziale (beginA()) della modifica.
+            // Questo è possibile perché endA() restituisce il numero di linea dopo la fine dell'intervallo di modifiche,
+            // mentre beginA() restituisce il numero di linea all'inizio dell'intervallo di modifiche.
+        }
+        return deletedLines;
     }
 }

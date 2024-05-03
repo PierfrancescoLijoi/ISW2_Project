@@ -25,29 +25,24 @@ public class ExtractInfoJira {
 
     public List<Release> extractAllReleases(){ //voglio estrarre TUTTE le realese e le ordino del progetto
         List<Release> ReleasesList =new ArrayList<>();
-        int i;
+        int i; int j=0;
         String UrlProjectJira= "https://issues.apache.org/jira/rest/api/latest/project/"+projName; //rest service
         JSONObject jsonAll = JsonOperations.readJsonFromUrl(UrlProjectJira); //contiene tutto quello mostrato dal url in un singolo oggetto Json
         System.out.println(jsonAll.toString());
         JSONArray versions = jsonAll.getJSONArray("versions"); //creo lista di oggetti json di version item
 
         for (i=0; i < versions.length(); i++) {
-            String releaseName=null;
-            String releaseDate=null;
+
             JSONObject releaseJsonObject = versions.getJSONObject(i); //considero il singolo oggetto
             if (releaseJsonObject.has("releaseDate") && releaseJsonObject.has("name")) {
-                releaseDate = releaseJsonObject.get("releaseDate").toString();
-                releaseName = releaseJsonObject.get("name").toString();
+                String releaseDate = releaseJsonObject.get("releaseDate").toString();
+                String releaseName = releaseJsonObject.get("name").toString();
                 ReleasesList.add(new Release(releaseName, LocalDate.parse(releaseDate)) );
             }
         }
 
         ReleasesList.sort(Comparator.comparing(Release::getReleaseDate));
 
-        if (!ReleasesList.isEmpty()){
-            System.out.println("non è vuota la lista di tutte le release del progetto "+ projName);
-        }
-        int j=0;
         for (Release release : ReleasesList) {
             j++;
             release.setReleaseId(j);
@@ -61,11 +56,12 @@ public class ExtractInfoJira {
     }
 
     public List<Ticket> extractAllTicketsForEachRelease(List<Release> releasesList) throws IOException, URISyntaxException { //dalla lista di realese, prendi tutti i ticket creati per ogni realese
-        System.out.println("Estraggo tutti i ticket per la release");
+
         List<Ticket> ticketsList = getTickets(releasesList);
         List<Ticket> fixedTicketsList;
-        System.out.println("Chiamo la fix ticket");
+
         fixedTicketsList = TicketOperations.fixTicketList(ticketsList, releasesList, projName);
+        // mi ritorna una lista di ticket che avrà ognuna una lista di A.V
 
         fixedTicketsList.sort(Comparator.comparing(Ticket::getResolutionDate)); //ordino in base alla data di risoluzione
 

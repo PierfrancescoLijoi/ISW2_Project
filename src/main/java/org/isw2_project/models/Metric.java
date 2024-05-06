@@ -11,13 +11,27 @@ public class Metric {
     private int numberOfRevisions;
     private int numberOfDefectFixes;
     private int numberOfAuthors;
+    private int numberOfCommentsInCode; //proposta
+    private int totalInvokedClasses; //proposta
+    private int numberOfImports;//proposta
+    private int numberJavaImportCount; //poprosta
+    private int numberImportApiCount; //poprosta
+    private  int numberImportPackageCount;
+    private int numberOfMethods;
 
     public Metric() {
         bugged = false;
         size = 0;
         numberOfRevisions = 0;
         numberOfDefectFixes = 0;
+        numberOfCommentsInCode=0;
         numberOfAuthors = 0;
+        numberOfMethods=0;
+        totalInvokedClasses=0;
+        numberOfImports= 0;
+        numberJavaImportCount =0;
+        numberImportApiCount =0;
+        numberImportPackageCount =0;
         removedLOCMetrics = new LOCMetric();
         churnMetrics = new LOCMetric();
         addedLOCMetrics = new LOCMetric();
@@ -103,5 +117,50 @@ public class Metric {
 
     public int getNumberOfAuthors() {
         return numberOfAuthors;
+    }
+
+    public int getNumberOfCommentLinesInClass() {
+        return numberOfCommentsInCode;
+    }
+    public void setNumberOfCommentLinesInClass(int numberOfCommentsInCode){
+        this.numberOfCommentsInCode=numberOfCommentsInCode;
+    }
+    public int getTotalInvokedClasses() {
+        return totalInvokedClasses;
+    }
+    public void setTotalInvokedClasses(int totalInvokedClasses){
+        this.totalInvokedClasses=totalInvokedClasses;
+    }
+    public int getNumberOfMethods() {
+        return numberOfMethods;
+    }
+    public void setNumberOfMethods(int numberOfMethods){
+        this.numberOfMethods=numberOfMethods;
+    }
+
+    public void setNumberOfImports(int numberOfImports){
+        this.numberOfImports=numberOfImports;
+    }
+    public int getNumberOfImports(){
+        return this.numberOfImports;
+    }
+
+    public void setNumberOfJavaImports(int javaImportCount) {
+        this.numberJavaImportCount =javaImportCount;
+    }
+    public int getNumberOfjavaImportCount(){return this.numberJavaImportCount;}
+
+    public void setNumberOfApiImports(int NumberImportApiCount) {
+        this.numberImportApiCount =NumberImportApiCount;
+    }
+    public int getNumberOfApiImports() {
+        return this.numberImportApiCount;
+    }
+
+    public void setNumberOfImportPackageCount(int importPackageCount) {
+        this.numberImportPackageCount =  importPackageCount;
+    }
+    public int getNumberOfImportPackageCount() {
+        return this.numberImportPackageCount;
     }
 }

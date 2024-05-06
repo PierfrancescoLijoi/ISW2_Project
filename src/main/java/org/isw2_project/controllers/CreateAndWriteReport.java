@@ -8,6 +8,7 @@ import org.isw2_project.models.Ticket;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -204,28 +205,59 @@ public class CreateAndWriteReport {
 
                 //Name of CSV for output
                 fileWriter = new FileWriter(fileTitle);
-                fileWriter.append("Release ID, Release Name,Size, numberOfRevisions(numNR),numberOfDefectFixes(NumFix),numberOfAuthors(numAuth),CHURN value, CHURN MAX, CHURN Averange,LOC touched value,LOC added MAX,LOC added Averange,LOC deleted MAX,LOC deleted Averange,Is Buggy ");
+                fileWriter.append("Class Name,Release ID, Size, Number Of Revisions(numNR),Number Of DefectFixes(NumFix),Number Of Comment Lines In Class,totalInvokedClasses,Number Of Methods,Number Of Imports,Number Of Java Imports, Number Of Api Imports,Number Of Package Imports,Number Of Authors (numAuth),CHURN value, CHURN MAX, CHURN Averange,LOC touched value,LOC added MAX,LOC added Averange,LOC deleted MAX,LOC deleted Averange,Is Buggy ");
                 fileWriter.append("\n");
+                allProjectClasses.sort(Comparator.comparing(projectClass -> projectClass.getRelease().getReleaseName()));
+
                 //scrittura del dataset iterando su ogni classe
                 for (ProjectClass projectClass: allProjectClasses){
-                    fileWriter.append(String.valueOf(projectClass.getRelease().getReleaseId())); //release ID
+
+                    fileWriter.append(String.valueOf(projectClass.getName())); //name
                     fileWriter.append(",");
-                    fileWriter.append(String.valueOf(projectClass.getName()));//name class
+                    fileWriter.append(String.valueOf(projectClass.getRelease().getReleaseId()));//name class
                     fileWriter.append(",");
                     fileWriter.append(String.valueOf(projectClass.getMetric().getSize())); //size
                     fileWriter.append(",");
+
                     fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfRevisions())); //numNR
                     fileWriter.append(",");
+
                     fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfDefectFixes())); //NumFix
                     fileWriter.append(",");
+
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfCommentLinesInClass())); //NumCommentLines -->proposta
+                    fileWriter.append(",");
+
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getTotalInvokedClasses())); //Num Of classes invoked -->proposta
+                    fileWriter.append(",");
+
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfMethods())); //Num Of Methods  -->proposta
+                    fileWriter.append(",");
+
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfImports())); //Num Of Imports  -->proposta
+                    fileWriter.append(",");
+
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfjavaImportCount())); //Num Of JAVA Imports  -->proposta
+                    fileWriter.append(",");
+
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfApiImports())); //Num Of API Imports  -->proposta
+                    fileWriter.append(",");
+
+                    fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfImportPackageCount())); //Num Of Package Imports  -->proposta
+                    fileWriter.append(",");
+
                     fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfAuthors()));//numAuth
                     fileWriter.append(",");
+
                     fileWriter.append(String.valueOf(projectClass.getMetric().getChurnMetrics().getVal()));//churn
                     fileWriter.append(",");
+
                     fileWriter.append(String.valueOf(projectClass.getMetric().getChurnMetrics().getMaxVal()));//churn MAX
                     fileWriter.append(",");
+
                     fileWriter.append(String.valueOf(projectClass.getMetric().getChurnMetrics().getAvgVal()));//churn Avg
                     fileWriter.append(",");
+
                     fileWriter.append(String.valueOf(projectClass.getMetric().getTouchedLOCMetrics().getVal()));//LOC touched
                     fileWriter.append(",");
                     fileWriter.append(String.valueOf(projectClass.getMetric().getAddedLOCMetrics().getMaxVal()));//LOC add MAX
@@ -236,17 +268,18 @@ public class CreateAndWriteReport {
                     fileWriter.append(",");
                     fileWriter.append(String.valueOf(projectClass.getMetric().getAddedLOCMetrics().getAvgVal()));//LOC delected Avg
                     fileWriter.append(",");
-                    fileWriter.append(String.valueOf(projectClass.getMetric().getBuggyness()));//buggy
+
+                    if(projectClass.getMetric().getBuggyness()==true){
+                        fileWriter.append("YES");//buggy
+                    }else{
+                        fileWriter.append("NO");//no buggy
+                    }
+
 
 
                     fileWriter.append("\n");
                 }
-                /*
-                 removedLOCMetrics = new LOCMetric();
-                 churnMetrics = new LOCMetric();
-                 addedLOCMetrics = new LOCMetric();
-                 touchedLOCMetrics = new LOCMetric();
-                 */
+
 
             } catch (Exception e) {
                 Logger.getAnonymousLogger().log(Level.INFO, e.getMessage());

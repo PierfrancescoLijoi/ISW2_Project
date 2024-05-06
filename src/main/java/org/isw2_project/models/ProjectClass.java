@@ -28,38 +28,39 @@ public class ProjectClass {
     }
     public Metric getMetric() {
         return metric;
-    }
+    } //ok
     public Release getRelease() {
         return release;
-    }
+    } //ok
 
     public String getContentOfClass() {
         return contentOfClass;
-    }
+    } //ok
 
     public String getName() {
         return name;
-    }
+    } //ok
     public List<Commit> getCommitsThatTouchTheClass() {
         return commitsThatTouchTheClass;
-    }
+    } //ok
     public void addCommitThatTouchesTheClass(Commit commit) {
         this.commitsThatTouchTheClass.add(commit);
-    }
+    } //ok
 
     public void addLOCAddedByClass(Integer lOCAddedByEntry) {
         lOCAddedByClass.add(lOCAddedByEntry);
-    }
+    } //ok
     public List<Integer> getLOCAddedByClass() {
         return lOCAddedByClass;
-    }
+    } //Ok
     public List<Integer> getLOCDeletedByClass() {
         return lOCRemovedByClass;
-    }
+    }//ok
 
     public void addLOCDeletedByClass(Integer lOCRemovedByEntry) {
         lOCRemovedByClass.add(lOCRemovedByEntry);
-    }
+    } //ok
+
 
 
 }

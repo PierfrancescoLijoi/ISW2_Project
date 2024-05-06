@@ -23,13 +23,13 @@ public class CreationAndMeasurementMetrics {
         ExtractInfoJira extractInfoJira= new ExtractInfoJira(ProjectName);
         List<Release> resultReleasesList = extractInfoJira.extractAllReleases();
 
-    //2
-        ExtractInfoGit  extractInfoGit= new ExtractInfoGit(ProjectName, repoURL, resultReleasesList);
-        List<Commit> resultCommitsList = extractInfoGit.extractAllCommits();
-
     //3
         List<Ticket> resultTicketsList = extractInfoJira.extractAllTicketsForEachRelease(resultReleasesList);
         resultTicketsList.sort(Comparator.comparing(Ticket::getCreationDate));
+
+    //2
+        ExtractInfoGit  extractInfoGit= new ExtractInfoGit(ProjectName, repoURL, resultReleasesList);
+        List<Commit> resultCommitsList = extractInfoGit.extractAllCommits();
 
 
     //4
@@ -56,6 +56,12 @@ public class CreationAndMeasurementMetrics {
         metricsExtractor.computeAllMetrics();
         //scrittura del dataset.csv
         generateReportDataSetInfo(ProjectName,allProjectClasses);
+       /* for(ProjectClass projectClass:allProjectClasses){
+            if(projectClass.getName().equals("bookkeeper-benchmark/src/main/java/org/apache/bookkeeper/benchmark/MySqlClient.java") && projectClass.getRelease().getReleaseId()==1){
+                System.out.println(projectClass.getContentOfClass());
+            }
+
+        }*/
 
 
 

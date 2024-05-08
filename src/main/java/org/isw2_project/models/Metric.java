@@ -13,7 +13,7 @@ public class Metric {
     private int numberOfAuthors;
     private int numberOfCommentsInCode; //proposta
     private int totalInvokedClasses; //proposta
-    private int numberOfImports;//proposta
+
     private int numberJavaImportCount; //poprosta
     private int numberImportApiCount; //poprosta
     private  int numberImportPackageCount;
@@ -28,7 +28,7 @@ public class Metric {
         numberOfAuthors = 0;
         numberOfMethods=0;
         totalInvokedClasses=0;
-        numberOfImports= 0;
+
         numberJavaImportCount =0;
         numberImportApiCount =0;
         numberImportPackageCount =0;
@@ -138,12 +138,6 @@ public class Metric {
         this.numberOfMethods=numberOfMethods;
     }
 
-    public void setNumberOfImports(int numberOfImports){
-        this.numberOfImports=numberOfImports;
-    }
-    public int getNumberOfImports(){
-        return this.numberOfImports;
-    }
 
     public void setNumberOfJavaImports(int javaImportCount) {
         this.numberJavaImportCount =javaImportCount;

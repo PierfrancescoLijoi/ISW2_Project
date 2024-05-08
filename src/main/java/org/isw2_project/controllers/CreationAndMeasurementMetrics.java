@@ -56,12 +56,6 @@ public class CreationAndMeasurementMetrics {
         metricsExtractor.computeAllMetrics();
         //scrittura del dataset.csv
         generateReportDataSetInfo(ProjectName,allProjectClasses);
-       /* for(ProjectClass projectClass:allProjectClasses){
-            if(projectClass.getName().equals("bookkeeper-benchmark/src/main/java/org/apache/bookkeeper/benchmark/MySqlClient.java") && projectClass.getRelease().getReleaseId()==1){
-                System.out.println(projectClass.getContentOfClass());
-            }
-
-        }*/
 
 
 

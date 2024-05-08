@@ -205,7 +205,7 @@ public class CreateAndWriteReport {
 
                 //Name of CSV for output
                 fileWriter = new FileWriter(fileTitle);
-                fileWriter.append("Class Name,Release ID, Size, Number Of Revisions(numNR),Number Of DefectFixes(NumFix),Number Of Comment Lines In Class,totalInvokedClasses,Number Of Methods,Number Of Imports,Number Of Java Imports, Number Of Api Imports,Number Of Package Imports,Number Of Authors (numAuth),CHURN value, CHURN MAX, CHURN Averange,LOC touched value,LOC added MAX,LOC added Averange,LOC deleted MAX,LOC deleted Averange,Is Buggy ");
+                fileWriter.append("Class Name,Release ID, Size, Number Of Revisions(numNR),Number Of DefectFixes(NumFix),Number Of Comment Lines In Class,totalInvokedClasses,Number Of Methods,Number Of Java Imports, Number Of Api Imports,Number Of Package Imports,Number Of Authors (numAuth),CHURN value, CHURN MAX, CHURN Averange,LOC touched value,LOC added MAX,LOC added Averange,LOC deleted MAX,LOC deleted Averange,Is Buggy ");
                 fileWriter.append("\n");
                 allProjectClasses.sort(Comparator.comparing(projectClass -> projectClass.getRelease().getReleaseName()));
 
@@ -234,8 +234,8 @@ public class CreateAndWriteReport {
                     fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfMethods())); //Num Of Methods  -->proposta
                     fileWriter.append(",");
 
-                    fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfImports())); //Num Of Imports  -->proposta
-                    fileWriter.append(",");
+                   // fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfImports())); //Num Of Imports  -->proposta
+                   // fileWriter.append(","); //commentata perche troppo correlata alle successive due
 
                     fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfjavaImportCount())); //Num Of JAVA Imports  -->proposta
                     fileWriter.append(",");
@@ -269,7 +269,7 @@ public class CreateAndWriteReport {
                     fileWriter.append(String.valueOf(projectClass.getMetric().getAddedLOCMetrics().getAvgVal()));//LOC delected Avg
                     fileWriter.append(",");
 
-                    if(projectClass.getMetric().getBuggyness()==true){
+                    if(projectClass.getMetric().getBuggyness()){
                         fileWriter.append("YES");//buggy
                     }else{
                         fileWriter.append("NO");//no buggy

@@ -174,7 +174,7 @@ public class ExtractInfoGit {
     }
 
     public void ClassesBuggyOrNot(List<Ticket> ticketList, List<ProjectClass> allProjectClasses) throws IOException {
-        // obiettivo:L'obiettivo principale del metodo è etichettare le classi come "buggy" (difettose) o meno in base ai commit associati ai ticket e alle date dei ticket.
+        // obiettivo:L'obiettivo principale del metodo è etichettare le classi come "buggy" (difettose) o meno in base ai commit associati a i ticket e alle date dei ticket.
 
         for(ProjectClass projectClass: allProjectClasses){ //prima setta tutte le classi a Buggy=false come detto da Falessi
             projectClass.getMetric().setBuggyness(false);
@@ -235,7 +235,7 @@ public class ExtractInfoGit {
         List<String> touchedClassesNamesByCommit = new ArrayList<>();
 
         try(DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE);
-            ObjectReader reader = this.repository.newObjectReader()) {
+            ObjectReader reader = repository.newObjectReader()) {
 
             CanonicalTreeParser newTreeIter = new CanonicalTreeParser(); //albero associato al commit corrente
             ObjectId newTree = commit.getTree(); //albero associato al commit corrente
@@ -249,7 +249,7 @@ public class ExtractInfoGit {
             // In modo che possa analizzare l'albero associato al commit genitore.
             // Il parser sarà pronto a esaminare i file e le loro differenze presenti nell'albero del commit genitore quando sarà richiesto
 
-            diffFormatter.setRepository(this.repository);
+            diffFormatter.setRepository(repository);
             //sarà configurato per operare all'interno del repository specificato,
             // perchè utilizzerà questo repository per ottenere informazioni sui file e sulle differenze tra i commit.
 
@@ -340,7 +340,7 @@ public class ExtractInfoGit {
     }
 
     public Repository getRepository() {
-        return this.repository;
+        return repository;
     }
     public String getProjectName() {
         return this.projName;

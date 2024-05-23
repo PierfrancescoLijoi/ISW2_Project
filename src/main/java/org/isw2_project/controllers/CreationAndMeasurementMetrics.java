@@ -23,19 +23,18 @@ public class CreationAndMeasurementMetrics {
         ExtractInfoJira extractInfoJira= new ExtractInfoJira(ProjectName);
         List<Release> resultReleasesList = extractInfoJira.extractAllReleases();
 
-    //3
+    //2
         List<Ticket> resultTicketsList = extractInfoJira.extractAllTicketsForEachRelease(resultReleasesList);
         resultTicketsList.sort(Comparator.comparing(Ticket::getCreationDate));
 
-    //2
+    //3
         ExtractInfoGit  extractInfoGit= new ExtractInfoGit(ProjectName, repoURL, resultReleasesList);
         List<Commit> resultCommitsList = extractInfoGit.extractAllCommits();
 
 
     //4
-        System.out.println("4");
         extractInfoGit.setTicketList(resultTicketsList);
-        List<Commit> filteredCommitsOfIssues = extractInfoGit.filterFixedCommits(resultCommitsList);
+        List<Commit> filteredCommitsOfIssues = extractInfoGit.filterFixedCommits(resultCommitsList); //serve per computare la metrica quanti Fix ha avuto la classe
         resultTicketsList = extractInfoGit.getTicketList();
 
         generateReportCommitFilteredInfo(ProjectName,filteredCommitsOfIssues);
@@ -44,7 +43,6 @@ public class CreationAndMeasurementMetrics {
         resultReleasesList = extractInfoGit.getReleaseList();
 
     //5
-        System.out.println("5");
         List<ProjectClass> allProjectClasses = extractInfoGit.extractAllProjectClasses(resultCommitsList, resultReleasesList.size());
         ExtractInfoGit.git.getRepository().close();
         generateReportReleaseInfo(ProjectName,resultReleasesList);

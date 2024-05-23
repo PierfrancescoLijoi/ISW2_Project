@@ -35,7 +35,7 @@ public class ReleaseOperations {
     public static Release getReleaseAfterOrEqualDate(LocalDate specificDate, List<Release> releasesList) {
         releasesList.sort(Comparator.comparing(Release::getReleaseDate));
         for (Release release : releasesList) {
-            if (release.getReleaseDate().isAfter(specificDate)) { //verifica  che la data di rilascio sia dopo(o uguale) della specifica data
+            if (release.getReleaseDate().isAfter(specificDate)) { //verifica che la data di rilascio sia dopo(o uguale) della specifica data
                 return release;
             }
         }

@@ -28,7 +28,7 @@ public class ExtractInfoJira {
         int i; int j=0;
         String UrlProjectJira= "https://issues.apache.org/jira/rest/api/latest/project/"+projName; //rest service
         JSONObject jsonAll = JsonOperations.readJsonFromUrl(UrlProjectJira); //contiene tutto quello mostrato dal url in un singolo oggetto Json
-        System.out.println(jsonAll.toString());
+        System.out.println(jsonAll);
         JSONArray versions = jsonAll.getJSONArray("versions"); //creo lista di oggetti json di version item
 
         for (i=0; i < versions.length(); i++) {
@@ -78,15 +78,14 @@ public class ExtractInfoJira {
             String url = "https://issues.apache.org/jira/rest/api/2/search?jql=project=%22"
                     + projName + "%22AND%22issueType%22=%22Bug%22AND(%22status%22=%22closed%22OR"
                     + "%22status%22=%22resolved%22)AND%22resolution%22=%22fixed%22&fields=key,resolutiondate,affectedVersion,versions,created&startAt="
-                    + start + "&maxResults=" + maxResults; //prendo tutti i ticket bug,risolti,delle versioni delle realese
+                    + start + "&maxResults=" + maxResults; //prendo tutti i ticket bug, risolti, delle versioni delle realese
             JSONObject json = JsonOperations.readJsonFromUrl(url);
 
             JSONArray issues = json.getJSONArray("issues");
             total = json.getInt("total");
 
             for (; start < total && start < maxResults; start++){ // scorro tutti i ticket
-                System.out.println("sotto loop");
-                System.out.println(start);
+
                 String ticketKey = issues.getJSONObject(start %1000).get("key").toString(); //chiave ticket in jira
                 JSONObject fields = issues.getJSONObject(start %1000).getJSONObject("fields");
 
@@ -110,7 +109,7 @@ public class ExtractInfoJira {
                         || openingVersion.getReleaseDate().isAfter(fixedVersion.getReleaseDate()))){
                     continue;
                 }
-                if(openingVersion != null && fixedVersion != null && openingVersion.getReleaseId()!=releasesList.get(0).getReleaseId()){ //ultima condizione dell'if,senno avremmo OV==IV, e sarebbe incosistente!
+                if(openingVersion != null && fixedVersion != null && openingVersion.getReleaseId()!=releasesList.get(0).getReleaseId()){ //ultima condizione dell'if, senno avremmo OV==IV, e sarebbe incosistente!
                     ticketsList.add(new Ticket(ticketKey, creationDate, resolutionDate, openingVersion, fixedVersion, affectedVersionList));
                 }
 

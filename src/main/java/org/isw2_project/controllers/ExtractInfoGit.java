@@ -198,7 +198,7 @@ public class ExtractInfoGit {
 
                 //controllo consistenza commit associato al ticket
                 if (!commitDate.isAfter(ticket.getResolutionDate()) // se la data del commit NON è dopo quella della risoluzione del ticket
-                        && !commitDate.isBefore(ticket.getCreationDate())) { //la data NOn è prima della creazione del ticket
+                        && !commitDate.isBefore(ticket.getCreationDate())) { //la data NON è prima della creazione del ticket
 
                     List<String> modifiedClassesNames = RetriveTouchedClassesNamesByCommit(revCommit);
                     Release releaseOfCommit = commit.getRelease(); //commit associato alla release

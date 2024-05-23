@@ -13,9 +13,7 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 
 
 import java.io.StringReader;
@@ -24,14 +22,13 @@ import java.util.Set;
 
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ComputeMetrics {
     private final List<ProjectClass> allProjectClasses;
-    private  List<Commit> filteredCommitsOfIssues;
+    private final List<Commit> filteredCommitsOfIssues;
     private final ExtractInfoGit gitExtractor;
 
     public ComputeMetrics(ExtractInfoGit gitExtractor, List<ProjectClass> allProjectClasses, List<Commit> filteredCommitsOfIssues) {
@@ -89,7 +86,6 @@ public class ComputeMetrics {
 
     private void numberOfImports() {
         for (ProjectClass projectClass : allProjectClasses) {
-            int totalImportCount = 0;
             int javaImportCount = 0;
             int ImportApiCount = 0;
             int ImportPackageCount = 0;
@@ -100,7 +96,6 @@ public class ComputeMetrics {
             for (String line : lines) {
                 // Ignora le righe che non iniziano con "import"
                 if (line.trim().startsWith("import")) {
-                    totalImportCount++;
                     // Controlla se l'import è relativo a Java
                     if (line.contains("java.")) {
                         javaImportCount++;
@@ -122,7 +117,7 @@ public class ComputeMetrics {
 
 
             // Imposta le metriche calcolate per la classe
-            projectClass.getMetric().setNumberOfImports(totalImportCount);
+
             projectClass.getMetric().setNumberOfJavaImports(javaImportCount);
             projectClass.getMetric().setNumberOfApiImports(ImportApiCount);
             projectClass.getMetric().setNumberOfImportPackageCount(ImportPackageCount);
@@ -263,19 +258,34 @@ public class ComputeMetrics {
         LOCMetric touchedLOC = new LOCMetric();
         int i;
         for(ProjectClass projectClass : allProjectClasses) {
-            addedLOC.setVal(0);addedLOC.setAvgVal(0);addedLOC.setMaxVal(0);
-            removedLOC.setVal(0);removedLOC.setAvgVal(0);removedLOC.setMaxVal(0);
-            churnLOC.setVal(0);churnLOC.setAvgVal(0);churnLOC.setMaxVal(0);
-            touchedLOC.setVal(0);touchedLOC.setAvgVal(0);touchedLOC.setMaxVal(0);
+            addedLOC.setVal(0);
+            addedLOC.setAvgVal(0);
+            addedLOC.setMaxVal(0);
+
+            removedLOC.setVal(0);
+            removedLOC.setAvgVal(0);
+            removedLOC.setMaxVal(0);
+
+            churnLOC.setVal(0);
+            churnLOC.setAvgVal(0);
+            churnLOC.setMaxVal(0);
+
+            touchedLOC.setVal(0);
+            touchedLOC.setAvgVal(0);
+            touchedLOC.setMaxVal(0);
+
             gitExtractor.extractAddedOrRemovedLOC(projectClass);
 
             List<Integer> locAddedByClass = projectClass.getLOCAddedByClass();
             List<Integer> locRemovedByClass = projectClass.getLOCDeletedByClass();
+
             for(i = 0; i < locAddedByClass.size(); i++) {
+
                 int addedLineOfCode = locAddedByClass.get(i);
                 int removedLineOfCode = locRemovedByClass.get(i);
                 int churningFactor = Math.abs(locAddedByClass.get(i) - locRemovedByClass.get(i));
                 int touchedLinesOfCode = locAddedByClass.get(i) + locRemovedByClass.get(i);
+
                 addedLOC.addToVal(addedLineOfCode);
                 removedLOC.addToVal(removedLineOfCode);
                 churnLOC.addToVal(churningFactor);
@@ -332,7 +342,7 @@ public class ComputeMetrics {
                 projectClass.getMetric().setNumberOfCommentLinesInClass(commentLinesInClass);
             }
         } catch (Exception e) {
-
+            //non fare nulla
         }
 
     }

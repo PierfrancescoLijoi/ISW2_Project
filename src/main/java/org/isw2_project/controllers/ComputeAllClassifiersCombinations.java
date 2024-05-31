@@ -20,16 +20,26 @@ public class ComputeAllClassifiersCombinations {
     private ComputeAllClassifiersCombinations() {
     }
     public static List<CustomClassifier> returnAllClassifiersCombinations(AttributeStats attributeStats) {
-        ArrayList<CustomClassifier> customClassifiers=new ArrayList<>();
+        // Inizializza la lista che conterrà i risultati finali
+        List<CustomClassifier> customClassifiers = new ArrayList<>();
+
+        // Lista di classifier da utilizzare
         List<Classifier> classifierList = new ArrayList<>(List.of(new RandomForest(), new NaiveBayes(), new IBk()));
-        List<CustomClassifier> customClassifiersList = new ArrayList<>();
-        basicClassifiers(classifierList, customClassifiersList);
+
+        // Popola customClassifiers usando il metodo basicClassifiers
+        basicClassifiers(classifierList, customClassifiers);
+
+        // Ritorna la lista popolata
         return customClassifiers;
     }
+
+    // Metodo per popolare customClassifiersList con oggetti CustomClassifier
     private static void basicClassifiers(List<Classifier> classifierList, List<CustomClassifier> customClassifiersList) {
         for (Classifier classifier : classifierList) {
+            // Aggiunge ogni CustomClassifier alla lista
             customClassifiersList.add(new CustomClassifier(classifier, classifier.getClass().getSimpleName(), NO_SELECTION, null, NO_SAMPLING, false));
         }
     }
+
 
 }

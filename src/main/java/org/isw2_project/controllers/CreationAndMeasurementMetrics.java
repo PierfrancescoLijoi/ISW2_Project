@@ -92,7 +92,7 @@ public class CreationAndMeasurementMetrics {
 
 
 
-        //calcola propotion su tutto per il test, posso usare allProjectClasses perchè elimino incremental
+        //calcola propotion su tutto il dataset per il test, posso usare allProjectClasses perchè elimino incremental
         float propotionFinal=TicketOperations.propotionFinal(resultReleasesList.size(),resultTicketsList);
         for(Ticket ticket: resultTicketsList){
             if(ticket.getAffectedVersions().isEmpty()){
@@ -111,15 +111,14 @@ public class CreationAndMeasurementMetrics {
 
             listProjectClassesTestingSet.sort(Comparator.comparing(projectClass -> projectClass.getRelease().getReleaseDate()));
 
-
-
             generateReportDataSetInfo(ProjectName, listProjectClassesTestingSet,ProjectName+"_Testing_Set_"+ String.valueOf(k));
 
             k++;
         }
+        buondTakeRelease=buondTakeRelease-1;
 
     //8 walk foward da release 2 a 8, numerati i file da 1 a 7
-        for(int walkForward = 2; walkForward <buondTakeRelease; walkForward++){
+        for(int walkForward = 1; walkForward < buondTakeRelease; walkForward++){
 
             ExtractInfoWeka wekaExtractor = new ExtractInfoWeka(ProjectName, buondTakeRelease);
             List<ResultOfClassifier> resultsOfClassifierList = wekaExtractor.retrieveAllResultsFromClassifiers();

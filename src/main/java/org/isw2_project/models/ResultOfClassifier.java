@@ -12,6 +12,7 @@ public class ResultOfClassifier {
     private double trainingPercent;
     private double precision;
     private double recall;
+    private double fMeasure;
     private final double areaUnderROC;
     private final double kappa;
     private final double truePositives;
@@ -32,6 +33,7 @@ public class ResultOfClassifier {
         falsePositives = evaluation.numFalsePositives(0);
         trueNegatives = evaluation.numTrueNegatives(0);
         falseNegatives = evaluation.numFalseNegatives(0);
+        fMeasure=evaluation.fMeasure(0);
         if(truePositives == 0.0 && falsePositives == 0.0){
             precision = Double.NaN;
         } else{
@@ -117,4 +119,9 @@ public class ResultOfClassifier {
     public boolean hasCostSensitive() {
         return hasCostSensitive;
     }
+
+    public double getfMeasure() {
+        return fMeasure;
+    }
+
 }

@@ -237,17 +237,17 @@ public class CreateAndWriteReport {
 
                 //Name of CSV for output
                 fileWriter = new FileWriter(fileTitle);
-                fileWriter.append("Class Name,Release ID, Size, Number Of Revisions(numNR),Number Of DefectFixes(NumFix),Number Of Comment Lines In Class,totalInvokedClasses,Number Of Methods,Number Of Java Imports, Number Of Api Imports,Number Of Package Imports,Number Of Authors (numAuth),CHURN value, CHURN MAX, CHURN Averange,LOC touched value,LOC added MAX,LOC added Averange,LOC deleted MAX,LOC deleted Averange,Is Buggy ");
+                fileWriter.append(" Size, Number Of Revisions(numNR),Number Of DefectFixes(NumFix),Number Of Comment Lines In Class,totalInvokedClasses,Number Of Methods,Number Of Java Imports, Number Of Api Imports,Number Of Package Imports,Number Of Authors (numAuth),CHURN value, CHURN MAX, CHURN Averange,LOC touched value,LOC added MAX,LOC added Averange,LOC deleted MAX,LOC deleted Averange,Is Buggy ");
                 fileWriter.append("\n");
                 allProjectClasses.sort(Comparator.comparing(projectClass -> projectClass.getRelease().getReleaseName()));
 
                 //scrittura del dataset iterando su ogni classe
                 for (ProjectClass projectClass: allProjectClasses){
 
-                    fileWriter.append(String.valueOf(projectClass.getName())); //name
-                    fileWriter.append(",");
-                    fileWriter.append(String.valueOf(projectClass.getRelease().getReleaseId()));//name class
-                    fileWriter.append(",");
+                    //fileWriter.append(String.valueOf(projectClass.getName())); //name
+                    //fileWriter.append(",");
+                    //fileWriter.append(String.valueOf(projectClass.getRelease().getReleaseId()));//name class
+                   // fileWriter.append(",");
                     fileWriter.append(String.valueOf(projectClass.getMetric().getSize())); //size
                     fileWriter.append(",");
 

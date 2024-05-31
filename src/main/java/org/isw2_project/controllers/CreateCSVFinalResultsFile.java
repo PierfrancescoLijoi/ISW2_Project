@@ -24,16 +24,20 @@ public class  CreateCSVFinalResultsFile {
             StringBuilder fileName = new StringBuilder();
             fileName.append("/").append(projName).append("_finalReport").append(".csv");
             file = new File("finalResults/" + projName + fileName);
+            if(finalResultsList.isEmpty()){
+                System.out.println("VUOTA RESULT");
+            }
             try(FileWriter fileWriter = new FileWriter(file)) {
                 fileWriter.append("DATASET," +
-                        "#TRAINING_RELEASES," +
-                        "#TRAINING_INSTANCES," +
+                        "INDEX TRAINING_RELEASES," +
+                        "TRAINING_INSTANCES(%)," +
                         "CLASSIFIER," +
                         "FEATURE_SELECTION," +
                         "BALANCING," +
                         "COST_SENSITIVE," +
                         "PRECISION," +
                         "RECALL," +
+                        "F1,"+
                         "AREA_UNDER_ROC," +
                         "KAPPA," +
                         "TRUE_POSITIVES," +
@@ -62,6 +66,7 @@ public class  CreateCSVFinalResultsFile {
                     }
                     fileWriter.append(String.valueOf(resultOfClassifier.getPrecision())).append(",")
                             .append(String.valueOf(resultOfClassifier.getRecall())).append(",")
+                            .append(String.valueOf(resultOfClassifier.getfMeasure())).append(",")
                             .append(String.valueOf(resultOfClassifier.getAreaUnderROC())).append(",")
                             .append(String.valueOf(resultOfClassifier.getKappa())).append(",")
                             .append(String.valueOf(resultOfClassifier.getTruePositives())).append(",")

@@ -60,12 +60,13 @@ public class ExtractInfoJira {
         List<Ticket> ticketsList = getTickets(releasesList);
         List<Ticket> fixedTicketsList;
 
-        fixedTicketsList = TicketOperations.fixTicketList(ticketsList, releasesList, projName);
+       //fixedTicketsList = TicketOperations.fixTicketList(ticketsList, releasesList, projName);
         // mi ritorna una lista di ticket che avrà ognuna una lista di A.V
 
-        fixedTicketsList.sort(Comparator.comparing(Ticket::getResolutionDate)); //ordino in base alla data di risoluzione
+      //  fixedTicketsList.sort(Comparator.comparing(Ticket::getResolutionDate)); //ordino in base alla data di risoluzione
 
-        return fixedTicketsList;
+       // return fixedTicketsList;
+        return ticketsList;
     }
     public List<Ticket> getTickets(List<Release> releasesList)  { //prendi tutti start ticket dalla specifica realese
         int maxResults, start = 0,total;

@@ -1,9 +1,9 @@
 package org.isw2_project.controllers;
 
-import org.isw2_project.models.Commit;
-import org.isw2_project.models.ProjectClass;
-import org.isw2_project.models.Release;
-import org.isw2_project.models.Ticket;
+import org.isw2_project.models.*;
+import weka.core.Instances;
+import weka.core.converters.ArffSaver;
+import weka.core.converters.CSVLoader;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -188,20 +188,52 @@ public class CreateAndWriteReport {
 
     }
 
-    public static void generateReportDataSetInfo(String projectName, List<ProjectClass> allProjectClasses){
+    public static void generateReportDataSetInfo(String projectName, List<ProjectClass> allProjectClasses, String DatasetName){
         FileWriter fileWriter = null;
-
+        String fileTitle=null;
         try {
-            File file = new File("outputFiles/DataSet/" + projectName);
-            if (!file.exists()) {
-                boolean created = file.mkdirs();
-                if (!created) {
-                    throw new IOException();
+            if(DatasetName.contains("_Generico")){
+                File file = new File("outputFiles/" + projectName+"/csv");
+                if (!file.exists()) {
+                    boolean created = file.mkdirs();
+                    if (!created) {
+                        throw new IOException();
+                    }
                 }
+
+
+
+            }else if(DatasetName.contains("_Training_Set_")){
+                File file = new File("outputFiles/" + projectName+"/csv"+"/Training_Set");
+                if (!file.exists()) {
+                    boolean created = file.mkdirs();
+                    if (!created) {
+                        throw new IOException();
+                    }
+                }
+
+
+            }else {
+                File file = new File("outputFiles/" + projectName +"/csv"+ "/Testing_Set");
+                if (!file.exists()) {
+                    boolean created = file.mkdirs();
+                    if (!created) {
+                        throw new IOException();
+                    }
+                }
+
+
             }
 
             try {
-                String fileTitle = "outputFiles/DataSet/" + projectName + "/" +"DataSet.csv";
+                if(DatasetName.contains("_Generico")){
+                    fileTitle = "outputFiles/" + projectName + "/csv/"+ DatasetName+".csv";
+
+                }else if(DatasetName.contains("_Training_Set_")){
+                    fileTitle = "outputFiles/" + projectName+ "/csv"+ "/Training_Set" +"/" +DatasetName+".csv";
+                }else {
+                    fileTitle = "outputFiles/" + projectName +"/csv"+ "/Testing_Set"+"/" +DatasetName+".csv";
+                }
 
                 //Name of CSV for output
                 fileWriter = new FileWriter(fileTitle);
@@ -295,6 +327,82 @@ public class CreateAndWriteReport {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        generateArffDataSet(projectName, DatasetName,fileTitle);
     }
 
+    public static void generateArffDataSet(String projectName,  String DataName, String fileTitle) {
+        String DatasetName = DataName;
+        String fileTitleCSV = fileTitle;
+        String fileTitleArff=null;
+
+        try {
+
+            if(DatasetName.contains("_Generico")){
+                File file = new File("outputFiles/" + projectName+"/arff");
+                if (!file.exists()) {
+                    boolean created = file.mkdirs();
+                    if (!created) {
+                        throw new IOException();
+                    }
+                }
+
+
+
+            }else if(DatasetName.contains("_Training_Set_")){
+                File file = new File("outputFiles/" + projectName+"/arff"+"/Training_Set");
+                if (!file.exists()) {
+                    boolean created = file.mkdirs();
+                    if (!created) {
+                        throw new IOException();
+                    }
+                }
+
+
+            }else {
+                File file = new File("outputFiles/" + projectName +"/arff"+ "/Testing_Set");
+                if (!file.exists()) {
+                    boolean created = file.mkdirs();
+                    if (!created) {
+                        throw new IOException();
+                    }
+                }
+
+
+            }
+
+            try {
+
+                if(DatasetName.contains("_Generico")){
+                    fileTitleArff = "outputFiles/" + projectName + "/arff/" +DatasetName+".arff";
+
+                }else if(DatasetName.contains("_Training_Set_")){
+                    fileTitleArff = "outputFiles/" + projectName +"/arff"+ "/Training_Set" +"/" +DatasetName+".arff";
+                }else {
+                    fileTitleArff = "outputFiles/" + projectName +"/arff"+ "/Testing_Set"+"/" +DatasetName+".arff";
+                }
+
+                CSVLoader loader = new CSVLoader();
+                loader.setSource(new File(fileTitleCSV));
+                Instances data = loader.getDataSet(); // ottieni l'oggetto Instances
+
+                // Salva come ARFF
+                ArffSaver saver = new ArffSaver();
+                saver.setInstances(data); // imposta il dataset da convertire
+                saver.setFile(new File(fileTitleArff));
+                saver.writeBatch(); // salva come ARFF
+
+                System.out.println("File ARFF creato con successo.");
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 }
+

@@ -146,7 +146,7 @@ public class ExtractInfoGit {
                 ListAllProjectClasses.add(new ProjectClass(nameAndContentOfClass.getKey(), nameAndContentOfClass.getValue(), lastCommit.getRelease()));
             }
         }
-        ClassesBuggyOrNot(ticketList, ListAllProjectClasses); //definisce quali classi erano buggy se era toccata dal commit del ticket fixed
+       // ClassesBuggyOrNot(ticketList, ListAllProjectClasses); //definisce quali classi erano buggy se era toccata dal commit del ticket fixed
 
         KnowWhichClassTouchedByCommit(ListAllProjectClasses, commitList); //tiene traccia dei commit che toccano la classe
 
@@ -173,7 +173,7 @@ public class ExtractInfoGit {
         return allClasses;
     }
 
-    public void ClassesBuggyOrNot(List<Ticket> ticketList, List<ProjectClass> allProjectClasses) throws IOException {
+    public static void ClassesBuggyOrNot(List<Ticket> ticketList, List<ProjectClass> allProjectClasses) throws IOException {
         // obiettivo:L'obiettivo principale del metodo è etichettare le classi come "buggy" (difettose) o meno in base ai commit associati a i ticket e alle date dei ticket.
 
         for(ProjectClass projectClass: allProjectClasses){ //prima setta tutte le classi a Buggy=false come detto da Falessi
@@ -231,7 +231,7 @@ public class ExtractInfoGit {
         }
 
     }
-    private List<String> RetriveTouchedClassesNamesByCommit(RevCommit commit) throws IOException {
+    private static List<String> RetriveTouchedClassesNamesByCommit(RevCommit commit) throws IOException {
         List<String> touchedClassesNamesByCommit = new ArrayList<>();
 
         try(DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE);

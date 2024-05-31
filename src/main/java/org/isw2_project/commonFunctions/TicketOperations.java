@@ -94,4 +94,85 @@ public class TicketOperations {
         correctTickets.sort(Comparator.comparing(Ticket::getResolutionDate));
         return correctTickets;
     }
+
+    public static float propotionFinal(int LimitTicketReleaseFix , List<Ticket> resultTicketsList) {
+       ArrayList<Ticket> ticketArrayListComplete=new ArrayList<>();
+        for (Ticket ticket : resultTicketsList){
+            if(ticket.getOpeningVersion().getReleaseId()<=LimitTicketReleaseFix){
+                if(!ticket.getAffectedVersions().isEmpty()){
+                    ticketArrayListComplete.add(ticket);
+                }
+            }
+        }
+        float propotionFinal=calcolaNewPropotion(ticketArrayListComplete);
+        return propotionFinal;
+
+    }
+
+    private static float calcolaNewPropotion(ArrayList<Ticket> ticketArrayListComplete) {
+
+        ArrayList<Float> totalProportion = new ArrayList<>();
+        float denominator= 0.0F ;
+        float numerator =  0.0F;
+
+        for (Ticket ticket : ticketArrayListComplete){
+            //Denominator = FV - FO
+            if (ticket.getFixedVersion().getReleaseId() != ticket.getOpeningVersion().getReleaseId()) {
+                denominator = ((float) ticket.getFixedVersion().getReleaseId() - (float) ticket.getOpeningVersion().getReleaseId());
+            }else{
+                denominator = 1;
+            }
+            denominator=denominator+denominator;
+            //numerator = FV - FI
+            if (ticket.getFixedVersion().getReleaseId() >= ticket.getInjectedVersion().getReleaseId()) {
+                numerator = ((float) ticket.getFixedVersion().getReleaseId() - (float) ticket.getInjectedVersion().getReleaseId());
+            }else{
+                numerator = 1;
+            }
+            numerator=numerator+numerator;
+            totalProportion.add(numerator / denominator);
+
+        }
+
+        float median;
+        int size = totalProportion.size();
+        if (size % 2 == 0) {
+            median = (totalProportion.get((size / 2) - 1) + totalProportion.get(size / 2)) / 2;
+        } else {
+            median = totalProportion.get(size / 2);
+        }
+
+        return median;
+    }
+
+    public static void fixTicketWithProportionFINALCalculated(Ticket ticket, List<Release> releasesList, Float proportionCalculated) {
+
+        List<Release> affectedVersionsList = new ArrayList<>();
+        int injectedVersionId;
+        // IV = max(1; FV-(FV-OV)*P)
+        if(ticket.getFixedVersion().getReleaseId() == ticket.getOpeningVersion().getReleaseId()){
+            injectedVersionId = max(1, (int)
+                    (ticket.getFixedVersion().getReleaseId()-proportionCalculated));
+        }else{
+            injectedVersionId = max(1, (int)
+                    (ticket.getFixedVersion().getReleaseId()-
+                            ((ticket.getFixedVersion().getReleaseId()-ticket.getOpeningVersion().getReleaseId())
+                                    *proportionCalculated)));
+        }
+        //cerco la release corrispondente all'I.V stimata e l'aggiungo all A.V.
+        for (Release release : releasesList){
+            if(release.getReleaseId() == injectedVersionId){
+                affectedVersionsList.add(new Release(release.getReleaseId(), release.getReleaseName(), release.getReleaseDate()));
+                break;
+            }
+        }
+        affectedVersionsList.sort(Comparator.comparing(Release::getReleaseDate));
+
+        ticket.setAffectedVersions(affectedVersionsList);
+        ticket.setInjectedVersion(affectedVersionsList.get(0)); //setto la I.V come la prima componente nella lista A.V
+
+
+    }
+
+
 }

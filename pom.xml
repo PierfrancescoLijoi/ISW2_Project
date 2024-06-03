@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>ISW2_CodeMetrics</artifactId>
+    <artifactId>ISW2_Project</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -13,6 +13,7 @@
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jgit</groupId>
@@ -27,12 +28,12 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20210307</version> <!-- Aggiorna alla versione più recente se necessario -->
+            <version>20210307</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version> <!-- Sostituisci con l'ultima versione disponibile -->
+            <version>1.2.3</version>
         </dependency>
         <dependency>
             <groupId>com.github.javaparser</groupId>
@@ -44,8 +45,10 @@
             <artifactId>weka-stable</artifactId>
             <version>3.8.6</version>
         </dependency>
-
+        <dependency>
+            <groupId>nz.ac.waikato.cms.weka</groupId>
+            <artifactId>SMOTE</artifactId>
+            <version>1.0.3</version>
+        </dependency>
     </dependencies>
-
-
 </project>

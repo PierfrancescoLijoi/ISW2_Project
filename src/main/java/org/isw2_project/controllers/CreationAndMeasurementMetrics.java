@@ -115,6 +115,7 @@ public class CreationAndMeasurementMetrics {
 
             k++;
         }
+
         buondTakeRelease=buondTakeRelease-1;
 
     //8 walk foward da release 2 a 8, numerati i file da 1 a 7

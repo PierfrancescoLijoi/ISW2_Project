@@ -103,15 +103,6 @@ public class CreationAndMeasurementMetrics {
         //aggiunta lei da eseguire ancora run
         ExtractInfoGit.ClassesBuggyOrNot(resultTicketsList,allProjectClasses);
 
-        System.out.println("---------------");
-        for(Ticket ticket: resultTicketsList){
-
-                System.out.println("-IV               "+ticket.getInjectedVersion().getReleaseId());
-                System.out.println("-OP               "+ticket.getOpeningVersion().getReleaseId());
-                System.out.println("-FV               "+ticket.getFixedVersion().getReleaseId());
-
-            System.out.println("---------------");
-        }
 
 
         int k=1;

@@ -1,7 +1,5 @@
 package org.isw2_project.controllers;
 
-
-import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -10,15 +8,7 @@ import org.isw2_project.models.Commit;
 import org.isw2_project.models.LOCMetric;
 import org.isw2_project.models.Metric;
 import org.isw2_project.models.ProjectClass;
-import com.github.javaparser.JavaParser;
-import com.github.javaparser.ParseResult;
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import org.j_paine.formatter.ParseException;
 
-
-import java.io.StringReader;
 import java.util.HashSet;
 import java.util.Set;
 

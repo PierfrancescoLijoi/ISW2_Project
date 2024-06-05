@@ -1,5 +1,6 @@
 package org.isw2_project.controllers;
 
+
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.lib.ObjectReader;
@@ -14,6 +15,7 @@ import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import org.j_paine.formatter.ParseException;
 
 
 import java.io.StringReader;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class ComputeMetrics {
     private final List<ProjectClass> allProjectClasses;
@@ -124,69 +127,55 @@ public class ComputeMetrics {
         }
     }
 
-    private void NumberOfClassesInvoked() {
+    public void NumberOfClassesInvoked() {
+
         for (ProjectClass projectClass : allProjectClasses) {
+            Pattern pattern = Pattern.compile("\\bnew\\s+(\\w+)\\s*\\(");
+
+            // Matcher per trovare i match nel contenuto della classe
+            Matcher matcher = pattern.matcher(projectClass.getContentOfClass());
+
+            // Set per memorizzare le classi invocate
             Set<String> invokedClasses = new HashSet<>();
 
-            // Ottieni il contenuto della classe corrente
-            String classContent = projectClass.getContentOfClass();
-
-            // Utilizza JavaParser per analizzare il contenuto della classe
-            ParseResult<CompilationUnit> parseResult = new JavaParser().parse(new StringReader(classContent));
-            CompilationUnit compilationUnit = parseResult.getResult().orElseThrow(() -> new RuntimeException("Errore durante il parsing del contenuto della classe"));
-
-            // Utilizza un Visitor per visitare i metodi nella CompilationUnit e trovare le invocazioni di classi
-            InvokedClassesFinder invokedClassesFinder = new InvokedClassesFinder();
-            compilationUnit.accept(invokedClassesFinder, invokedClasses);
-
-            // Aggiorna il numero totale di classi invocate
-            int totalInvokedClasses = invokedClasses.size();
-            projectClass.getMetric().setTotalInvokedClasses(totalInvokedClasses);
+            // Trova e aggiungi le classi invocate al set
+            while (matcher.find()) {
+                String className = matcher.group(1);
+                invokedClasses.add(className);
+            }
+            projectClass.getMetric().setTotalInvokedClasses(invokedClasses.size());
         }
+
     }
 
-    // Visitor per trovare le classi invocate all'interno dei metodi
-    private static class InvokedClassesFinder extends VoidVisitorAdapter<Set<String>> {
-        @Override
-        public void visit(MethodDeclaration methodDeclaration, Set<String> invokedClasses) {
-            super.visit(methodDeclaration, invokedClasses);
-            methodDeclaration.findAll(ObjectCreationExpr.class).forEach(expr -> invokedClasses.add(expr.getTypeAsString()));
-        }
-    }
+    public void numberOfMethod() {
 
-    private void numberOfMethod() {
         for (ProjectClass projectClass : allProjectClasses) {
-            String codeContent = projectClass.getContentOfClass();
-            int methodCount = countMethodsUsingParser(codeContent);
+            int methodCount = 0;
+            Pattern pattern = Pattern.compile("\\b(?:public|private|protected)\\s+\\w+\\s+(\\w+)\\s*\\(");
+
+            // Matcher per trovare i match nel contenuto della classe
+            Matcher matcher = pattern.matcher(projectClass.getContentOfClass());
+
+            // Contatore per il numero di metodi
+
+            // Conta il numero di metodi trovati
+            while (matcher.find()) {
+                methodCount++;
+            }
+
+            // Restituisci il numero totale di metodi
+
             projectClass.getMetric().setNumberOfMethods(methodCount);
         }
+
     }
 
-    private int countMethodsUsingParser(String classContent) {
-        // Utilizziamo JavaParser per analizzare il contenuto della classe
-        ParseResult<CompilationUnit> parseResult = new JavaParser().parse(new StringReader(classContent));
-        CompilationUnit compilationUnit = parseResult.getResult().orElseThrow(() -> new RuntimeException("Errore durante il parsing del contenuto della classe"));
 
-        // Utilizziamo un Visitor per visitare i metodi nella CompilationUnit e contare il loro numero
-        MethodCounter methodCounter = new MethodCounter();
-        compilationUnit.accept(methodCounter, null);
 
-        return methodCounter.getCount();
-    }
 
-    private static class MethodCounter extends VoidVisitorAdapter<Void> {
-        private int count = 0;
 
-        @Override
-        public void visit(MethodDeclaration methodDeclaration, Void arg) {
-            super.visit(methodDeclaration, arg);
-            count++;
-        }
 
-        public int getCount() {
-            return count;
-        }
-    }
 
     private void computeSize() {
         //scorro tutta la lista delle ProjectCLasses con cui ho istanziato la classe

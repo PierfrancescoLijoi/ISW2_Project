@@ -41,6 +41,7 @@ public class ComputeAllClassifiersCombinations {
         List<AttributeSelection> featureSelectionFilters = getFeatureSelectionFilters();
         int majorityClassSize = isBuggyattributeStats.nominalCounts[1];
         int minorityClassSize = isBuggyattributeStats.nominalCounts[0];
+
         List<Filter> samplingFilters = getSamplingFilters(majorityClassSize, minorityClassSize);
         //ONLY FEATURE SELECTION
         onlyFeatureSelectionClassifiers(classifierList, featureSelectionFilters, customClassifiers);

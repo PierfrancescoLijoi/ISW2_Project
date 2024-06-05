@@ -14,6 +14,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/javaparser/javaparser</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jgit</groupId>
@@ -38,7 +45,7 @@
         <dependency>
             <groupId>com.github.javaparser</groupId>
             <artifactId>javaparser-core</artifactId>
-            <version>3.24.0</version>
+            <version>3.25.0</version> <!-- Sostituisci con l'ultima versione disponibile -->
         </dependency>
         <dependency>
             <groupId>nz.ac.waikato.cms.weka</groupId>
@@ -50,5 +57,31 @@
             <artifactId>SMOTE</artifactId>
             <version>1.0.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.9.2</version> <!-- Aggiorna alla versione più recente -->
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.sisu</groupId>
+            <artifactId>org.eclipse.sisu.inject</artifactId>
+            <version>0.3.4</version>
+        </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-maven-plugin</artifactId>
+                <version>4.9.2</version> <!-- Aggiorna alla versione più recente -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>antlr4</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

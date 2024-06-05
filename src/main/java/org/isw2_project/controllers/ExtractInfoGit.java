@@ -179,6 +179,7 @@ public class ExtractInfoGit {
         for(ProjectClass projectClass: allProjectClasses){ //prima setta tutte le classi a Buggy=false come detto da Falessi
             projectClass.getMetric().setBuggyness(false);
         }
+
         for(Ticket ticket: ticketList) { //itera su tutti i Ticket
 
             List<Commit> commitsContainingTicket = ticket.getCommitList(); // il ticket ha una lista di Commit associati a esso, puo capitare che non ho corrispondenza 1-1

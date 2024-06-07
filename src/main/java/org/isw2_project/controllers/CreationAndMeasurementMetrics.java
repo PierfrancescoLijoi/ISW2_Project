@@ -100,7 +100,8 @@ public class CreationAndMeasurementMetrics {
                 TicketOperations.fixTicketWithProportionFINALCalculated(ticket,resultReleasesList,propotionFinal);
             }
         }
-        //aggiunta lei da eseguire ancora run
+
+
         ExtractInfoGit.ClassesBuggyOrNot(resultTicketsList,allProjectClasses);
 
 
@@ -125,7 +126,7 @@ public class CreationAndMeasurementMetrics {
 
         buondTakeRelease=buondTakeRelease-1;
 
-    // 8 walk foward da release 2 a 8, numerati i file da 1 a 7
+    // 8 walk foward da release 2 a metà+1, numerati i file da 1 a 7
         for(int walkForward = 1; walkForward < buondTakeRelease; walkForward++){
 
             ExtractInfoWeka wekaExtractor = new ExtractInfoWeka(ProjectName, buondTakeRelease);

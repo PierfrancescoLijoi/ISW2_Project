@@ -5,9 +5,7 @@ import weka.core.Instances;
 import weka.core.converters.ArffSaver;
 import weka.core.converters.CSVLoader;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
@@ -15,7 +13,9 @@ import java.util.logging.Logger;
 
 public class CreateAndWriteReport {
 
-    private CreateAndWriteReport(){}
+    private CreateAndWriteReport() {
+    }
+
     public static void generateReportReleaseInfo(String projName, List<Release> resultReleasesList) {
         FileWriter fileWriter = null;
         int numRelease;
@@ -68,7 +68,8 @@ public class CreateAndWriteReport {
         }
 
     }
-    public static void generateReportTicketInfo(String projName, List<Ticket> ticketList)  {
+
+    public static void generateReportTicketInfo(String projName, List<Ticket> ticketList) {
         FileWriter fileWriter = null;
         int numTickets;
         try {
@@ -81,7 +82,7 @@ public class CreateAndWriteReport {
             }
 
             try {
-                String fileTitle = "outputFiles/reportFiles/" + projName + "/"+"Ticket_List.csv";
+                String fileTitle = "outputFiles/reportFiles/" + projName + "/" + "Ticket_List.csv";
 
                 //Name of CSV for output
                 fileWriter = new FileWriter(fileTitle);
@@ -111,7 +112,7 @@ public class CreateAndWriteReport {
                     fileWriter.append("}");
 
                     fileWriter.append(",");
-                    fileWriter.append( String.valueOf(ticketList.get(i).getCommitList().size() ));//num of commits
+                    fileWriter.append(String.valueOf(ticketList.get(i).getCommitList().size()));//num of commits
                     fileWriter.append(",");
                     fileWriter.append(String.valueOf(ticketList.get(i).getCreationDate()));//creation date
                     fileWriter.append(",");
@@ -137,7 +138,8 @@ public class CreateAndWriteReport {
         }
 
     }
-    public static void generateReportCommitFilteredInfo(String projName, List<Commit>filteredCommitsOfIssues){
+
+    public static void generateReportCommitFilteredInfo(String projName, List<Commit> filteredCommitsOfIssues) {
         FileWriter fileWriter = null;
         int numCommits;
         try {
@@ -188,12 +190,12 @@ public class CreateAndWriteReport {
 
     }
 
-    public static void generateReportDataSetInfo(String projectName, List<ProjectClass> allProjectClasses, String DatasetName){
+    public static void generateReportDataSetInfo(String projectName, List<ProjectClass> allProjectClasses, String DatasetName) {
         FileWriter fileWriter = null;
-        String fileTitle=null;
+        String fileTitle = null;
         try {
-            if(DatasetName.contains("_Generico")){
-                File file = new File("outputFiles/" + projectName+"/csv");
+            if (DatasetName.contains("_Generico")) {
+                File file = new File("outputFiles/" + projectName + "/csv");
                 if (!file.exists()) {
                     boolean created = file.mkdirs();
                     if (!created) {
@@ -202,9 +204,8 @@ public class CreateAndWriteReport {
                 }
 
 
-
-            }else if(DatasetName.contains("_Training_Set_")){
-                File file = new File("outputFiles/" + projectName+"/csv"+"/Training_Set");
+            } else if (DatasetName.contains("_Training_Set_")) {
+                File file = new File("outputFiles/" + projectName + "/csv" + "/Training_Set");
                 if (!file.exists()) {
                     boolean created = file.mkdirs();
                     if (!created) {
@@ -213,8 +214,8 @@ public class CreateAndWriteReport {
                 }
 
 
-            }else {
-                File file = new File("outputFiles/" + projectName +"/csv"+ "/Testing_Set");
+            } else {
+                File file = new File("outputFiles/" + projectName + "/csv" + "/Testing_Set");
                 if (!file.exists()) {
                     boolean created = file.mkdirs();
                     if (!created) {
@@ -226,13 +227,13 @@ public class CreateAndWriteReport {
             }
 
             try {
-                if(DatasetName.contains("_Generico")){
-                    fileTitle = "outputFiles/" + projectName + "/csv/"+ DatasetName+".csv";
+                if (DatasetName.contains("_Generico")) {
+                    fileTitle = "outputFiles/" + projectName + "/csv/" + DatasetName + ".csv";
 
-                }else if(DatasetName.contains("_Training_Set_")){
-                    fileTitle = "outputFiles/" + projectName+ "/csv"+ "/Training_Set" +"/" +DatasetName+".csv";
-                }else {
-                    fileTitle = "outputFiles/" + projectName +"/csv"+ "/Testing_Set"+"/" +DatasetName+".csv";
+                } else if (DatasetName.contains("_Training_Set_")) {
+                    fileTitle = "outputFiles/" + projectName + "/csv" + "/Training_Set" + "/" + DatasetName + ".csv";
+                } else {
+                    fileTitle = "outputFiles/" + projectName + "/csv" + "/Testing_Set" + "/" + DatasetName + ".csv";
                 }
 
                 //Name of CSV for output
@@ -242,12 +243,12 @@ public class CreateAndWriteReport {
                 allProjectClasses.sort(Comparator.comparing(projectClass -> projectClass.getRelease().getReleaseName()));
 
                 //scrittura del dataset iterando su ogni classe
-                for (ProjectClass projectClass: allProjectClasses){
+                for (ProjectClass projectClass : allProjectClasses) {
 
                     //fileWriter.append(String.valueOf(projectClass.getName())); //name
                     //fileWriter.append(",");
                     //fileWriter.append(String.valueOf(projectClass.getRelease().getReleaseId()));//name class
-                   // fileWriter.append(",");
+                    // fileWriter.append(",");
                     fileWriter.append(String.valueOf(projectClass.getMetric().getSize())); //size
                     fileWriter.append(",");
 
@@ -266,8 +267,8 @@ public class CreateAndWriteReport {
                     fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfMethods())); //Num Of Methods  -->proposta
                     fileWriter.append(",");
 
-                   // fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfImports())); //Num Of Imports  -->proposta
-                   // fileWriter.append(","); //commentata perche troppo correlata alle successive due
+                    // fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfImports())); //Num Of Imports  -->proposta
+                    // fileWriter.append(","); //commentata perche troppo correlata alle successive due
 
                     fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfjavaImportCount())); //Num Of JAVA Imports  -->proposta
                     fileWriter.append(",");
@@ -301,12 +302,11 @@ public class CreateAndWriteReport {
                     fileWriter.append(String.valueOf(projectClass.getMetric().getAddedLOCMetrics().getAvgVal()));//LOC delected Avg
                     fileWriter.append(",");
 
-                    if(projectClass.getMetric().getBuggyness()){
+                    if (projectClass.getMetric().getBuggyness()) {
                         fileWriter.append("YES");//buggy
-                    }else{
+                    } else {
                         fileWriter.append("NO");//no buggy
                     }
-
 
 
                     fileWriter.append("\n");
@@ -327,82 +327,81 @@ public class CreateAndWriteReport {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        generateArffDataSet(projectName, DatasetName,fileTitle);
+        generateArffDataSet(projectName, DatasetName, fileTitle);
     }
 
-    public static void generateArffDataSet(String projectName,  String DataName, String fileTitle) {
+    public static void generateArffDataSet(String projectName, String DataName, String fileTitle) {
         String DatasetName = DataName;
         String fileTitleCSV = fileTitle;
-        String fileTitleArff=null;
+        String fileTitleArff = null;
 
         try {
-
-            if(DatasetName.contains("_Generico")){
-                File file = new File("outputFiles/" + projectName+"/arff");
-                if (!file.exists()) {
-                    boolean created = file.mkdirs();
-                    if (!created) {
-                        throw new IOException();
-                    }
+            File file;
+            if (DatasetName.contains("_Generico")) {
+                file = new File("outputFiles/" + projectName + "/arff");
+            } else if (DatasetName.contains("_Training_Set_")) {
+                file = new File("outputFiles/" + projectName + "/arff" + "/Training_Set");
+            } else {
+                file = new File("outputFiles/" + projectName + "/arff" + "/Testing_Set");
+            }
+            if (!file.exists()) {
+                boolean created = file.mkdirs();
+                if (!created) {
+                    throw new IOException();
                 }
-
-
-
-            }else if(DatasetName.contains("_Training_Set_")){
-                File file = new File("outputFiles/" + projectName+"/arff"+"/Training_Set");
-                if (!file.exists()) {
-                    boolean created = file.mkdirs();
-                    if (!created) {
-                        throw new IOException();
-                    }
-                }
-
-
-            }else {
-                File file = new File("outputFiles/" + projectName +"/arff"+ "/Testing_Set");
-                if (!file.exists()) {
-                    boolean created = file.mkdirs();
-                    if (!created) {
-                        throw new IOException();
-                    }
-                }
-
-
             }
 
-            try {
+            if (DatasetName.contains("_Generico")) {
+                fileTitleArff = "outputFiles/" + projectName + "/arff/" + DatasetName + ".arff";
+            } else if (DatasetName.contains("_Training_Set_")) {
+                fileTitleArff = "outputFiles/" + projectName + "/arff" + "/Training_Set" + "/" + DatasetName + ".arff";
+            } else {
+                fileTitleArff = "outputFiles/" + projectName + "/arff" + "/Testing_Set" + "/" + DatasetName + ".arff";
+            }
 
-                if(DatasetName.contains("_Generico")){
-                    fileTitleArff = "outputFiles/" + projectName + "/arff/" +DatasetName+".arff";
+            CSVLoader loader = new CSVLoader();
+            loader.setSource(new File(fileTitleCSV));
+            Instances data = loader.getDataSet(); // ottieni l'oggetto Instances
 
-                }else if(DatasetName.contains("_Training_Set_")){
-                    fileTitleArff = "outputFiles/" + projectName +"/arff"+ "/Training_Set" +"/" +DatasetName+".arff";
-                }else {
-                    fileTitleArff = "outputFiles/" + projectName +"/arff"+ "/Testing_Set"+"/" +DatasetName+".arff";
-                }
+            // Salva come ARFF
+            ArffSaver saver = new ArffSaver();
+            saver.setInstances(data); // imposta il dataset da convertire
+            saver.setFile(new File(fileTitleArff));
+            saver.writeBatch(); // salva come ARFF
 
-                CSVLoader loader = new CSVLoader();
-                loader.setSource(new File(fileTitleCSV));
-                Instances data = loader.getDataSet(); // ottieni l'oggetto Instances
+            // Modifica la riga 21 del file ARFF
+            modifyArffLine(fileTitleArff, 21, "@attribute 'Is Buggy ' {YES,NO}");
 
-                // Salva come ARFF
-                ArffSaver saver = new ArffSaver();
-                saver.setInstances(data); // imposta il dataset da convertire
-                saver.setFile(new File(fileTitleArff));
-                saver.writeBatch(); // salva come ARFF
-
-                System.out.println("File ARFF creato con successo.");
-
+            System.out.println("File ARFF creato con successo.");
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    } catch (IOException e) {
+    }
+
+    public static void modifyArffLine(String filePath, int lineNumber, String newLine) {
+        try {
+            File file = new File(filePath);
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            StringBuilder content = new StringBuilder();
+            String line;
+            int currentLine = 1;
+
+            while ((line = reader.readLine()) != null) {
+                if (currentLine == lineNumber) {
+                    content.append(newLine).append("\n");
+                } else {
+                    content.append(line).append("\n");
+                }
+                currentLine++;
+            }
+            reader.close();
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(content.toString());
+            writer.close();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
-
-
 }
-

@@ -18,7 +18,7 @@
 @attribute 'LOC added Averange' numeric
 @attribute 'LOC deleted MAX' numeric
 @attribute 'LOC deleted Averange' numeric
-@attribute 'Is Buggy ' {NO}
+@attribute 'Is Buggy ' {YES,NO}
 
 @data
 137,4,0,5,3,1,6,3,2,2,139,137,34.75,333,137,58.75,94,58.75,NO

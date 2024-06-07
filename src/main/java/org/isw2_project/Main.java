@@ -12,8 +12,8 @@ public class Main {
         String InvidualProjectName="AVRO";
         CreationAndMeasurementMetrics creationAndMeasurementMetrics=new CreationAndMeasurementMetrics();
         try {
-            //creationAndMeasurementMetrics.StartExtractMetrics(CommonProjectName,"https://github.com/PierfrancescoLijoi/bookkeeper.git");
-            creationAndMeasurementMetrics.StartExtractMetrics(InvidualProjectName,"https://github.com/PierfrancescoLijoi/avro.git");
+            creationAndMeasurementMetrics.StartExtractMetrics(CommonProjectName,"https://github.com/PierfrancescoLijoi/bookkeeper.git");
+            //creationAndMeasurementMetrics.StartExtractMetrics(InvidualProjectName,"https://github.com/PierfrancescoLijoi/avro.git");
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

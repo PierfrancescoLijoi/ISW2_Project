@@ -2,6 +2,12 @@ package org.isw2_project.controllers;
 
 import org.isw2_project.models.CustomClassifier;
 
+import weka.core.Instances;
+import weka.filters.supervised.attribute.AttributeSelection;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import weka.attributeSelection.BestFirst;
 import weka.classifiers.Classifier;
 import weka.classifiers.CostMatrix;
@@ -13,7 +19,6 @@ import weka.classifiers.trees.RandomForest;
 import weka.core.AttributeStats;
 import weka.core.SelectedTag;
 import weka.filters.Filter;
-import weka.filters.supervised.attribute.AttributeSelection;
 
 import weka.filters.supervised.instance.Resample;
 import weka.filters.supervised.instance.SMOTE;
@@ -22,92 +27,98 @@ import weka.filters.supervised.instance.SpreadSubsample;
 import java.util.ArrayList;
 import java.util.List;
 
+import weka.core.Attribute;
+
 public class ComputeAllClassifiersCombinations {
     public static final String NO_SELECTION = "NoSelection";
     public static final String NO_SAMPLING = "NoSampling";
     public static final double WEIGHT_FALSE_POSITIVE = 1.0;
     public static final double WEIGHT_FALSE_NEGATIVE = 10.0;
-    private ComputeAllClassifiersCombinations() {
-    }
-    public static List<CustomClassifier> returnAllClassifiersCombinations(AttributeStats isBuggyattributeStats) {
-        // Inizializza la lista che conterrà i risultati finali
-        List<CustomClassifier> customClassifiers = new ArrayList<>();
+    public static String projectName;
 
-        // Lista di classifier da utilizzare
+
+
+    private ComputeAllClassifiersCombinations() {
+
+    }
+
+    public static List<CustomClassifier> returnAllClassifiersCombinations(AttributeStats isBuggyattributeStats, Instances data,String prjName) {
+        projectName=prjName;
+        List<CustomClassifier> customClassifiers = new ArrayList<>();
         List<Classifier> classifierList = new ArrayList<>(List.of(new RandomForest(), new NaiveBayes(), new IBk()));
 
-        // Popola customClassifiers usando il metodo basicClassifiers
         basicClassifiers(classifierList, customClassifiers);
         List<AttributeSelection> featureSelectionFilters = getFeatureSelectionFilters();
         int majorityClassSize = isBuggyattributeStats.nominalCounts[1];
         int minorityClassSize = isBuggyattributeStats.nominalCounts[0];
 
         List<Filter> samplingFilters = getSamplingFilters(majorityClassSize, minorityClassSize);
-        //ONLY FEATURE SELECTION
-        onlyFeatureSelectionClassifiers(classifierList, featureSelectionFilters, customClassifiers);
-        //ONLY SAMPLING
-        onlySamplingClassifiers(classifierList, samplingFilters, customClassifiers);
-        //ONLY COST SENSITIVE
-        onlyCostSensitiveClassifiers(classifierList, customClassifiers);
-        //FEATURE SELECTION AND SAMPLING
-        featureSelectionAndSamplingClassifiers(classifierList, featureSelectionFilters, samplingFilters, customClassifiers);
-        //FEATURE SELECTION AND COST SENSITIVE
-        featureSelectionAndCostSensitiveClassifiers(classifierList, featureSelectionFilters, customClassifiers);
 
-        // Ritorna la lista popolata
+        onlyFeatureSelectionClassifiers(classifierList, featureSelectionFilters, customClassifiers, data);
+        onlySamplingClassifiers(classifierList, samplingFilters, customClassifiers);
+        onlyCostSensitiveClassifiers(classifierList, customClassifiers);
+        featureSelectionAndSamplingClassifiers(classifierList, featureSelectionFilters, samplingFilters, customClassifiers, data);
+        featureSelectionAndCostSensitiveClassifiers(classifierList, featureSelectionFilters, customClassifiers, data);
+
         return customClassifiers;
     }
-    // Metodo per popolare customClassifiersList con oggetti CustomClassifier
+
     private static void basicClassifiers(List<Classifier> classifierList, List<CustomClassifier> customClassifiersList) {
+        List<String> featuresF=new ArrayList<>();
         for (Classifier classifier : classifierList) {
-            // Aggiunge ogni CustomClassifier alla lista
-            customClassifiersList.add(new CustomClassifier(classifier, classifier.getClass().getSimpleName(), NO_SELECTION, null, NO_SAMPLING, false));
+            customClassifiersList.add(new CustomClassifier(classifier, classifier.getClass().getSimpleName(), NO_SELECTION, null, NO_SAMPLING, false,featuresF));
         }
     }
-    private static void onlyFeatureSelectionClassifiers(List<Classifier> classifierList, List<AttributeSelection> featureSelectionFilters, List<CustomClassifier> customClassifiersList) {
+
+    private static void onlyFeatureSelectionClassifiers(List<Classifier> classifierList, List<AttributeSelection> featureSelectionFilters, List<CustomClassifier> customClassifiersList, Instances data) {
         for (AttributeSelection featureSelectionFilter : featureSelectionFilters) {
             for (Classifier classifier : classifierList) {
                 FilteredClassifier filteredClassifier = new FilteredClassifier();
                 filteredClassifier.setClassifier(classifier);
                 filteredClassifier.setFilter(featureSelectionFilter);
 
-                customClassifiersList.add(new CustomClassifier(filteredClassifier, classifier.getClass().getSimpleName(), featureSelectionFilter.getSearch().getClass().getSimpleName(), ((BestFirst)featureSelectionFilter.getSearch()).getDirection().getSelectedTag().getReadable(), NO_SAMPLING, false));
+                List<String> selectedFeatures = new ArrayList<>(); // Lista per le features selezionate
+                // Estrai e scrivi le feature selezionate, aggiungendole alla lista
+                extractAndWriteSelectedFeatures(classifier.getClass().getSimpleName(), featureSelectionFilter, data, selectedFeatures);
+
+                customClassifiersList.add(new CustomClassifier(filteredClassifier, classifier.getClass().getSimpleName(), featureSelectionFilter.getSearch().getClass().getSimpleName(), ((BestFirst) featureSelectionFilter.getSearch()).getDirection().getSelectedTag().getReadable(), NO_SAMPLING, false, selectedFeatures));
             }
         }
     }
+
     private static List<Filter> getSamplingFilters(int majorityClassSize, int minorityClassSize) {
-    double percentStandardOversampling = 0;
-    double percentSMOTE = 0;
+        double percentStandardOversampling = 0;
+        double percentSMOTE = 0;
 
-    if (majorityClassSize + minorityClassSize > 0) {
-        percentStandardOversampling = ((100.0 * majorityClassSize) / (majorityClassSize + minorityClassSize)) * 2;
+        if (majorityClassSize + minorityClassSize > 0) {
+            percentStandardOversampling = ((100.0 * majorityClassSize) / (majorityClassSize + minorityClassSize)) * 2;
+        }
+
+        if (minorityClassSize > 0 && minorityClassSize <= majorityClassSize) {
+            percentSMOTE = (100.0 * (majorityClassSize - minorityClassSize)) / minorityClassSize;
+        }
+
+        List<Filter> filterList = new ArrayList<>();
+
+        // Configurazione filtro Resample
+        Resample resample = new Resample();
+        resample.setBiasToUniformClass(1.0);
+        resample.setSampleSizePercent(percentStandardOversampling);
+        filterList.add(resample);
+
+        // Configurazione filtro SpreadSubsample
+        SpreadSubsample spreadSubsample = new SpreadSubsample();
+        spreadSubsample.setDistributionSpread(1.0);
+        filterList.add(spreadSubsample);
+
+        // Configurazione filtro SMOTE
+        SMOTE smote = new SMOTE();
+        smote.setClassValue("1");
+        smote.setPercentage(percentSMOTE);
+        filterList.add(smote);
+
+        return filterList;
     }
-
-    if (minorityClassSize > 0 && minorityClassSize <= majorityClassSize) {
-        percentSMOTE = (100.0 * (majorityClassSize - minorityClassSize)) / minorityClassSize;
-    }
-
-    List<Filter> filterList = new ArrayList<>();
-
-    // Configurazione filtro Resample
-    Resample resample = new Resample();
-    resample.setBiasToUniformClass(1.0);
-    resample.setSampleSizePercent(percentStandardOversampling);
-    filterList.add(resample);
-
-    // Configurazione filtro SpreadSubsample
-    SpreadSubsample spreadSubsample = new SpreadSubsample();
-    spreadSubsample.setDistributionSpread(1.0);
-    filterList.add(spreadSubsample);
-
-    // Configurazione filtro SMOTE
-    SMOTE smote = new SMOTE();
-    smote.setClassValue("1");
-    smote.setPercentage(percentSMOTE);
-    filterList.add(smote);
-
-    return filterList;
-}
 
     private static List<AttributeSelection> getFeatureSelectionFilters() {
         AttributeSelection attributeSelection = new AttributeSelection();
@@ -116,27 +127,32 @@ public class ComputeAllClassifiersCombinations {
         attributeSelection.setSearch(bestFirst);
         return new ArrayList<>(List.of(attributeSelection));
     }
+
     private static void onlySamplingClassifiers(List<Classifier> classifierList, List<Filter> samplingFilters, List<CustomClassifier> customClassifiersList) {
+        List<String> featuresF=new ArrayList<>();
         for (Filter samplingFilter : samplingFilters) {
             for (Classifier classifier : classifierList) {
                 FilteredClassifier filteredClassifier = new FilteredClassifier();
                 filteredClassifier.setClassifier(classifier);
                 filteredClassifier.setFilter(samplingFilter);
 
-                customClassifiersList.add(new CustomClassifier(filteredClassifier, classifier.getClass().getSimpleName(),NO_SELECTION, null, samplingFilter.getClass().getSimpleName(), false));
+                customClassifiersList.add(new CustomClassifier(filteredClassifier, classifier.getClass().getSimpleName(), NO_SELECTION, null, samplingFilter.getClass().getSimpleName(), false,featuresF));
             }
         }
     }
+
     private static void onlyCostSensitiveClassifiers(List<Classifier> classifierList, List<CustomClassifier> customClassifiersList) {
+        List<String> featuresF=new ArrayList<>();
         for (Classifier classifier : classifierList) {
             List<CostSensitiveClassifier> costSensitiveFilters = getCostSensitiveFilters();
             for (CostSensitiveClassifier costSensitiveClassifier : costSensitiveFilters) {
                 costSensitiveClassifier.setClassifier(classifier);
 
-                customClassifiersList.add(new CustomClassifier(costSensitiveClassifier, classifier.getClass().getSimpleName(),NO_SELECTION, null, NO_SAMPLING, true));
+                customClassifiersList.add(new CustomClassifier(costSensitiveClassifier, classifier.getClass().getSimpleName(), NO_SELECTION, null, NO_SAMPLING, true,featuresF));
             }
         }
     }
+
     private static List<CostSensitiveClassifier> getCostSensitiveFilters() {
         CostSensitiveClassifier costSensitiveClassifier = new CostSensitiveClassifier();
         costSensitiveClassifier.setMinimizeExpectedCost(false);
@@ -144,6 +160,7 @@ public class ComputeAllClassifiersCombinations {
         costSensitiveClassifier.setCostMatrix(costMatrix);
         return new ArrayList<>(List.of(costSensitiveClassifier));
     }
+
     private static CostMatrix getCostMatrix() {
         CostMatrix costMatrix = new CostMatrix(2);
         costMatrix.setCell(0, 0, 0.0);
@@ -152,10 +169,12 @@ public class ComputeAllClassifiersCombinations {
         costMatrix.setCell(1, 1, 0.0);
         return costMatrix;
     }
-    private static void featureSelectionAndSamplingClassifiers(List<Classifier> classifierList, List<AttributeSelection> featureSelectionFilters, List<Filter> samplingFilters, List<CustomClassifier> customClassifiersList) {
+
+    private static void featureSelectionAndSamplingClassifiers(List<Classifier> classifierList, List<AttributeSelection> featureSelectionFilters, List<Filter> samplingFilters, List<CustomClassifier> customClassifiersList, Instances data) {
         for (AttributeSelection featureSelectionFilter : featureSelectionFilters) {
             for (Filter samplingFilter : samplingFilters) {
                 for (Classifier classifier : classifierList) {
+                    List<String> featuresF=new ArrayList<>();
                     FilteredClassifier innerClassifier = new FilteredClassifier();
                     innerClassifier.setClassifier(classifier);
                     innerClassifier.setFilter(samplingFilter);
@@ -164,24 +183,74 @@ public class ComputeAllClassifiersCombinations {
                     externalClassifier.setFilter(featureSelectionFilter);
                     externalClassifier.setClassifier(innerClassifier);
 
-                    customClassifiersList.add(new CustomClassifier(externalClassifier, classifier.getClass().getSimpleName(), featureSelectionFilter.getSearch().getClass().getSimpleName(), ((BestFirst)featureSelectionFilter.getSearch()).getDirection().getSelectedTag().getReadable(), samplingFilter.getClass().getSimpleName(), false));
+                    customClassifiersList.add(new CustomClassifier(externalClassifier, classifier.getClass().getSimpleName(), featureSelectionFilter.getSearch().getClass().getSimpleName(), ((BestFirst) featureSelectionFilter.getSearch()).getDirection().getSelectedTag().getReadable(), samplingFilter.getClass().getSimpleName(), false,featuresF));
+
+                    // Estrai e scrivi le feature selezionate
+                    extractAndWriteSelectedFeatures(classifier.getClass().getSimpleName(), featureSelectionFilter, data, customClassifiersList.get(customClassifiersList.size() - 1).getSelectedFeatures());
                 }
             }
         }
     }
-    private static void featureSelectionAndCostSensitiveClassifiers(List<Classifier> classifierList, List<AttributeSelection> featureSelectionFilters, List<CustomClassifier> customClassifiersList) {
+
+    private static void featureSelectionAndCostSensitiveClassifiers(List<Classifier> classifierList, List<AttributeSelection> featureSelectionFilters, List<CustomClassifier> customClassifiersList, Instances data) {
         for (Classifier classifier : classifierList) {
             List<CostSensitiveClassifier> costSensitiveFilters = getCostSensitiveFilters();
-            for(CostSensitiveClassifier costSensitiveClassifier: costSensitiveFilters){
+            for (CostSensitiveClassifier costSensitiveClassifier : costSensitiveFilters) {
                 for (AttributeSelection featureSelectionFilter : featureSelectionFilters) {
                     FilteredClassifier filteredClassifier = new FilteredClassifier();
+                    List<String> featuresF=new ArrayList<>();
                     filteredClassifier.setFilter(featureSelectionFilter);
                     costSensitiveClassifier.setClassifier(classifier);
                     filteredClassifier.setClassifier(costSensitiveClassifier);
 
-                    customClassifiersList.add(new CustomClassifier(filteredClassifier, classifier.getClass().getSimpleName(), featureSelectionFilter.getSearch().getClass().getSimpleName(), ((BestFirst)featureSelectionFilter.getSearch()).getDirection().getSelectedTag().getReadable(), NO_SAMPLING, true));
+                    customClassifiersList.add(new CustomClassifier(filteredClassifier, classifier.getClass().getSimpleName(), featureSelectionFilter.getSearch().getClass().getSimpleName(), ((BestFirst) featureSelectionFilter.getSearch()).getDirection().getSelectedTag().getReadable(), NO_SAMPLING, true,featuresF));
+
+                    // Estrai e scrivi le feature selezionate
+                    extractAndWriteSelectedFeatures(classifier.getClass().getSimpleName(), featureSelectionFilter, data, customClassifiersList.get(customClassifiersList.size() - 1).getSelectedFeatures());
                 }
             }
+        }
+    }
+
+    private static void extractAndWriteSelectedFeatures(String classifierName, AttributeSelection featureSelectionFilter, Instances data, List<String> selectedFeatures) {
+        try {
+            File directory = new File("finalResults/" + projectName);
+            if (!directory.exists()) {
+                boolean success = directory.mkdirs();
+                if (!success) {
+                    throw new IOException();
+                }
+            }
+            File file = new File(directory.getPath() + "/"+projectName+"_Features_Selection.txt");
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                writer.write("-----------------------------------------");
+                writer.newLine();
+                writer.write("Classifier: " + classifierName);
+                writer.newLine();
+                writer.newLine();
+                writer.write("Selected Features:");
+                writer.newLine();
+
+                // Applicare il filtro AttributeSelection ai dati
+                featureSelectionFilter.setInputFormat(data);
+                Instances selectedData = Filter.useFilter(data, featureSelectionFilter);
+
+                // Ottenere l'elenco degli attributi selezionati
+                int numAttributes = selectedData.numAttributes();
+                for (int i = 0; i < numAttributes; i++) {
+                    Attribute attribute = selectedData.attribute(i);
+                    int index = i + 1;
+                    String attributeName = attribute.name();
+                    writer.write(index + ")   " + attributeName);
+                    writer.newLine();
+                    selectedFeatures.add(attributeName); // Aggiungi la feature selezionata alla lista
+                }
+                writer.write("-----------------------------------------");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

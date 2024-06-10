@@ -33,11 +33,17 @@ public class ExtractInfoWeka {
                 trainingSetInstance.setClassIndex(numAttr - 1);
                 testingSetInstance.setClassIndex(numAttr - 1);
 
-                List<CustomClassifier> customClassifiers = ComputeAllClassifiersCombinations.returnAllClassifiersCombinations(trainingSetInstance.attributeStats(numAttr - 1));
-                if(customClassifiers.isEmpty()){
-                    System.out.println("VUOTA COSTUM");
-                }
+
+                List<CustomClassifier> customClassifiers = ComputeAllClassifiersCombinations.returnAllClassifiersCombinations(trainingSetInstance.attributeStats(numAttr - 1), trainingSetInstance, projName);
+
+
+
+
+
                 for (CustomClassifier customClassifier : customClassifiers) {
+
+                    // scrittura su file di text features selezionate accedendo a ogni campo della lista
+
                     if (customClassifier == null || customClassifier.getClassifier() == null) {
                         System.out.println("Il classificatore è null per: " + customClassifier);
                         continue;

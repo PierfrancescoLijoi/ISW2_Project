@@ -1,4 +1,4 @@
- Size, Number Of Revisions(numNR),Number Of DefectFixes(NumFix),Number Of Comment Lines In Class,totalInvokedClasses,Number Of Methods,Number Of Java Imports, Number Of Api Imports,Number Of Package Imports,Number Of Authors (numAuth),CHURN value, CHURN MAX, CHURN Averange,LOC touched value,LOC added MAX,LOC added Averange,LOC deleted MAX,LOC deleted Averange,Is Buggy 
+Size,Number Of Revisions(numNR),Number Of DefectFixes(NumFix),Number Of Comment Lines In Class,totalInvokedClasses,Number Of Methods,Number Of Java Imports, Number Of Api Imports,Number Of Package Imports,Number Of Authors (numAuth),CHURN value,CHURN MAX,CHURN Averange,LOC touched value,LOC added MAX,LOC added Averange,LOC deleted MAX,LOC deleted Averange,Is Buggy 
 215,3,1,1,11,5,3,14,8,1,215,177,71.66666666666667,239,177,75.66666666666667,8,75.66666666666667,NO
 271,2,0,2,10,4,9,13,6,1,271,260,135.5,297,260,142.0,13,142.0,NO
 451,5,0,8,19,11,14,16,5,3,459,425,91.8,617,425,106.8,55,106.8,NO

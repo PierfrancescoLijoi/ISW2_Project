@@ -19,6 +19,7 @@ public class ResultOfClassifier {
     private final double falsePositives;
     private final double trueNegatives;
     private final double falseNegatives;
+    private String[] selectedFeatures;
 
     public ResultOfClassifier(int walkForwardIteration, CustomClassifier customClassifier, Evaluation evaluation) {
         this.walkForwardIteration = walkForwardIteration;
@@ -122,6 +123,13 @@ public class ResultOfClassifier {
 
     public double getfMeasure() {
         return fMeasure;
+    }
+    public void setSelectedFeatures(String[] selectedFeatures) {
+        this.selectedFeatures = selectedFeatures;
+    }
+
+    public String[] getSelectedFeatures() {
+        return selectedFeatures;
     }
 
 }

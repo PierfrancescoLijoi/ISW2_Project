@@ -7,8 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-
-public class  CreateCSVFinalResultsFile {
+public class CreateCSVFinalResultsFile {
 
     private CreateCSVFinalResultsFile() {}
 
@@ -79,6 +78,69 @@ public class  CreateCSVFinalResultsFile {
         } catch (IOException e) {
 
         }
+        writeFeaturesSelectionCSV(projName,finalResultsList);
     }
 
+    public static void writeFeaturesSelectionCSV(String projName, List<ResultOfClassifier> finalResultsList){
+        try {
+            File file = new File("finalResults/" + projName );
+            if (!file.exists()) {
+                boolean success = file.mkdirs();
+                if (!success) {
+                    throw new IOException();
+                }
+            }
+            StringBuilder fileName = new StringBuilder();
+            fileName.append("/").append(projName).append("_FeaturesSelection").append(".csv");
+            file = new File("finalResults/" + projName + fileName);
+            if(finalResultsList.isEmpty()){
+                System.out.println("VUOTA RESULT");
+            }
+            try(FileWriter fileWriter = new FileWriter(file)) {
+                fileWriter.append("DATASET," +
+                        "INDEX TRAINING_RELEASES," +
+                        "TRAINING_INSTANCES(%)," +
+                        "CLASSIFIER," +
+                        "FEATURE_SELECTION," +
+                        "BALANCING," +
+                        "COST_SENSITIVE," +
+                        "FEATURES_1," +
+                        "FEATURES_2," +
+                        "FEATURES_3," +
+                        "FEATURES_4," +
+                        "FEATURES_5," +
+                        "FEATURES_6," +
+                        "FEATURES_7," +
+                        "FEATURES_8," +
+                        "FEATURES_9," +
+                        "FEATURES_10," +
+                        "FEATURES_11," +
+                        "FEATURES_12").append("\n");
+                for(ResultOfClassifier resultOfClassifier: finalResultsList){
+                    if(resultOfClassifier.hasFeatureSelection()) {
+                        fileWriter.append(projName).append(",")
+                                .append(String.valueOf(resultOfClassifier.getWalkForwardIteration())).append(",")
+                                .append(String.valueOf(resultOfClassifier.getTrainingPercent())).append(",")
+                                .append(resultOfClassifier.getClassifierName()).append(",")
+                                .append(resultOfClassifier.getCustomClassifier().getFeatureSelectionFilterName()).append(",")
+                                .append(resultOfClassifier.getCustomClassifier().getSamplingFilterName()).append(",")
+                                .append("SensitiveLearning").append(",");
+                        // Aggiungi le features selezionate al CSV
+                        List<String> selectedFeatures = resultOfClassifier.getCustomClassifier().getSelectedFeatures();
+                        for (String feature : selectedFeatures) {
+                            fileWriter.append(feature).append(",");
+                        }
+                        // Riempie i restanti campi con valori vuoti
+                        for (int i = selectedFeatures.size(); i < 12; i++) {
+                            fileWriter.append(",");
+                        }
+                        fileWriter.append("\n");
+                    }
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

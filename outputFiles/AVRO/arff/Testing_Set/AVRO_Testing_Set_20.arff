@@ -1,7 +1,7 @@
 @relation AVRO_Testing_Set_20
 
-@attribute ' Size' numeric
-@attribute ' Number Of Revisions(numNR)' numeric
+@attribute Size numeric
+@attribute 'Number Of Revisions(numNR)' numeric
 @attribute 'Number Of DefectFixes(NumFix)' numeric
 @attribute 'Number Of Comment Lines In Class' numeric
 @attribute totalInvokedClasses numeric
@@ -11,8 +11,8 @@
 @attribute 'Number Of Package Imports' numeric
 @attribute 'Number Of Authors (numAuth)' numeric
 @attribute 'CHURN value' numeric
-@attribute ' CHURN MAX' numeric
-@attribute ' CHURN Averange' numeric
+@attribute 'CHURN MAX' numeric
+@attribute 'CHURN Averange' numeric
 @attribute 'LOC touched value' numeric
 @attribute 'LOC added MAX' numeric
 @attribute 'LOC added Averange' numeric

@@ -111,11 +111,7 @@ public class CreateCSVFinalResultsFile {
                         "FEATURES_5," +
                         "FEATURES_6," +
                         "FEATURES_7," +
-                        "FEATURES_8," +
-                        "FEATURES_9," +
-                        "FEATURES_10," +
-                        "FEATURES_11," +
-                        "FEATURES_12").append("\n");
+                        "FEATURES_8" ).append("\n");
                 for(ResultOfClassifier resultOfClassifier: finalResultsList){
                     if(resultOfClassifier.hasFeatureSelection()) {
                         fileWriter.append(projName).append(",")
@@ -134,10 +130,7 @@ public class CreateCSVFinalResultsFile {
                         for (String feature : selectedFeatures) {
                             fileWriter.append(feature).append(",");
                         }
-                        // Riempie i restanti campi con valori vuoti
-                        for (int i = selectedFeatures.size(); i < 12; i++) {
-                            fileWriter.append(",");
-                        }
+
                         fileWriter.append("\n");
                     }
                 }

@@ -123,8 +123,12 @@ public class CreateCSVFinalResultsFile {
                                 .append(String.valueOf(resultOfClassifier.getTrainingPercent())).append(",")
                                 .append(resultOfClassifier.getClassifierName()).append(",")
                                 .append(resultOfClassifier.getCustomClassifier().getFeatureSelectionFilterName()).append(",")
-                                .append(resultOfClassifier.getCustomClassifier().getSamplingFilterName()).append(",")
-                                .append("SensitiveLearning").append(",");
+                                .append(resultOfClassifier.getCustomClassifier().getSamplingFilterName()).append(",");
+                                if (resultOfClassifier.hasCostSensitive()){
+                                    fileWriter.append("SensitiveLearning").append(",");
+                                }else {
+                                    fileWriter.append("None").append(",");
+                                }
                         // Aggiungi le features selezionate al CSV
                         List<String> selectedFeatures = resultOfClassifier.getCustomClassifier().getSelectedFeatures();
                         for (String feature : selectedFeatures) {

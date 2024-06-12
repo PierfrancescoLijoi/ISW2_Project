@@ -111,7 +111,10 @@ public class CreateCSVFinalResultsFile {
                         "FEATURES_5," +
                         "FEATURES_6," +
                         "FEATURES_7," +
-                        "FEATURES_8" ).append("\n");
+                        "FEATURES_8," +
+                        "FEATURES_9," +
+                        "FEATURES_10," +
+                        "FEATURES_11").append("\n");
                 for(ResultOfClassifier resultOfClassifier: finalResultsList){
                     if(resultOfClassifier.hasFeatureSelection()) {
                         fileWriter.append(projName).append(",")

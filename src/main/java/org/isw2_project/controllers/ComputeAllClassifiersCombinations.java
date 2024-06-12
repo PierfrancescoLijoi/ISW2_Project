@@ -214,7 +214,7 @@ public class ComputeAllClassifiersCombinations {
 
     private static void extractAndWriteSelectedFeatures(String classifierName, AttributeSelection featureSelectionFilter, Instances data, List<String> selectedFeatures) {
         try {
-            File directory = new File("finalResults/" + projectName);
+            File directory = new File("outputFiles/reportFiles/" + projectName);
             if (!directory.exists()) {
                 boolean success = directory.mkdirs();
                 if (!success) {

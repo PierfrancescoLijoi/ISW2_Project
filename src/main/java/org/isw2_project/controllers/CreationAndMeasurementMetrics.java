@@ -23,7 +23,7 @@ public class CreationAndMeasurementMetrics {
         ExtractInfoJira extractInfoJira= new ExtractInfoJira(ProjectName);
         List<Release> resultReleasesList = extractInfoJira.extractAllReleases();
 
-    //2 Momentaneamente disabilitata il richiamo al proportion con incremental
+    //2 Momentaneamente disabilitata il richiamo al proportion con incremental (da annullare completamente)
         List<Ticket> resultTicketsList = extractInfoJira.extractAllTicketsForEachRelease(resultReleasesList);
         resultTicketsList.sort(Comparator.comparing(Ticket::getCreationDate));
 

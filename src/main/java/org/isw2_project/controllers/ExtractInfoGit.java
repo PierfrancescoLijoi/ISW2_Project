@@ -58,6 +58,7 @@ public class ExtractInfoGit {
         }
 
     }
+
     public List<Commit> extractAllCommits() throws IOException, GitAPIException {
         List<RevCommit> revCommitList = new ArrayList<>();
         List<Ref> branchList = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
@@ -106,9 +107,11 @@ public class ExtractInfoGit {
     public void setTicketList(List<Ticket> ticketList) {
         this.ticketList = ticketList;
     }
+
     public List<Release> getReleaseList() {
         return releaseList;
     }
+
     public List<Commit> filterFixedCommits(List<Commit> commitList) {
         List<Commit> filteredCommits = new ArrayList<>();
         for (Commit commit : commitList) {

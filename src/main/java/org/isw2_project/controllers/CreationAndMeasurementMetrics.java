@@ -51,6 +51,11 @@ public class CreationAndMeasurementMetrics {
 
             boolean shouldRemove = false; // Flag per indicare se rimuovere il ticket
 
+            if (ticket1.getOpeningVersion() != null &&
+                    !TicketOperations.isAVInList(resultReleasesList, ticket1.getOpeningVersion().getReleaseName())) {
+                shouldRemove = true; // Segna per rimozione se InjectedVersion non è presente
+            }
+
             // Controlla se la versione iniettata è presente nella lista
             if (ticket1.getInjectedVersion() != null &&
                     !TicketOperations.isAVInList(resultReleasesList, ticket1.getInjectedVersion().getReleaseName())) {

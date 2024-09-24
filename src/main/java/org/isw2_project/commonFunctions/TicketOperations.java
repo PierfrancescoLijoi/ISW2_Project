@@ -13,6 +13,7 @@ import java.util.List;
 import static java.lang.Math.max;
 
 public class TicketOperations {
+    private static List<Release> listR;
     private TicketOperations(){}
     public static List<Ticket> fixTicketList(List<Ticket> ticketsList, List<Release> releasesList, String projName) throws IOException, URISyntaxException {
         List<Ticket> ticketsForProportionList = new ArrayList<>();
@@ -115,6 +116,14 @@ public class TicketOperations {
         float denominator= 0.0F ;
         float numerator =  0.0F;
 
+        for(Release release : listR){
+            boolean isInList= TicketOperations.isAVInList(listR, release.getReleaseName());
+            if(!isInList){
+                ticketArrayListComplete.removeIf(ticket -> ticket.getOpeningVersion().getReleaseName().equals(release.getReleaseName()));
+                ticketArrayListComplete.removeIf(ticket -> ticket.getInjectedVersion().getReleaseName().equals(release.getReleaseName()));
+            }
+        }
+
         for (Ticket ticket : ticketArrayListComplete){
             //Denominator = FV - FO
             if (ticket.getFixedVersion().getReleaseId() != ticket.getOpeningVersion().getReleaseId()) {
@@ -160,12 +169,16 @@ public class TicketOperations {
                                     *proportionCalculated)));
         }
         //cerco la release corrispondente all'I.V stimata e l'aggiungo all A.V.
-        for (Release release : releasesList){
-            if(release.getReleaseId() == injectedVersionId){
+        for (Release release :releasesList ){
+            boolean isInList= isAVInList(releasesList,release.getReleaseName());
+
+            if(release.getReleaseId() == injectedVersionId && isInList ){
                 affectedVersionsList.add(new Release(release.getReleaseId(), release.getReleaseName(), release.getReleaseDate()));
                 break;
             }
         }
+
+
         affectedVersionsList.sort(Comparator.comparing(Release::getReleaseDate));
 
         ticket.setAffectedVersions(affectedVersionsList);
@@ -173,6 +186,16 @@ public class TicketOperations {
 
 
     }
+    static public boolean isAVInList(List<Release> releasesList, String nomeRealistCercare) {
+        for (Release release : releasesList) {
+            if (release.getReleaseName().equals(nomeRealistCercare) || release.getReleaseName() == null) {
+                return true; // Nome trovato
+            }
+        }
+        return false; // Nome non trovato
+    }
 
-
+    public static void setListR(List<Release> resultReleasesList) {
+        listR=resultReleasesList;
+    }
 }

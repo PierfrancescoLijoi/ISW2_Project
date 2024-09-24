@@ -17,6 +17,7 @@ import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
+import org.isw2_project.commonFunctions.TicketOperations;
 import org.isw2_project.models.Commit;
 import org.isw2_project.models.ProjectClass;
 import org.isw2_project.models.Release;
@@ -31,11 +32,13 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class ExtractInfoGit {
+
     private List<Ticket> ticketList;
     private final String projName;
     private final  List<Release> releaseList;
     protected static  Git git;
     private static  Repository repository ;
+
     public ExtractInfoGit(String projName, String repoURL, List<Release> releaseList) throws IOException, GitAPIException {
         String filename = projName.toLowerCase() + "Temp";
         File directory = new File(filename);
@@ -49,6 +52,10 @@ public class ExtractInfoGit {
         this.releaseList = releaseList;
         this.ticketList = null;
         this.projName=projName;
+        for (Release release : releaseList) {
+
+            System.out.println("è presente: " + release.getReleaseName() + ", " + release.getReleaseDate() + ", " + release.getReleaseId());
+        }
 
     }
     public List<Commit> extractAllCommits() throws IOException, GitAPIException {
@@ -69,8 +76,10 @@ public class ExtractInfoGit {
             LocalDate commitDate = LocalDate.parse(formatter.format(revCommit.getCommitterIdent().getWhen()));
             LocalDate lowerBoundDate = LocalDate.parse(formatter.format(new Date(0)));
             for(Release release: releaseList){
+
                 LocalDate dateOfRelease = release.getReleaseDate();
-                if (commitDate.isAfter(lowerBoundDate) && !commitDate.isAfter(dateOfRelease)) {
+
+                if (commitDate.isAfter(lowerBoundDate) && !commitDate.isAfter(dateOfRelease) ) {
                     Commit newCommit = new Commit(revCommit, release);
                     commitList.add(newCommit);
                     release.addCommit(newCommit);
@@ -78,7 +87,10 @@ public class ExtractInfoGit {
                 lowerBoundDate = dateOfRelease;
             }
         }
+
         releaseList.removeIf(release -> release.getCommitList().isEmpty());
+
+
         int i = 0;
         for (Release release : releaseList) {
             release.setReleaseId(++i);

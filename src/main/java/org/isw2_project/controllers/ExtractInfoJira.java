@@ -26,20 +26,21 @@ public class ExtractInfoJira {
     public List<Release> extractAllReleases(){ //voglio estrarre TUTTE le realese e le ordino del progetto
         List<Release> ReleasesList =new ArrayList<>();
         int i; int j=0;
-        String UrlProjectJira= "https://issues.apache.org/jira/rest/api/2/project/"+projName; //rest service
-        JSONObject jsonAll = JsonOperations.readJsonFromUrl(UrlProjectJira); //contiene tutto quello mostrato dal url in un singolo oggetto Json
-        System.out.println(jsonAll);
-        JSONArray versions = jsonAll.getJSONArray("versions"); //creo lista di oggetti json di version item
 
-        for (i=0; i < versions.length(); i++) {
+        String UrlProjectJira = "https://issues.apache.org/jira/rest/api/2/project/" + projName;
+        JSONObject jsonAll = JsonOperations.readJsonFromUrl(UrlProjectJira);
+        JSONArray versions = jsonAll.getJSONArray("versions");
 
-            JSONObject releaseJsonObject = versions.getJSONObject(i); //considero il singolo oggetto
-            if (releaseJsonObject.has("releaseDate") && releaseJsonObject.has("name")) {
-                String releaseDate = releaseJsonObject.get("releaseDate").toString();
-                String releaseName = releaseJsonObject.get("name").toString();
+        for ( i = 0; i < versions.length(); i++) {
+            JSONObject jsonObject = versions.getJSONObject(i);
+            if (jsonObject.has("releaseDate") && jsonObject.has("name")) {
+                String releaseDate = jsonObject.getString("releaseDate");
+                String releaseName = jsonObject.getString("name");
                 ReleasesList.add(new Release(releaseName, LocalDate.parse(releaseDate)) );
             }
         }
+
+
 
         ReleasesList.sort(Comparator.comparing(Release::getReleaseDate));
 

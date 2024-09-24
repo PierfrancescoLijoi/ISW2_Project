@@ -8,31 +8,75 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.isw2_project.controllers.CreateAndWriteReport.*;
 import static org.isw2_project.controllers.CreateCSVFinalResultsFile.writeCsvFinalResultsFile;
 
 public class CreationAndMeasurementMetrics {
+
     public CreationAndMeasurementMetrics(){}
+
+    public List<Release> resultReleasesList;
 
     public  void StartExtractMetrics(String ProjectName,String repoURL) throws IOException, GitAPIException, URISyntaxException {
         System.out.println("Inizio");
 
     //1
         ExtractInfoJira extractInfoJira= new ExtractInfoJira(ProjectName);
-        List<Release> resultReleasesList = extractInfoJira.extractAllReleases();
+         resultReleasesList = extractInfoJira.extractAllReleases();
 
     //2 Momentaneamente disabilitata il richiamo al proportion con incremental (da annullare completamente)
         List<Ticket> resultTicketsList = extractInfoJira.extractAllTicketsForEachRelease(resultReleasesList);
         resultTicketsList.sort(Comparator.comparing(Ticket::getCreationDate));
 
-    //3
+
+
+
+
+        //3
         ExtractInfoGit  extractInfoGit= new ExtractInfoGit(ProjectName, repoURL, resultReleasesList);
         List<Commit> resultCommitsList = extractInfoGit.extractAllCommits();
 
+        for (Release release : resultReleasesList) {
+            System.out.println("  Nome R : " + release.getReleaseName() );
+        }
 
-    //4
+        // Usa un iteratore per evitare ConcurrentModificationException
+        Iterator<Ticket> iterator = resultTicketsList.iterator();
+
+        while (iterator.hasNext()) {
+            Ticket ticket1 = iterator.next();
+
+            boolean shouldRemove = false; // Flag per indicare se rimuovere il ticket
+
+            // Controlla se la versione iniettata è presente nella lista
+            if (ticket1.getInjectedVersion() != null &&
+                    !TicketOperations.isAVInList(resultReleasesList, ticket1.getInjectedVersion().getReleaseName())) {
+                shouldRemove = true; // Segna per rimozione se InjectedVersion non è presente
+            }
+
+            // Itera su tutte le versioni affette dal ticket
+            for (Release release : ticket1.getAffectedVersions()) {
+                if (release != null &&
+                        !TicketOperations.isAVInList(resultReleasesList, release.getReleaseName())) {
+                    shouldRemove = true; // Segna per rimozione se AffectedVersion non è presente
+                    break; // Esci dal ciclo se trovi una versione non valida
+                }
+            }
+
+            // Rimuovi il ticket se necessario
+            if (shouldRemove) {
+                iterator.remove();
+            }
+        }
+
+
+
+
+
+        //4
         extractInfoGit.setTicketList(resultTicketsList);
         List<Commit> filteredCommitsOfIssues = extractInfoGit.filterFixedCommits(resultCommitsList); //serve per computare la metrica quanti Fix ha avuto la classe
         resultTicketsList = extractInfoGit.getTicketList();
@@ -41,11 +85,12 @@ public class CreationAndMeasurementMetrics {
 
 
         resultReleasesList = extractInfoGit.getReleaseList();
+        generateReportReleaseInfo(ProjectName,resultReleasesList);
 
     //5 ELIMINATO il labeling del bug or not !!!
         List<ProjectClass> allProjectClasses = extractInfoGit.extractAllProjectClasses(resultCommitsList, resultReleasesList.size());
         ExtractInfoGit.git.getRepository().close();
-        generateReportReleaseInfo(ProjectName,resultReleasesList);
+
 
 
     //6
@@ -76,6 +121,7 @@ public class CreationAndMeasurementMetrics {
 
             listProjectClassesTrainingSet.sort(Comparator.comparing(projectClass -> projectClass.getRelease().getReleaseId()) );
 
+            TicketOperations.setListR(resultReleasesList);
             //calcolare propotion e fixare i ticket delle classi
             float propotionFinal=TicketOperations.propotionFinal(UpperBoundReleaseToKeep,tmpResultListTicket);
             for(Ticket ticket: tmpResultListTicket){
@@ -144,7 +190,9 @@ public class CreationAndMeasurementMetrics {
         System.out.println("Fine");
     }
 
-
+    public List<Release> getLR(){
+        return resultReleasesList;
+    }
 
 
 }

@@ -26,7 +26,7 @@ public class ExtractInfoJira {
     public List<Release> extractAllReleases(){ //voglio estrarre TUTTE le realese e le ordino del progetto
         List<Release> ReleasesList =new ArrayList<>();
         int i; int j=0;
-        String UrlProjectJira= "https://issues.apache.org/jira/rest/api/latest/project/"+projName; //rest service
+        String UrlProjectJira= "https://issues.apache.org/jira/rest/api/2/project/"+projName; //rest service
         JSONObject jsonAll = JsonOperations.readJsonFromUrl(UrlProjectJira); //contiene tutto quello mostrato dal url in un singolo oggetto Json
         System.out.println(jsonAll);
         JSONArray versions = jsonAll.getJSONArray("versions"); //creo lista di oggetti json di version item

@@ -1,5 +1,6 @@
 package org.isw2_project.controllers;
 
+import org.isw2_project.models.AcumeClass;
 import org.isw2_project.models.ResultOfClassifier;
 
 import java.io.File;
@@ -143,6 +144,36 @@ public class CreateCSVFinalResultsFile {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void createAcumeFiles(String project, List<AcumeClass> classes, String name) throws IOException {
+        project = project.toLowerCase();
+
+        File file = new File("acumeFiles/" + project);
+        if (!file.exists()) {
+            boolean created = file.mkdirs();
+            if (!created) {
+                throw new IOException();
+            }
+        }
+
+        file = new File("acumeFiles/" + project+ "/"+name+".csv");
+        try(FileWriter fileWriter = new FileWriter(file)) {
+
+            fileWriter.append("ID,Size,Predicted %,Actual value").append("\n");
+            for (AcumeClass c: classes){
+
+
+                fileWriter.append(String.valueOf(c.getId())).append(",")
+                        .append(c.getSize()).append(",")
+                        .append(c.getPredictedProbability()).append(",")
+                        .append(c.getActualValue()).append("\n");
+            }
+
+            fileWriter.flush();
+        } catch (IOException e) {
+            //ignore
         }
     }
 }

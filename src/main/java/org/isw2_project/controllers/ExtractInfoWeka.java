@@ -1,6 +1,8 @@
 package org.isw2_project.controllers;
 
+import org.isw2_project.models.AcumeClass;
 import org.isw2_project.models.CustomClassifier;
+import org.isw2_project.models.ProjectClass;
 import org.isw2_project.models.ResultOfClassifier;
 import weka.classifiers.Classifier;
 import weka.classifiers.evaluation.Evaluation;
@@ -15,10 +17,14 @@ import java.util.List;
 public class ExtractInfoWeka {
     private final String projName;
     private final int howManyIterations;
+    private List<ProjectClass> allClasses;
+    List<AcumeClass> acumeClasses;
 
-    public ExtractInfoWeka(String projName, int howManyIterations) {
+    public ExtractInfoWeka(String projName, int howManyIterations, List<ProjectClass> allClasses) {
         this.projName = projName;
         this.howManyIterations = howManyIterations;
+        this.allClasses = allClasses;
+        this.acumeClasses = new ArrayList<>();
     }
     public List<ResultOfClassifier> retrieveAllResultsFromClassifiers() {
         List<ResultOfClassifier> allResultsOfClassifiers = new ArrayList<>();
@@ -82,6 +88,8 @@ public class ExtractInfoWeka {
                         System.out.println("Errore durante la valutazione del classificatore: " + customClassifier.getClassifier().getClass().getSimpleName());
                         e.printStackTrace();
                     }
+                    String name = getNameOfFile(customClassifier, walkForwardIteration);
+                    evaluateProbabilityAndCreateAcume(name, classifier, testingSetInstance, walkForwardIteration);
                 }
 
             } catch (Exception e) {
@@ -90,6 +98,58 @@ public class ExtractInfoWeka {
 
         }
         return allResultsOfClassifiers;
+    }
+
+    private String getNameOfFile(CustomClassifier customClassifier, int iteration){
+        String name = customClassifier.getClassifierName();
+        if(!customClassifier.getFeatureSelectionFilterName().equals("none")){
+            name = name + "_"+ customClassifier.getFeatureSelectionFilterName();
+        }
+        if(!customClassifier.getSamplingFilterName().equals("none")){
+            name = name + "_"+ customClassifier.getSamplingFilterName();
+        }
+
+        if (customClassifier.getIsCostSensitive()){
+
+            name = name + "_"+ "SensitiveLearning";
+        }
+        name= name+"_"+iteration;
+        return name;
+    }
+
+    private void evaluateProbabilityAndCreateAcume(String name, Classifier classifier, Instances testingSet, int iteration) throws Exception {
+
+        int numtesting = testingSet.numInstances();
+        int id =0;
+
+        acumeClasses.clear();
+        List<ProjectClass> lastReleaseClasses = new ArrayList<>(allClasses);
+        lastReleaseClasses.removeIf(javaClass -> javaClass.getRelease().getReleaseId() != iteration+2);
+
+
+        // Loop over each test instance.
+        for (int i = 0; i < numtesting; i++)
+        {
+            ProjectClass javaClass = lastReleaseClasses.get(i);
+            // Get the true class label from the instance's own classIndex.
+            String trueClassLabel =
+                    testingSet.instance(i).toString(testingSet.classIndex());
+
+            // Get the prediction probability distribution.
+            double[] predictionDistribution =
+                    classifier.distributionForInstance(testingSet.instance(i));
+
+            // Get the probability.
+            double predictionProbability = predictionDistribution[0];
+
+            AcumeClass acumeClass = new AcumeClass(id, javaClass.getMetric().getSize(), predictionProbability, trueClassLabel);
+            acumeClasses.add(acumeClass);
+
+            id++;
+        }
+
+        CreateCSVFinalResultsFile.createAcumeFiles(projName,acumeClasses, name);
+
     }
 
 }

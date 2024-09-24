@@ -37,8 +37,8 @@ public class CreationAndMeasurementMetrics {
         List<Commit> filteredCommitsOfIssues = extractInfoGit.filterFixedCommits(resultCommitsList); //serve per computare la metrica quanti Fix ha avuto la classe
         resultTicketsList = extractInfoGit.getTicketList();
 
-        generateReportCommitFilteredInfo(ProjectName,filteredCommitsOfIssues);
-        generateReportTicketInfo(ProjectName,resultTicketsList);
+
+
 
         resultReleasesList = extractInfoGit.getReleaseList();
 
@@ -57,12 +57,15 @@ public class CreationAndMeasurementMetrics {
 
         generateReportDataSetInfo(ProjectName,allProjectClasses,ProjectName+"_Generico");
 
+        generateReportTicketInfo(ProjectName,resultTicketsList);
+        generateReportCommitFilteredInfo(ProjectName,filteredCommitsOfIssues);
 
     //7 creazione dei test e train set e dopo ci sarà walk foward
 
         int j=1;
-        int buondTakeRelease=(resultReleasesList.size()/2)+3;
+        int buondTakeRelease=(resultReleasesList.size()/2);//dalla release 2 alla 6...1->4 numerati
         //training Set
+
         for (int i=2; i < buondTakeRelease;i++ ){
 
             ArrayList<Ticket> tmpResultListTicket=new ArrayList<>(resultTicketsList);
@@ -126,10 +129,11 @@ public class CreationAndMeasurementMetrics {
 
         buondTakeRelease=buondTakeRelease-1;
 
+        generateReportTicketInfo(ProjectName,resultTicketsList);
     // 8 walk foward da release 2 a metà+1, numerati i file da 1 a 7
         for(int walkForward = 1; walkForward < buondTakeRelease; walkForward++){
 
-            ExtractInfoWeka wekaExtractor = new ExtractInfoWeka(ProjectName, buondTakeRelease);
+            ExtractInfoWeka wekaExtractor = new ExtractInfoWeka(ProjectName, buondTakeRelease,allProjectClasses);
             List<ResultOfClassifier> resultsOfClassifierList = wekaExtractor.retrieveAllResultsFromClassifiers();
             writeCsvFinalResultsFile(ProjectName, resultsOfClassifierList);
 

@@ -47,7 +47,8 @@ public class CustomClassifier {
         return samplingFilterName;
     }
 
-    public boolean isCostSensitive() {
+    public boolean getIsCostSensitive() {
+
         return isCostSensitive;
     }
     public void setSelectedFeatures(List<String> selectedFeatures) {

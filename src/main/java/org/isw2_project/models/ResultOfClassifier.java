@@ -30,7 +30,7 @@ public class ResultOfClassifier {
         this.classifierName = customClassifier.getClassifierName();
         this.hasFeatureSelection = (!customClassifier.getFeatureSelectionFilterName().equals("NoSelection"));
         this.hasSampling = (!customClassifier.getSamplingFilterName().equals("NoSampling"));
-        this.hasCostSensitive = customClassifier.isCostSensitive();
+        this.hasCostSensitive = customClassifier.getIsCostSensitive();
 
 
 

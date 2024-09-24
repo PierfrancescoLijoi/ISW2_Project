@@ -21,7 +21,10 @@ public class ResultOfClassifier {
     private final double falseNegatives;
     private String[] selectedFeatures;
 
-    public ResultOfClassifier(int walkForwardIteration, CustomClassifier customClassifier, Evaluation evaluation) {
+    private double totalCost;
+
+
+    public ResultOfClassifier(int walkForwardIteration, CustomClassifier customClassifier, Evaluation evaluation,  double costFalsePositives, double costFalseNegatives) {
         this.walkForwardIteration = walkForwardIteration;
         this.customClassifier = customClassifier;
         this.classifierName = customClassifier.getClassifierName();
@@ -29,12 +32,20 @@ public class ResultOfClassifier {
         this.hasSampling = (!customClassifier.getSamplingFilterName().equals("NoSampling"));
         this.hasCostSensitive = customClassifier.isCostSensitive();
 
+
+
         trainingPercent = 0.0;
         truePositives = evaluation.numTruePositives(0);
-        falsePositives = evaluation.numFalsePositives(0);
+        falsePositives = evaluation.numFalsePositives(0); //usato per i costi
         trueNegatives = evaluation.numTrueNegatives(0);
-        falseNegatives = evaluation.numFalseNegatives(0);
+        falseNegatives = evaluation.numFalseNegatives(0); //usato per i costi
         fMeasure=evaluation.fMeasure(0);
+
+
+        // Calcola il costo totale
+        totalCost = (falsePositives * costFalsePositives) + (falseNegatives * costFalseNegatives);
+
+
         if(truePositives == 0.0 && falsePositives == 0.0){
             precision = Double.NaN;
         } else{
@@ -130,6 +141,10 @@ public class ResultOfClassifier {
 
     public String[] getSelectedFeatures() {
         return selectedFeatures;
+    }
+
+    public double getTotalCost() {
+        return totalCost;
     }
 
 }

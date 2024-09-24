@@ -42,7 +42,7 @@ public class CreationAndMeasurementMetrics {
 
         resultReleasesList = extractInfoGit.getReleaseList();
 
-    //5 mometnaneamente disabilitato il labeling del bug or not
+    //5 ELIMINATO il labeling del bug or not !!!
         List<ProjectClass> allProjectClasses = extractInfoGit.extractAllProjectClasses(resultCommitsList, resultReleasesList.size());
         ExtractInfoGit.git.getRepository().close();
         generateReportReleaseInfo(ProjectName,resultReleasesList);
@@ -81,7 +81,7 @@ public class CreationAndMeasurementMetrics {
                 }
             }
 
-            ExtractInfoGit.ClassesBuggyOrNot(tmpResultListTicket,listProjectClassesTrainingSet);
+            ExtractInfoGit.ClassesBuggyOrNot(tmpResultListTicket,listProjectClassesTrainingSet); //definisce quali classi erano buggy se era toccata dal commit del ticket fixed
 
 
             generateReportDataSetInfo(ProjectName,listProjectClassesTrainingSet,ProjectName+"_Training_Set_"+ String.valueOf(j));

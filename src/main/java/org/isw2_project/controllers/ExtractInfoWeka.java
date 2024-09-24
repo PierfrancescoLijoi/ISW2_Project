@@ -72,7 +72,7 @@ public class ExtractInfoWeka {
                         Evaluation evaluator = new Evaluation(testingSetInstance);
                         evaluator.evaluateModel(classifier, testingSetInstance);
 
-                        ResultOfClassifier resultOfClassifier = new ResultOfClassifier(walkForwardIteration, customClassifier, evaluator);
+                        ResultOfClassifier resultOfClassifier = new ResultOfClassifier(walkForwardIteration, customClassifier, evaluator, 1.0, 10.0 );
                         resultOfClassifier.setTrainingPercent(100.0 * trainingSetInstance.numInstances() / (trainingSetInstance.numInstances() + testingSetInstance.numInstances()));
                         allResultsOfClassifiers.add(resultOfClassifier);
                     } catch (ArrayIndexOutOfBoundsException e) {

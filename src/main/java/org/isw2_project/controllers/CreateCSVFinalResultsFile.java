@@ -42,7 +42,8 @@ public class CreateCSVFinalResultsFile {
                         "TRUE_POSITIVES," +
                         "FALSE_POSITIVES," +
                         "TRUE_NEGATIVES," +
-                        "FALSE_NEGATIVES").append("\n");
+                        "FALSE_NEGATIVES,"+
+                        "TOTAL_COST").append("\n");
                 for(ResultOfClassifier resultOfClassifier: finalResultsList){
                     fileWriter.append(projName).append(",")
                             .append(String.valueOf(resultOfClassifier.getWalkForwardIteration())).append(",")
@@ -71,7 +72,8 @@ public class CreateCSVFinalResultsFile {
                             .append(String.valueOf(resultOfClassifier.getTruePositives())).append(",")
                             .append(String.valueOf(resultOfClassifier.getFalsePositives())).append(",")
                             .append(String.valueOf(resultOfClassifier.getTrueNegatives())).append(",")
-                            .append(String.valueOf(resultOfClassifier.getFalseNegatives())).append("\n");
+                            .append(String.valueOf(resultOfClassifier.getFalseNegatives())).append(",")
+                            .append(String.valueOf(resultOfClassifier.getTotalCost())).append("\n");
                 }
 
             }

@@ -3,10 +3,10 @@ package org.isw2_project.controllers;
 import org.isw2_project.models.AcumeClass;
 import org.isw2_project.models.ResultOfClassifier;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class CreateCSVFinalResultsFile {
 
@@ -21,9 +21,7 @@ public class CreateCSVFinalResultsFile {
                     throw new IOException();
                 }
             }
-            StringBuilder fileName = new StringBuilder();
-            fileName.append("/").append(projName).append("_finalReport").append(".csv");
-            file = new File("finalResults/" + projName + fileName);
+            file = new File("finalResults/" + projName + "/" + projName + "_finalReport" + ".csv");
             if(finalResultsList.isEmpty()){
                 System.out.println("VUOTA RESULT");
             }
@@ -78,10 +76,115 @@ public class CreateCSVFinalResultsFile {
                 }
 
             }
-        } catch (IOException e) {
+        } catch (IOException ignored) {
 
         }
         writeFeaturesSelectionCSV(projName,finalResultsList);
+
+        //potrebbe ivocare il conteggio fatto su quel file
+        writeCountFeaturesSelectionCSV(projName);
+    }
+    public static void writeCountFeaturesSelectionCSV(String projName) {
+        String inputCsvPath = "finalResults/" + projName + "/" + projName + "_" + "FeaturesSelection" + ".csv";  // Percorso del file CSV di input
+        String outputCsvPath = "finalResults/" + projName + "/" + projName + "_" + "Count" + "_" + "FeaturesSelection" + ".csv";  // Percorso del file CSV di output
+
+        // Lista delle features di interesse (come colonne di output)
+        List<String> allFeatures = Arrays.asList(
+                "Size", "Number Of Revisions(numNR)", "Number Of DefectFixes(NumFix)", "Number Of Comment Lines In Class",
+                "totalInvokedClasses", "Number Of Methods", "Number Of Java Imports", "Number Of Api Imports",
+                "Number Of Package Imports", "Number Of Authors (numAuth)", "CHURN value", "CHURN MAX", "CHURN Average",
+                "LOC touched value", "LOC added MAX", "LOC added Average", "LOC deleted MAX", "LOC deleted Average", "Is Buggy"
+        );
+
+        // Mappa che conteggia le feature selezionate per ogni classificatore
+        Map<String, Map<String, Integer>> classifierFeatureCountMap = new HashMap<>();
+        // Mappa che conteggia il numero di run totali per ogni classificatore
+        Map<String, Integer> classifierRunCountMap = new HashMap<>();
+
+        // Leggi il CSV di input e aggiorna i conteggi delle features e dei run
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(inputCsvPath))) {
+            String line;
+            boolean isFirstLine = true;
+
+            // Leggi riga per riga
+            while ((line = br.readLine()) != null) {
+                if (isFirstLine) {
+                    // Salta la prima riga (header)
+                    isFirstLine = false;
+                    continue;
+                }
+
+                // Split della riga per colonne
+                String[] columns = line.split(",");
+
+                // Verifica che ci siano abbastanza colonne
+                if (columns.length < 11) { // Ci sono 11 colonne di features
+                    continue;  // Salta righe malformate o incomplete
+                }
+
+                // Classificatore è nella colonna 3 (index 3)
+                String classifier = columns[3].trim();
+
+                // Se il classificatore non è già nella mappa, inizializzalo
+                classifierFeatureCountMap.putIfAbsent(classifier, initializeFeatureCountMap(allFeatures));
+
+                // Incrementa il numero di run per il classificatore
+                classifierRunCountMap.put(classifier, classifierRunCountMap.getOrDefault(classifier, 0) + 1);
+
+                // Contiamo le features selezionate, partendo dalla colonna 8 (index 7)
+                for (int i = 7; i < columns.length; i++) {
+                    String feature = columns[i].trim();
+                    if (!feature.isEmpty() && allFeatures.contains(feature)) {
+                        // Incrementa il conteggio per questa feature
+                        Map<String, Integer> featureCount = classifierFeatureCountMap.get(classifier);
+                        featureCount.put(feature, featureCount.getOrDefault(feature, 0) + 1);
+                    }
+                }
+            }
+
+            // Scrivi i risultati nel CSV di output
+            writeCsv(outputCsvPath, classifierFeatureCountMap, classifierRunCountMap, allFeatures);
+            System.out.println("File CSV di output generato con successo!");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Inizializza una nuova mappa con tutte le features settate a 0
+    private static Map<String, Integer> initializeFeatureCountMap(List<String> allFeatures) {
+        Map<String, Integer> featureCountMap = new HashMap<>();
+        for (String feature : allFeatures) {
+            featureCountMap.put(feature, 0);
+        }
+        return featureCountMap;
+    }
+
+    // Scrive i conteggi delle features e il numero di run per ogni classificatore nel file CSV
+    private static void writeCsv(String outputCsvPath, Map<String, Map<String, Integer>> classifierFeatureCountMap, Map<String, Integer> classifierRunCountMap, List<String> allFeatures) throws IOException {
+        try (BufferedWriter bw = Files.newBufferedWriter(Paths.get(outputCsvPath))) {
+            // Scrivi l'intestazione del CSV
+            bw.write("Classifier," + String.join(",", allFeatures) + ",Total Runs\n");
+
+            // Per ogni classificatore, scrivi i conteggi delle features e il numero di run
+            for (Map.Entry<String, Map<String, Integer>> entry : classifierFeatureCountMap.entrySet()) {
+                String classifier = entry.getKey();
+                Map<String, Integer> featureCount = entry.getValue();
+                int totalRuns = classifierRunCountMap.getOrDefault(classifier, 0);
+
+                bw.write(classifier);  // Scrivi il nome del classificatore
+
+                // Scrivi il conteggio per ogni feature
+                for (String feature : allFeatures) {
+                    int count = featureCount.getOrDefault(feature, 0);
+                    bw.write("," + count);
+                }
+
+                // Scrivi il numero totale di run per il classificatore
+                bw.write("," + totalRuns);
+                bw.write("\n");  // Fine della riga
+            }
+        }
     }
 
     public static void writeFeaturesSelectionCSV(String projName, List<ResultOfClassifier> finalResultsList){
@@ -93,9 +196,7 @@ public class CreateCSVFinalResultsFile {
                     throw new IOException();
                 }
             }
-            StringBuilder fileName = new StringBuilder();
-            fileName.append("/").append(projName).append("_FeaturesSelection").append(".csv");
-            file = new File("finalResults/" + projName + fileName);
+            file = new File("finalResults/" + projName + "/" + projName + "_FeaturesSelection" + ".csv");
             if(finalResultsList.isEmpty()){
                 System.out.println("VUOTA RESULT");
             }
@@ -143,7 +244,7 @@ public class CreateCSVFinalResultsFile {
 
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //ingore
         }
     }
 

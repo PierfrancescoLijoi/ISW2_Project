@@ -34,9 +34,6 @@ public class ComputeAllClassifiersCombinations {
     public static final double WEIGHT_FALSE_NEGATIVE = 10.0;
     public static String projectName;
 
-
-
-
     private ComputeAllClassifiersCombinations() {
 
     }
@@ -86,13 +83,9 @@ public class ComputeAllClassifiersCombinations {
         }
     }
 
+    // con solo smote
     private static List<Filter> getSamplingFilters(int majorityClassSize, int minorityClassSize) {
-        double percentStandardOversampling = 0;
         double percentSMOTE = 0;
-
-        if (majorityClassSize + minorityClassSize > 0) {
-            percentStandardOversampling = ((100.0 * majorityClassSize) / (majorityClassSize + minorityClassSize)) * 2;
-        }
 
         if (minorityClassSize > 0 && minorityClassSize <= majorityClassSize) {
             percentSMOTE = (100.0 * (majorityClassSize - minorityClassSize)) / minorityClassSize;
@@ -100,20 +93,9 @@ public class ComputeAllClassifiersCombinations {
 
         List<Filter> filterList = new ArrayList<>();
 
-        // Configurazione filtro Resample
-        Resample resample = new Resample();
-        resample.setBiasToUniformClass(1.0);
-        resample.setSampleSizePercent(percentStandardOversampling);
-        filterList.add(resample);
-
-        // Configurazione filtro SpreadSubsample
-        SpreadSubsample spreadSubsample = new SpreadSubsample();
-        spreadSubsample.setDistributionSpread(1.0);
-        filterList.add(spreadSubsample);
-
         // Configurazione filtro SMOTE
         SMOTE smote = new SMOTE();
-        smote.setClassValue("1");
+        smote.setClassValue("1");  // Assicurati che la classe "1" sia la minoritaria
         smote.setPercentage(percentSMOTE);
         filterList.add(smote);
 
@@ -128,18 +110,22 @@ public class ComputeAllClassifiersCombinations {
         return new ArrayList<>(List.of(attributeSelection));
     }
 
+    //modificate con solo smote
     private static void onlySamplingClassifiers(List<Classifier> classifierList, List<Filter> samplingFilters, List<CustomClassifier> customClassifiersList) {
-        List<String> featuresF=new ArrayList<>();
+        List<String> featuresF = new ArrayList<>();
         for (Filter samplingFilter : samplingFilters) {
-            for (Classifier classifier : classifierList) {
-                FilteredClassifier filteredClassifier = new FilteredClassifier();
-                filteredClassifier.setClassifier(classifier);
-                filteredClassifier.setFilter(samplingFilter);
+            if (samplingFilter instanceof SMOTE) { // Usa solo SMOTE
+                for (Classifier classifier : classifierList) {
+                    FilteredClassifier filteredClassifier = new FilteredClassifier();
+                    filteredClassifier.setClassifier(classifier);
+                    filteredClassifier.setFilter(samplingFilter);
 
-                customClassifiersList.add(new CustomClassifier(filteredClassifier, classifier.getClass().getSimpleName(), NO_SELECTION, null, samplingFilter.getClass().getSimpleName(), false,featuresF));
+                    customClassifiersList.add(new CustomClassifier(filteredClassifier, classifier.getClass().getSimpleName(), NO_SELECTION, null, samplingFilter.getClass().getSimpleName(), false, featuresF));
+                }
             }
         }
     }
+
 
     private static void onlyCostSensitiveClassifiers(List<Classifier> classifierList, List<CustomClassifier> customClassifiersList) {
         List<String> featuresF=new ArrayList<>();

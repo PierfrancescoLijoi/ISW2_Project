@@ -39,12 +39,11 @@ public class CreationAndMeasurementMetrics {
         ExtractInfoGit  extractInfoGit= new ExtractInfoGit(ProjectName, repoURL, resultReleasesList);
         List<Commit> resultCommitsList = extractInfoGit.extractAllCommits();
 
-        for (Release release : resultReleasesList) {
-            System.out.println("  Nome R : " + release.getReleaseName() );
-        }
+
 
         // Usa un iteratore per evitare ConcurrentModificationException
         Iterator<Ticket> iterator = resultTicketsList.iterator();
+
 
         while (iterator.hasNext()) {
             Ticket ticket1 = iterator.next();
@@ -114,9 +113,10 @@ public class CreationAndMeasurementMetrics {
 
         int j=1;
         int buondTakeRelease=(resultReleasesList.size()/2);//dalla release 2 alla 6...1->4 numerati
-        //training Set
+        int startPointRealese=2;
 
-        for (int i=2; i < buondTakeRelease;i++ ){
+        //training Set
+        for (int i=startPointRealese; i < buondTakeRelease;i++ ){
 
             ArrayList<Ticket> tmpResultListTicket=new ArrayList<>(resultTicketsList);
             int UpperBoundReleaseToKeep = i;
@@ -127,8 +127,11 @@ public class CreationAndMeasurementMetrics {
             listProjectClassesTrainingSet.sort(Comparator.comparing(projectClass -> projectClass.getRelease().getReleaseId()) );
 
             TicketOperations.setListR(resultReleasesList);
+
             //calcolare propotion e fixare i ticket delle classi
+
             float propotionFinal=TicketOperations.propotionFinal(UpperBoundReleaseToKeep,tmpResultListTicket);
+
             for(Ticket ticket: tmpResultListTicket){
                 if(ticket.getAffectedVersions().isEmpty()){
                     TicketOperations.fixTicketWithProportionFINALCalculated(ticket,resultReleasesList,propotionFinal);
@@ -156,13 +159,13 @@ public class CreationAndMeasurementMetrics {
         }
 
 
+        // Etichetto tutto , mi pongo alla fine ed etichetto tutto quello che ho (PER IL TEST SET)
         ExtractInfoGit.ClassesBuggyOrNot(resultTicketsList,allProjectClasses);
 
 
-
         int k=1;
-        //testing Set
 
+        //testing Set
         for (int p = 2; p < buondTakeRelease; p++ ){
 
             int UpperBoundReleaseToKeep = p;
@@ -178,7 +181,7 @@ public class CreationAndMeasurementMetrics {
             k++;
         }
 
-        buondTakeRelease=buondTakeRelease-1;
+        buondTakeRelease=buondTakeRelease-1; //perchè il walkfoward iniza da 1 e non da 2
 
         generateReportTicketInfo(ProjectName,resultTicketsList);
     // 8 walk foward da release 2 a metà+1, numerati i file da 1 a 7

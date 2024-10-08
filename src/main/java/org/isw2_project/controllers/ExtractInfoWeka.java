@@ -43,9 +43,6 @@ public class ExtractInfoWeka {
                 List<CustomClassifier> customClassifiers = ComputeAllClassifiersCombinations.returnAllClassifiersCombinations(trainingSetInstance.attributeStats(numAttr - 1), trainingSetInstance, projName);
 
 
-
-
-
                 for (CustomClassifier customClassifier : customClassifiers) {
 
                     // scrittura su file di text features selezionate accedendo a ogni campo della lista
@@ -79,6 +76,7 @@ public class ExtractInfoWeka {
                         evaluator.evaluateModel(classifier, testingSetInstance);
 
                         ResultOfClassifier resultOfClassifier = new ResultOfClassifier(walkForwardIteration, customClassifier, evaluator, 1.0, 10.0 );
+
                         resultOfClassifier.setTrainingPercent(100.0 * trainingSetInstance.numInstances() / (trainingSetInstance.numInstances() + testingSetInstance.numInstances()));
                         allResultsOfClassifiers.add(resultOfClassifier);
                     } catch (ArrayIndexOutOfBoundsException e) {

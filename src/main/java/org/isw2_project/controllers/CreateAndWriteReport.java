@@ -239,6 +239,8 @@ public class CreateAndWriteReport {
                 //Name of CSV for output
                 fileWriter = new FileWriter(fileTitle);
                 fileWriter.append("Size,Number Of Revisions(numNR),Number Of DefectFixes(NumFix),Number Of Comment Lines In Class,totalInvokedClasses,Number Of Methods,Number Of Java Imports, Number Of Api Imports,Number Of Package Imports,Number Of Authors (numAuth),CHURN value,CHURN MAX,CHURN Averange,LOC touched value,LOC added MAX,LOC added Averange,LOC deleted MAX,LOC deleted Averange,Is Buggy ");
+              //  fileWriter.append("Size,Number Of Revisions(numNR),Number Of DefectFixes(NumFix),Number Of Comment Lines In Class,totalInvokedClasses,Number Of Methods,Number Of Java Imports, Number Of Api Imports,Number Of Package Imports,Number Of Authors (numAuth),CHURN value,LOC touched value,Is Buggy ");
+              //  fileWriter.append("Size,Number Of Revisions(numNR),Number Of DefectFixes(NumFix),Number Of Comment Lines In Class,totalInvokedClasses,Number Of Methods,Number Of Java Imports, Number Of Api Imports,Number Of Package Imports,Number Of Authors (numAuth),CHURN value,CHURN MAX,CHURN Averange,LOC touched value,LOC added MAX,LOC added Averange,Is Buggy ");
                 fileWriter.append("\n");
                 allProjectClasses.sort(Comparator.comparing(projectClass -> projectClass.getRelease().getReleaseName()));
 
@@ -264,8 +266,6 @@ public class CreateAndWriteReport {
                     fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfMethods())); //Num Of Methods  -->proposta
                     fileWriter.append(",");
 
-                    // fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfImports())); //Num Of Imports  -->proposta
-                    // fileWriter.append(","); //commentata perche troppo correlata alle successive due
 
                     fileWriter.append(String.valueOf(projectClass.getMetric().getNumberOfjavaImportCount())); //Num Of JAVA Imports  -->proposta
                     fileWriter.append(",");
@@ -290,12 +290,16 @@ public class CreateAndWriteReport {
 
                     fileWriter.append(String.valueOf(projectClass.getMetric().getTouchedLOCMetrics().getVal()));//LOC touched
                     fileWriter.append(",");
+
                     fileWriter.append(String.valueOf(projectClass.getMetric().getAddedLOCMetrics().getMaxVal()));//LOC add MAX
                     fileWriter.append(",");
+
                     fileWriter.append(String.valueOf(projectClass.getMetric().getAddedLOCMetrics().getAvgVal()));//LOC add AVG
                     fileWriter.append(",");
+
                     fileWriter.append(String.valueOf(projectClass.getMetric().getDelectedLOCMetrics().getMaxVal()));//LOC delected MAX
                     fileWriter.append(",");
+
                     fileWriter.append(String.valueOf(projectClass.getMetric().getAddedLOCMetrics().getAvgVal()));//LOC delected Avg
                     fileWriter.append(",");
 
@@ -367,7 +371,7 @@ public class CreateAndWriteReport {
             saver.writeBatch(); // salva come ARFF
 
             // Modifica la riga 21 del file ARFF
-            modifyArffLine(fileTitleArff, 21, "@attribute 'Is Buggy ' {YES,NO}");
+            modifyArffLine(fileTitleArff, /*21 15 19*/21, "@attribute 'Is Buggy ' {YES,NO}");
 
             System.out.println("File ARFF creato con successo.");
 

@@ -33,12 +33,9 @@ public class CreationAndMeasurementMetrics {
 
 
 
-
-
         //3
         ExtractInfoGit  extractInfoGit= new ExtractInfoGit(ProjectName, repoURL, resultReleasesList);
         List<Commit> resultCommitsList = extractInfoGit.extractAllCommits();
-
 
 
         // Usa un iteratore per evitare ConcurrentModificationException
@@ -75,8 +72,6 @@ public class CreationAndMeasurementMetrics {
                 iterator.remove();
             }
         }
-
-
 
 
 
@@ -149,18 +144,18 @@ public class CreationAndMeasurementMetrics {
 
 
 
-        //calcola propotion su tutto il dataset per il test, posso usare allProjectClasses perchè elimino incremental
-        float propotionFinal=TicketOperations.propotionFinal(resultReleasesList.size(),resultTicketsList);
+        //calcola propotion su tutto il dataset per il testset, posso usare allProjectClasses perchè elimino incremental
+        float propotionFinal = TicketOperations.propotionFinal(resultReleasesList.size(), resultTicketsList);
 
-        for(Ticket ticket: resultTicketsList){
-            if(ticket.getAffectedVersions().isEmpty()){
-                TicketOperations.fixTicketWithProportionFINALCalculated(ticket,resultReleasesList,propotionFinal);
+        for (Ticket ticket : resultTicketsList) {
+            if (ticket.getAffectedVersions().isEmpty()) {
+                TicketOperations.fixTicketWithProportionFINALCalculated(ticket, resultReleasesList, propotionFinal);
             }
         }
 
 
         // Etichetto tutto , mi pongo alla fine ed etichetto tutto quello che ho (PER IL TEST SET)
-        ExtractInfoGit.ClassesBuggyOrNot(resultTicketsList,allProjectClasses);
+        ExtractInfoGit.ClassesBuggyOrNot(resultTicketsList, allProjectClasses);
 
 
         int k=1;
@@ -184,6 +179,7 @@ public class CreationAndMeasurementMetrics {
         buondTakeRelease=buondTakeRelease-1; //perchè il walkfoward iniza da 1 e non da 2
 
         generateReportTicketInfo(ProjectName,resultTicketsList);
+
     // 8 walk foward da release 2 a metà+1, numerati i file da 1 a 7
         for(int walkForward = 1; walkForward < buondTakeRelease; walkForward++){
 
@@ -196,10 +192,6 @@ public class CreationAndMeasurementMetrics {
 
 
         System.out.println("Fine");
-    }
-
-    public List<Release> getLR(){
-        return resultReleasesList;
     }
 
 

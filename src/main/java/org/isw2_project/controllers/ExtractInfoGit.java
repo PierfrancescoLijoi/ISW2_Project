@@ -168,6 +168,7 @@ public class ExtractInfoGit {
 
         return ListAllProjectClasses;
     }
+
     private Map<String, String> getAllClassesNameAndContent(RevCommit revCommit) throws IOException {
         Map<String, String> allClasses = new HashMap<>();
         RevTree tree = revCommit.getTree(); // per ottenere l'albero dei file associato al commit fornito.
@@ -226,7 +227,15 @@ public class ExtractInfoGit {
 
         }
     }
-
+    private static void labelBuggyClasses(String modifiedClass, Release injectedVersion, Release fixedVersion, List<ProjectClass> allProjectClasses) {
+        for(ProjectClass projectClass: allProjectClasses){
+            if(projectClass.getName().equals(modifiedClass)  //la classe modificata è uguale a quella corrente nelle classi del progetto
+                    && projectClass.getRelease().getReleaseId() < fixedVersion.getReleaseId() //classe associata alla release che per avere il bug deve avere id < della F.V
+                    && projectClass.getRelease().getReleaseId() >= injectedVersion.getReleaseId()){ // classe associata alla release che per avere il bug deve avere id >= della I.V.
+                projectClass.getMetric().setBuggyness(true);
+            }
+        }
+    }
     private void KnowWhichClassTouchedByCommit(List<ProjectClass> allProjectClasses, List<Commit> commitList) throws IOException {
         List<ProjectClass> tempProjClasses;
         for(Commit commit: commitList){
@@ -293,15 +302,7 @@ public class ExtractInfoGit {
         return touchedClassesNamesByCommit;
     }
 
-    private static void labelBuggyClasses(String modifiedClass, Release injectedVersion, Release fixedVersion, List<ProjectClass> allProjectClasses) {
-        for(ProjectClass projectClass: allProjectClasses){
-            if(projectClass.getName().equals(modifiedClass)  //la classe modificata è uguale a quella corrente nelle classi del progetto
-                    && projectClass.getRelease().getReleaseId() < fixedVersion.getReleaseId() //classe associata alla release che per avere il bug deve avere id < della F.V
-                    && projectClass.getRelease().getReleaseId() >= injectedVersion.getReleaseId()){ // classe associata alla release che per avere il bug deve avere id >= della I.V.
-                projectClass.getMetric().setBuggyness(true);
-            }
-        }
-    }
+
 
     public void extractAddedOrRemovedLOC(ProjectClass projectClass) throws IOException {
         for(Commit commit : projectClass.getCommitsThatTouchTheClass()) {

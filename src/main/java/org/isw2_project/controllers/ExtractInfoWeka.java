@@ -6,19 +6,21 @@ import org.isw2_project.models.ProjectClass;
 import org.isw2_project.models.ResultOfClassifier;
 import weka.classifiers.Classifier;
 import weka.classifiers.evaluation.Evaluation;
-import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils;
-import weka.gui.beans.DataSource;
+
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ExtractInfoWeka {
     private final String projName;
     private final int howManyIterations;
     private List<ProjectClass> allClasses;
     List<AcumeClass> acumeClasses;
+    private String slash="/";
 
     public ExtractInfoWeka(String projName, int howManyIterations, List<ProjectClass> allClasses) {
         this.projName = projName;
@@ -30,68 +32,22 @@ public class ExtractInfoWeka {
         List<ResultOfClassifier> allResultsOfClassifiers = new ArrayList<>();
         for (int walkForwardIteration = 1; walkForwardIteration < howManyIterations; walkForwardIteration++) {
             try {
-                ConverterUtils.DataSource trainingSetDataSource = new ConverterUtils.DataSource("outputFiles/"+ this.projName + "/arff/" + "Training_Set/" + this.projName + "_Training_Set" + "_" + walkForwardIteration + ".arff");
-                ConverterUtils.DataSource testingSetDataSource = new ConverterUtils.DataSource("outputFiles/" + this.projName + "/arff/" + "Testing_Set/" + this.projName + "_Testing_Set"+ "_" + walkForwardIteration + ".arff");
-                Instances trainingSetInstance = trainingSetDataSource.getDataSet();
-                Instances testingSetInstance = testingSetDataSource.getDataSet();
+                Instances trainingSetInstance = loadInstances("Training_Set", walkForwardIteration);
+                Instances testingSetInstance = loadInstances("Testing_Set", walkForwardIteration);
 
                 int numAttr = trainingSetInstance.numAttributes();
                 trainingSetInstance.setClassIndex(numAttr - 1);
                 testingSetInstance.setClassIndex(numAttr - 1);
 
-
                 List<CustomClassifier> customClassifiers = ComputeAllClassifiersCombinations.returnAllClassifiersCombinations(trainingSetInstance.attributeStats(numAttr - 1), trainingSetInstance, projName);
 
-
                 for (CustomClassifier customClassifier : customClassifiers) {
-
-                    // scrittura su file di text features selezionate accedendo a ogni campo della lista
-
-                    if (customClassifier == null || customClassifier.getClassifier() == null) {
-                        System.out.println("Il classificatore è null per: " + customClassifier);
-                        continue;
-                    }
-
-                    Classifier classifier = customClassifier.getClassifier();
-
-                    System.out.println("Valutando il classificatore: " + customClassifier.getClassifier().getClass().getSimpleName());
-
-                    if (trainingSetInstance.numInstances() == 0) {
-                        System.out.println("Il training set è vuoto.");
-                        continue;
-                    }
-
-                    if (testingSetInstance.numInstances() == 0) {
-                        System.out.println("Il testing set è vuoto.");
-                        continue;
-                    }
-
-                    // Stampa il numero di attributi nel training e testing set
-                    System.out.println("Numero di attributi nel training set: " + trainingSetInstance.numAttributes());
-                    System.out.println("Numero di attributi nel testing set: " + testingSetInstance.numAttributes());
-
-                    try {
-                        classifier.buildClassifier(trainingSetInstance);
-                        Evaluation evaluator = new Evaluation(testingSetInstance);
-                        evaluator.evaluateModel(classifier, testingSetInstance);
-
-                        ResultOfClassifier resultOfClassifier = new ResultOfClassifier(walkForwardIteration, customClassifier, evaluator, 1.0, 10.0 );
-
-                        resultOfClassifier.setTrainingPercent(100.0 * trainingSetInstance.numInstances() / (trainingSetInstance.numInstances() + testingSetInstance.numInstances()));
-                        allResultsOfClassifiers.add(resultOfClassifier);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("ArrayIndexOutOfBoundsException durante la valutazione del classificatore: " + customClassifier.getClassifier().getClass().getSimpleName());
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        System.out.println("Errore durante la valutazione del classificatore: " + customClassifier.getClassifier().getClass().getSimpleName());
-                        e.printStackTrace();
-                    }
-                    String name = getNameOfFile(customClassifier, walkForwardIteration);
-                    evaluateProbabilityAndCreateAcume(name, classifier, testingSetInstance, walkForwardIteration);
+                    evaluateClassifier(customClassifier, trainingSetInstance, testingSetInstance, walkForwardIteration, allResultsOfClassifiers);
                 }
 
             } catch (Exception e) {
-
+                Logger.getAnonymousLogger().log(Level.INFO, "Errore durante la valutazione dei classificatori.");
+                e.printStackTrace();
             }
 
         }
@@ -114,6 +70,59 @@ public class ExtractInfoWeka {
         name= name+"_"+iteration;
         return name;
     }
+    private Instances loadInstances(String setType, int iteration) throws Exception {
+        String filePath = "outputFiles/" + this.projName + "/arff/" + setType + slash + this.projName + "_" + setType + "_" + iteration + ".arff";
+        ConverterUtils.DataSource dataSource = new ConverterUtils.DataSource(filePath);
+        return dataSource.getDataSet();
+    }
+
+    private void evaluateClassifier(CustomClassifier customClassifier, Instances trainingSetInstance, Instances testingSetInstance, int walkForwardIteration, List<ResultOfClassifier> allResultsOfClassifiers) {
+        if (customClassifier == null || customClassifier.getClassifier() == null) {
+            Logger.getAnonymousLogger().log(Level.INFO, "Il classificatore è null per: {0}", customClassifier);
+            return;
+        }
+
+        Classifier classifier = customClassifier.getClassifier();
+        Logger.getAnonymousLogger().log(Level.INFO, "Valutando il classificatore: {0}", customClassifier.getClassifier().getClass().getSimpleName());
+
+        if (trainingSetInstance.numInstances() == 0) {
+            Logger.getAnonymousLogger().log(Level.INFO, "Il training set è vuoto.");
+            return;
+        }
+
+        if (testingSetInstance.numInstances() == 0) {
+            Logger.getAnonymousLogger().log(Level.INFO, "Il testing set è vuoto.");
+            return;
+        }
+
+        Logger.getAnonymousLogger().log(Level.INFO, "Numero di attributi nel training set: {0}", trainingSetInstance.numAttributes());
+        Logger.getAnonymousLogger().log(Level.INFO, "Numero di attributi nel testing set: {0}", testingSetInstance.numAttributes());
+
+        try {
+            classifier.buildClassifier(trainingSetInstance);
+            Evaluation evaluator = new Evaluation(testingSetInstance);
+            evaluator.evaluateModel(classifier, testingSetInstance);
+
+            ResultOfClassifier resultOfClassifier = new ResultOfClassifier(walkForwardIteration, customClassifier, evaluator, 1.0, 10.0);
+            resultOfClassifier.setTrainingPercent(100.0 * trainingSetInstance.numInstances() / (trainingSetInstance.numInstances() + testingSetInstance.numInstances()));
+            allResultsOfClassifiers.add(resultOfClassifier);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Logger.getAnonymousLogger().log(Level.INFO, String.format("ArrayIndexOutOfBoundsException durante la valutazione del classificatore: %s", customClassifier.getClassifier().getClass().getSimpleName()));
+            e.printStackTrace();
+        } catch (Exception e) {
+            Logger.getAnonymousLogger().log(Level.INFO, String.format("Errore durante la valutazione del classificatore: %s", customClassifier.getClassifier().getClass().getSimpleName()));
+            e.printStackTrace();
+        }
+
+        String name = getNameOfFile(customClassifier, walkForwardIteration);
+        try {
+            evaluateProbabilityAndCreateAcume(name, classifier, testingSetInstance, walkForwardIteration);
+        } catch (Exception e) {
+            Logger.getAnonymousLogger().log(Level.INFO, "Errore durante la creazione di Acume.");
+            e.printStackTrace();
+        }
+    }
+
 
     private void evaluateProbabilityAndCreateAcume(String name, Classifier classifier, Instances testingSet, int iteration) throws Exception {
 

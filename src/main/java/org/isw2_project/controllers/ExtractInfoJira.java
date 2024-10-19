@@ -2,18 +2,18 @@ package org.isw2_project.controllers;
 
 import org.isw2_project.commonFunctions.JsonOperations;
 import org.isw2_project.commonFunctions.ReleaseOperations;
-import org.isw2_project.commonFunctions.TicketOperations;
+
 import org.isw2_project.models.Release;
 import org.isw2_project.models.Ticket;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ExtractInfoJira {
 
@@ -25,7 +25,8 @@ public class ExtractInfoJira {
 
     public List<Release> extractAllReleases(){ //voglio estrarre TUTTE le realese e le ordino del progetto
         List<Release> ReleasesList =new ArrayList<>();
-        int i; int j=0;
+        int i;
+        int j=0;
 
         String UrlProjectJira = "https://issues.apache.org/jira/rest/api/2/project/" + projName;
         JSONObject jsonAll = JsonOperations.readJsonFromUrl(UrlProjectJira);
@@ -50,27 +51,17 @@ public class ExtractInfoJira {
             String releaseId= String.valueOf(release.getReleaseId());
             String releaseName= String.valueOf(release.getReleaseName());
             String releaseDate= String.valueOf(release.getReleaseDate());
-            System.out.println("è presente: " + releaseName + ", " + releaseDate + ", " + releaseId);
+            Logger.getAnonymousLogger().log(Level.INFO, "è presente: {0}, {1}, {2}", new Object[]{releaseName, releaseDate, releaseId});
         }
 
         return ReleasesList;
     }
 
-    public List<Ticket> extractAllTicketsForEachRelease(List<Release> releasesList) throws IOException, URISyntaxException { //dalla lista di realese, prendi tutti i ticket creati per ogni realese
 
-        List<Ticket> ticketsList = getTickets(releasesList);
-        List<Ticket> fixedTicketsList;
-
-       //fixedTicketsList = TicketOperations.fixTicketList(ticketsList, releasesList, projName);
-        // mi ritorna una lista di ticket che avrà ognuna una lista di A.V
-
-      //  fixedTicketsList.sort(Comparator.comparing(Ticket::getResolutionDate)); //ordino in base alla data di risoluzione
-
-       // return fixedTicketsList;
-        return ticketsList;
-    }
     public List<Ticket> getTickets(List<Release> releasesList)  { //prendi tutti start ticket dalla specifica realese
-        int maxResults, start = 0,total;
+        int maxResults;
+        int start = 0;
+        int total;
         List<Ticket> ticketsList = new ArrayList<>();
         do { //recupero tutti i possibili ticket
             //Only gets a max of 1000 at a time, so must do this multiple times if bugs >1000

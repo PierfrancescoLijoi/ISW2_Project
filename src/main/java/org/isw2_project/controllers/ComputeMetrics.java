@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
+
 
 public class ComputeMetrics {
     private final List<ProjectClass> allProjectClasses;
@@ -46,12 +46,12 @@ public class ComputeMetrics {
        o la correzione di difetti segnalati*/
         computeLOCMetrics();
 
-        NumberOfCommentLinesInCode();//proposta
+        numberOfCommentLinesInCode();//proposta
 
         // proposta inutile NumberOfPublicAttributeInCode essendo tutti zero, è stata rimossa poiché non veniva
         // infranta l'incapsulamento nel Object oriented
 
-        NumberOfClassesInvoked();//proposta, quante classi invoca ogni classe-->
+        numberOfClassesInvoked();//proposta, quante classi invoca ogni classe-->
 
         /*-->Contare il numero di classi invocate è importante perché fornisce
          informazioni sulla complessità, l'accoppiamento e la dipendenza del codice.
@@ -78,46 +78,43 @@ public class ComputeMetrics {
     }
 
     private void numberOfImports() {
-        for (ProjectClass projectClass : allProjectClasses) {
-            int javaImportCount = 0;
-            int ImportApiCount = 0;
-            int ImportPackageCount = 0;
+    for (ProjectClass projectClass : allProjectClasses) {
+        int javaImportCount = 0;
+        int importApiCount = 0;
+        int importPackageCount = 0;
 
-            String[] lines = projectClass.getContentOfClass().split("\\r?\\n");
+        String[] lines = projectClass.getContentOfClass().split("\\r?\\n");
 
-            // Scansiona ogni riga per cercare gli import
-            for (String line : lines) {
-                // Ignora le righe che non iniziano con "import"
-                if (line.trim().startsWith("import")) {
-                    // Controlla se l'import è relativo a Java
-                    if (line.contains("java.")) {
-                        javaImportCount++;
-                    } else {
-                        // Controlla se l'import contiene un punto e non è un import statico
-                        if (line.contains(".") && !line.contains("import static")
-                                && !(line.contains(gitExtractor.getProjectName().toLowerCase() + ".")|| //minuscolo
-                                line.contains(gitExtractor.getProjectName().toUpperCase() + "."))) {
-                             ImportApiCount++;
-                        }
-                        if (line.contains(gitExtractor.getProjectName().toLowerCase() + ".")|| //minuscolo
-                                line.contains(gitExtractor.getProjectName().toUpperCase() + ".")) { //maiuscolo
-                            ImportPackageCount++;
-                        }
-                    }
-                }
+        for (String line : lines) {
+            if (line.trim().startsWith("import")) {
+                javaImportCount += countJavaImports(line);
+                importApiCount += countApiImports(line);
+                importPackageCount += countPackageImports(line);
             }
-
-
-
-            // Imposta le metriche calcolate per la classe
-
-            projectClass.getMetric().setNumberOfJavaImports(javaImportCount);
-            projectClass.getMetric().setNumberOfApiImports(ImportApiCount);
-            projectClass.getMetric().setNumberOfImportPackageCount(ImportPackageCount);
         }
-    }
 
-    public void NumberOfClassesInvoked() {
+        projectClass.getMetric().setNumberOfJavaImports(javaImportCount);
+        projectClass.getMetric().setNumberOfApiImports(importApiCount);
+        projectClass.getMetric().setNumberOfImportPackageCount(importPackageCount);
+    }
+}
+
+private int countJavaImports(String line) {
+    return line.contains("java.") ? 1 : 0;
+}
+
+private int countApiImports(String line) {
+    return (line.contains(".") && !line.contains("import static")
+            && !(line.contains(gitExtractor.getProjectName().toLowerCase() + ".")
+            || line.contains(gitExtractor.getProjectName().toUpperCase() + "."))) ? 1 : 0;
+}
+
+private int countPackageImports(String line) {
+    return (line.contains(gitExtractor.getProjectName().toLowerCase() + ".")
+            || line.contains(gitExtractor.getProjectName().toUpperCase() + ".")) ? 1 : 0;
+}
+
+    public void numberOfClassesInvoked() {
 
         for (ProjectClass projectClass : allProjectClasses) {
             Pattern pattern = Pattern.compile("\\bnew\\s+(\\w+)\\s*\\(");
@@ -231,78 +228,66 @@ public class ComputeMetrics {
     }
 
     private void computeLOCMetrics() throws IOException {
+    for (ProjectClass projectClass : allProjectClasses) {
+        LOCMetric addedLOC = new LOCMetric();
         LOCMetric removedLOC = new LOCMetric();
         LOCMetric churnLOC = new LOCMetric();
-        LOCMetric addedLOC = new LOCMetric();
         LOCMetric touchedLOC = new LOCMetric();
-        int i;
-        for(ProjectClass projectClass : allProjectClasses) {
-            addedLOC.setVal(0);
-            addedLOC.setAvgVal(0);
-            addedLOC.setMaxVal(0);
 
-            removedLOC.setVal(0);
-            removedLOC.setAvgVal(0);
-            removedLOC.setMaxVal(0);
+        resetMetrics(addedLOC, removedLOC, churnLOC, touchedLOC);
+        gitExtractor.extractAddedOrRemovedLOC(projectClass);
 
-            churnLOC.setVal(0);
-            churnLOC.setAvgVal(0);
-            churnLOC.setMaxVal(0);
+        List<Integer> locAddedByClass = projectClass.getLOCAddedByClass();
+        List<Integer> locRemovedByClass = projectClass.getLOCDeletedByClass();
 
-            touchedLOC.setVal(0);
-            touchedLOC.setAvgVal(0);
-            touchedLOC.setMaxVal(0);
-
-            gitExtractor.extractAddedOrRemovedLOC(projectClass);
-
-            List<Integer> locAddedByClass = projectClass.getLOCAddedByClass();
-            List<Integer> locRemovedByClass = projectClass.getLOCDeletedByClass();
-
-            for(i = 0; i < locAddedByClass.size(); i++) {
-
-                int addedLineOfCode = locAddedByClass.get(i);
-                int removedLineOfCode = locRemovedByClass.get(i);
-                int churningFactor = Math.abs(locAddedByClass.get(i) - locRemovedByClass.get(i));
-                int touchedLinesOfCode = locAddedByClass.get(i) + locRemovedByClass.get(i);
-
-                addedLOC.addToVal(addedLineOfCode);
-                removedLOC.addToVal(removedLineOfCode);
-                churnLOC.addToVal(churningFactor);
-                touchedLOC.addToVal(touchedLinesOfCode);
-                if(addedLineOfCode > addedLOC.getMaxVal()) {
-                    addedLOC.setMaxVal(addedLineOfCode);
-                }
-                if(removedLineOfCode > removedLOC.getMaxVal()) {
-                    removedLOC.setMaxVal(removedLineOfCode);
-                }
-                if(churningFactor > churnLOC.getMaxVal()) {
-                    churnLOC.setMaxVal(churningFactor);
-                }
-                if(touchedLinesOfCode > touchedLOC.getMaxVal()){
-                    touchedLOC.setMaxVal(touchedLinesOfCode);
-                }
-            }
-
-            //settare i valori calcolati
-            int nRevisions = projectClass.getMetric().getNumberOfRevisions();
-            if(!locAddedByClass.isEmpty()) {
-                addedLOC.setAvgVal(1.0* addedLOC.getVal()/ nRevisions);
-            }
-            if(!locRemovedByClass.isEmpty()) {
-                removedLOC.setAvgVal(1.0* removedLOC.getVal()/ nRevisions);
-            }
-            if(!locAddedByClass.isEmpty() || !locRemovedByClass.isEmpty()) {
-                churnLOC.setAvgVal(1.0* churnLOC.getVal()/ nRevisions);
-                touchedLOC.setAvgVal(1.0* touchedLOC.getVal()/nRevisions);
-            }
-            projectClass.getMetric().setAddedLOCMetrics(addedLOC.getVal(), addedLOC.getMaxVal(), addedLOC.getAvgVal());
-            projectClass.getMetric().setRemovedLOCMetrics(removedLOC.getVal(), removedLOC.getMaxVal(), removedLOC.getAvgVal());
-            projectClass.getMetric().setChurnMetrics(churnLOC.getVal(), churnLOC.getMaxVal(), churnLOC.getAvgVal());
-            projectClass.getMetric().setTouchedLOCMetrics(touchedLOC.getVal(), touchedLOC.getMaxVal(), touchedLOC.getAvgVal());
-        }
+        calculateMetrics(locAddedByClass, locRemovedByClass, addedLOC, removedLOC, churnLOC, touchedLOC);
+        setMetrics(projectClass, addedLOC, removedLOC, churnLOC, touchedLOC);
     }
+}
 
-    private void NumberOfCommentLinesInCode(){
+private void resetMetrics(LOCMetric... metrics) {
+    for (LOCMetric metric : metrics) {
+        metric.setVal(0);
+        metric.setAvgVal(0);
+        metric.setMaxVal(0);
+    }
+}
+
+private void calculateMetrics(List<Integer> locAddedByClass, List<Integer> locRemovedByClass, LOCMetric addedLOC, LOCMetric removedLOC, LOCMetric churnLOC, LOCMetric touchedLOC) {
+    for (int i = 0; i < locAddedByClass.size(); i++) {
+        int addedLineOfCode = locAddedByClass.get(i);
+        int removedLineOfCode = locRemovedByClass.get(i);
+        int churningFactor = Math.abs(addedLineOfCode - removedLineOfCode);
+        int touchedLinesOfCode = addedLineOfCode + removedLineOfCode;
+
+        updateMetrics(addedLOC, addedLineOfCode);
+        updateMetrics(removedLOC, removedLineOfCode);
+        updateMetrics(churnLOC, churningFactor);
+        updateMetrics(touchedLOC, touchedLinesOfCode);
+    }
+}
+
+private void updateMetrics(LOCMetric metric, int value) {
+    metric.addToVal(value);
+    if (value > metric.getMaxVal()) {
+        metric.setMaxVal(value);
+    }
+}
+
+private void setMetrics(ProjectClass projectClass, LOCMetric addedLOC, LOCMetric removedLOC, LOCMetric churnLOC, LOCMetric touchedLOC) {
+    int nRevisions = projectClass.getMetric().getNumberOfRevisions();
+    if (nRevisions > 0) {
+        addedLOC.setAvgVal(1.0 * addedLOC.getVal() / nRevisions);
+        removedLOC.setAvgVal(1.0 * removedLOC.getVal() / nRevisions);
+        churnLOC.setAvgVal(1.0 * churnLOC.getVal() / nRevisions);
+        touchedLOC.setAvgVal(1.0 * touchedLOC.getVal() / nRevisions);
+    }
+    projectClass.getMetric().setAddedLOCMetrics(addedLOC.getVal(), addedLOC.getMaxVal(), addedLOC.getAvgVal());
+    projectClass.getMetric().setRemovedLOCMetrics(removedLOC.getVal(), removedLOC.getMaxVal(), removedLOC.getAvgVal());
+    projectClass.getMetric().setChurnMetrics(churnLOC.getVal(), churnLOC.getMaxVal(), churnLOC.getAvgVal());
+    projectClass.getMetric().setTouchedLOCMetrics(touchedLOC.getVal(), touchedLOC.getMaxVal(), touchedLOC.getAvgVal());
+}
+    private void numberOfCommentLinesInCode(){
         try (DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE);
              ObjectReader reader = this.gitExtractor.getRepository().newObjectReader()) {
             // Imposta il repository e l'object reader per il DiffFormatter

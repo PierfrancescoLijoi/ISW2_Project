@@ -18,9 +18,7 @@ import weka.core.AttributeStats;
 import weka.core.SelectedTag;
 import weka.filters.Filter;
 
-import weka.filters.supervised.instance.Resample;
 import weka.filters.supervised.instance.SMOTE;
-import weka.filters.supervised.instance.SpreadSubsample;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +30,8 @@ public class ComputeAllClassifiersCombinations {
     public static final String NO_SAMPLING = "NoSampling";
     public static final double WEIGHT_FALSE_POSITIVE = 1.0;
     public static final double WEIGHT_FALSE_NEGATIVE = 10.0;
-    public static String projectName;
+    private static String projectName;
+    private static final String SLASH = "/";
 
     private ComputeAllClassifiersCombinations() {
 
@@ -207,7 +206,7 @@ public class ComputeAllClassifiersCombinations {
                     throw new IOException();
                 }
             }
-            File file = new File(directory.getPath() + "/"+projectName+"_Features_Selection.txt");
+            File file = new File(directory.getPath() + SLASH +projectName+"_Features_Selection.txt");
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
                 writer.write("-----------------------------------------");
                 writer.newLine();
@@ -233,10 +232,8 @@ public class ComputeAllClassifiersCombinations {
                 }
                 writer.write("-----------------------------------------");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+          e.printStackTrace();
         }
     }
 

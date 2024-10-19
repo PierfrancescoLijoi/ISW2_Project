@@ -17,7 +17,6 @@ import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
-import org.isw2_project.commonFunctions.TicketOperations;
 import org.isw2_project.models.Commit;
 import org.isw2_project.models.ProjectClass;
 import org.isw2_project.models.Release;
@@ -29,6 +28,8 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class ExtractInfoGit {
@@ -36,27 +37,25 @@ public class ExtractInfoGit {
     private List<Ticket> ticketList;
     private final String projName;
     private final  List<Release> releaseList;
-    protected static  Git git;
-    private static  Repository repository ;
+    private final Git git;
+    private final Repository repository;
 
     public ExtractInfoGit(String projName, String repoURL, List<Release> releaseList) throws IOException, GitAPIException {
         String filename = projName.toLowerCase() + "Temp";
         File directory = new File(filename);
-        if(directory.exists()){
+        if (directory.exists()) {
             repository = new FileRepository(filename + "\\.git");
             git = new Git(repository);
-        }else{
+        } else {
             git = Git.cloneRepository().setURI(repoURL).setDirectory(directory).call();
             repository = git.getRepository();
         }
         this.releaseList = releaseList;
         this.ticketList = null;
-        this.projName=projName;
+        this.projName = projName;
         for (Release release : releaseList) {
-
-            System.out.println("è presente: " + release.getReleaseName() + ", " + release.getReleaseDate() + ", " + release.getReleaseId());
+            Logger.getAnonymousLogger().log(Level.INFO, "è presente: {0}, {1}, {2}", new Object[]{release.getReleaseName(), release.getReleaseDate(), release.getReleaseId()});
         }
-
     }
 
     public List<Commit> extractAllCommits() throws IOException, GitAPIException {
@@ -118,7 +117,7 @@ public class ExtractInfoGit {
             for (Ticket ticket : ticketList) {
                 String commitFullMessage = commit.getRevCommit().getFullMessage();
                 String ticketKey = ticket.getTicketKey();
-                if (CommitMatchWithTicketID(commitFullMessage, ticketKey)) {
+                if (commitMatchWithTicketID(commitFullMessage, ticketKey)) {
                     filteredCommits.add(commit);
                     ticket.addCommit(commit);
                     commit.setTicket(ticket);
@@ -130,7 +129,7 @@ public class ExtractInfoGit {
     }
 
     // Vede la corrispondenza del commit con ogni ticket. E se è presento lo inserisce.
-    public static boolean CommitMatchWithTicketID(String stringToMatch, String commitKey) {
+    public static boolean commitMatchWithTicketID(String stringToMatch, String commitKey) {
         Pattern pattern = Pattern.compile(commitKey + "\\b");
         return pattern.matcher(stringToMatch).find();
     }
@@ -162,7 +161,7 @@ public class ExtractInfoGit {
             }
         }
 
-        KnowWhichClassTouchedByCommit(ListAllProjectClasses, commitList); //tiene traccia dei commit che toccano la classe
+        knowWhichClassTouchedByCommit(ListAllProjectClasses, commitList); //tiene traccia dei commit che toccano la classe
 
         ListAllProjectClasses.sort(Comparator.comparing(ProjectClass::getName));
 
@@ -188,7 +187,7 @@ public class ExtractInfoGit {
         return allClasses;
     }
 
-    public static void ClassesBuggyOrNot(List<Ticket> ticketList, List<ProjectClass> allProjectClasses) throws IOException {
+    public  void classesBuggyOrNot(List<Ticket> ticketList, List<ProjectClass> allProjectClasses) throws IOException {
         // obiettivo:L'obiettivo principale del metodo è etichettare le classi come "buggy" (difettose) o meno in base ai commit associati a i ticket e alle date dei ticket.
 
         for(ProjectClass projectClass: allProjectClasses){ //prima setta tutte le classi a Buggy=false come detto da Falessi
@@ -216,7 +215,7 @@ public class ExtractInfoGit {
                 if (!commitDate.isAfter(ticket.getResolutionDate()) // se la data del commit NON è dopo quella della risoluzione del ticket
                         && !commitDate.isBefore(ticket.getCreationDate())) { //la data NON è prima della creazione del ticket
 
-                    List<String> modifiedClassesNames = RetriveTouchedClassesNamesByCommit(revCommit);
+                    List<String> modifiedClassesNames = retriveTouchedClassesNamesByCommit(revCommit);
                     Release releaseOfCommit = commit.getRelease(); //commit associato alla release
 
                     for (String modifiedClass : modifiedClassesNames) {
@@ -236,13 +235,13 @@ public class ExtractInfoGit {
             }
         }
     }
-    private void KnowWhichClassTouchedByCommit(List<ProjectClass> allProjectClasses, List<Commit> commitList) throws IOException {
+    private void knowWhichClassTouchedByCommit(List<ProjectClass> allProjectClasses, List<Commit> commitList) throws IOException {
         List<ProjectClass> tempProjClasses;
         for(Commit commit: commitList){
             Release release = commit.getRelease();
             tempProjClasses = new ArrayList<>(allProjectClasses);
             tempProjClasses.removeIf(tempProjClass -> !tempProjClass.getRelease().equals(release));
-            List<String> modifiedClassesNames = RetriveTouchedClassesNamesByCommit(commit.getRevCommit());
+            List<String> modifiedClassesNames = retriveTouchedClassesNamesByCommit(commit.getRevCommit());
             for(String modifiedClass: modifiedClassesNames){
                 for(ProjectClass projectClass: tempProjClasses){
                     if(projectClass.getName().equals(modifiedClass) && !projectClass.getCommitsThatTouchTheClass().contains(commit)){
@@ -255,7 +254,7 @@ public class ExtractInfoGit {
         }
 
     }
-    private static List<String> RetriveTouchedClassesNamesByCommit(RevCommit commit) throws IOException {
+    private  List<String> retriveTouchedClassesNamesByCommit(RevCommit commit) throws IOException {
         List<String> touchedClassesNamesByCommit = new ArrayList<>();
 
         try(DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE);
@@ -360,5 +359,8 @@ public class ExtractInfoGit {
     }
     public String getProjectName() {
         return this.projName;
+    }
+    public Git getGit() {
+        return this.git;
     }
 }

@@ -115,241 +115,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -363,7 +129,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -377,7 +143,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -391,7 +157,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -405,7 +171,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -419,7 +185,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -433,7 +199,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -447,7 +213,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -461,11 +227,272 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
 10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
 ----------------------------------------------------------------------------------
 Classifier: RandomForest
 
@@ -583,241 +610,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -831,7 +624,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -845,7 +638,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -859,7 +652,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -873,7 +666,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -887,7 +680,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -901,7 +694,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -915,7 +708,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -929,11 +722,272 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
 10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
 ----------------------------------------------------------------------------------
 Classifier: RandomForest
 
@@ -1051,241 +1105,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1299,7 +1119,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1313,7 +1133,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1327,7 +1147,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1341,7 +1161,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1355,7 +1175,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1369,7 +1189,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1383,7 +1203,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1397,11 +1217,272 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
 10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
 ----------------------------------------------------------------------------------
 Classifier: RandomForest
 
@@ -1519,241 +1600,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC deleted MAX
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: NaiveBayes
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: IBk
-
-Selected Features:
-1)   Size
-2)   Number Of Comment Lines In Class
-3)   totalInvokedClasses
-4)   Number Of Methods
-5)   Number Of Java Imports
-6)   Number Of Package Imports
-7)   Number Of Authors (numAuth)
-8)   LOC touched value
-9)   Is Buggy 
-----------------------------------------------------------------------------------
-Classifier: RandomForest
-
-Selected Features:
-1)   Size
-2)   Number Of DefectFixes(NumFix)
-3)   Number Of Comment Lines In Class
-4)   totalInvokedClasses
-5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1767,7 +1614,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1781,7 +1628,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1795,7 +1642,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1809,7 +1656,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1823,7 +1670,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1837,7 +1684,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1851,7 +1698,7 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
@@ -1865,9 +1712,270 @@ Selected Features:
 3)   Number Of Comment Lines In Class
 4)   totalInvokedClasses
 5)   Number Of Methods
-6)   Number Of Java Imports
+6)    Number Of Api Imports
 7)   Number Of Package Imports
 8)   Number Of Authors (numAuth)
 9)   LOC deleted MAX
 10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of Comment Lines In Class
+3)   totalInvokedClasses
+4)   Number Of Methods
+5)   Number Of Java Imports
+6)    Number Of Api Imports
+7)   Number Of Package Imports
+8)   Number Of Authors (numAuth)
+9)   LOC touched value
+10)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: RandomForest
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: NaiveBayes
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
+----------------------------------------------------------------------------------
+Classifier: IBk
+
+Selected Features:
+1)   Size
+2)   Number Of DefectFixes(NumFix)
+3)   Number Of Comment Lines In Class
+4)   totalInvokedClasses
+5)   Number Of Methods
+6)   Number Of Java Imports
+7)    Number Of Api Imports
+8)   Number Of Package Imports
+9)   Number Of Authors (numAuth)
+10)   LOC deleted MAX
+11)   Is Buggy 
 -----------------------------------------

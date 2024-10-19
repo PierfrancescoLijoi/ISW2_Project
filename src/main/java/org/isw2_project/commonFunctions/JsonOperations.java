@@ -1,5 +1,7 @@
 package org.isw2_project.commonFunctions;
 
+import org.isw2_project.Exception.JsonReadException;
+import org.isw2_project.Exception.SpecialRunException;
 import org.json.JSONObject;
 
 
@@ -20,22 +22,20 @@ public class JsonOperations {
         return strings.toString();
     }
 
-    public static JSONObject readJsonFromUrl(String url) {
-        InputStream inputStream= null; //contiente tutto quello mostrato dal url
-        try {
-            inputStream =  new URI(url).toURL().openStream();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-        String jsonText = null; //leggi tutto il contenuto in bufferedread che contiene tutto lo strewam
-        try {
-            jsonText = readFile(bufferedReader);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return new JSONObject(jsonText);
+    public static JSONObject readJsonFromUrl(String url) throws JsonReadException {
+    InputStream inputStream; //contiente tutto quello mostrato dal url
+    try {
+        inputStream =  new URI(url).toURL().openStream();
+    } catch (IOException | URISyntaxException e) {
+        throw new JsonReadException(e);
     }
+    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+    String jsonText; //leggi tutto il contenuto in bufferedread che contiene tutto lo strewam
+    try {
+        jsonText = readFile(bufferedReader);
+    } catch (IOException e) {
+        throw new SpecialRunException(e);
+    }
+    return new JSONObject(jsonText);
+}
 }

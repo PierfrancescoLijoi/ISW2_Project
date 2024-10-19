@@ -6,7 +6,9 @@ import java.util.logging.Logger;
 
 public class FileWriterOperations {
 
-
+    private  FileWriterOperations() {
+        throw new IllegalStateException("Utility class");
+    }
     public static void flushAndCloseFW(FileWriter fileWriter, Logger logger, String nameOfThisClass) {
         try {
             fileWriter.flush();

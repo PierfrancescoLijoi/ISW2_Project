@@ -121,15 +121,15 @@ public class CreationAndMeasurementMetrics {
 
             listProjectClassesTrainingSet.sort(Comparator.comparing(projectClass -> projectClass.getRelease().getReleaseId()) );
 
-            TicketOperations.setListR(resultReleasesList);
+            CalculatePropotion.setListR(resultReleasesList);
 
             //calcolare propotion e fixare i ticket delle classi
 
-            float propotionFinal=TicketOperations.propotionFinal(UpperBoundReleaseToKeep,tmpResultListTicket);
+            float propotionFinal=CalculatePropotion.propotionFinal(UpperBoundReleaseToKeep,tmpResultListTicket);
 
             for(Ticket ticket: tmpResultListTicket){
                 if(ticket.getAffectedVersions().isEmpty()){
-                    TicketOperations.fixTicketWithProportionFINALCalculated(ticket,resultReleasesList,propotionFinal);
+                    CalculatePropotion.callFixTicketWithProportionFINALCalculated(ticket,resultReleasesList,propotionFinal);
                 }
             }
 
@@ -145,11 +145,11 @@ public class CreationAndMeasurementMetrics {
 
 
         //calcola propotion su tutto il dataset per il testset, posso usare allProjectClasses perchè elimino incremental
-        float propotionFinal = TicketOperations.propotionFinal(resultReleasesList.size(), resultTicketsList);
+        float propotionFinal = CalculatePropotion.propotionFinal(resultReleasesList.size(), resultTicketsList);
 
         for (Ticket ticket : resultTicketsList) {
             if (ticket.getAffectedVersions().isEmpty()) {
-                TicketOperations.fixTicketWithProportionFINALCalculated(ticket, resultReleasesList, propotionFinal);
+                CalculatePropotion.callFixTicketWithProportionFINALCalculated(ticket, resultReleasesList, propotionFinal);
             }
         }
 
@@ -190,8 +190,6 @@ public class CreationAndMeasurementMetrics {
         }
 
 
-
-        System.out.println("Fine");
     }
 
 

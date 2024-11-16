@@ -27,7 +27,7 @@ public class CreationAndMeasurementMetrics {
         ExtractInfoJira extractInfoJira= new ExtractInfoJira(ProjectName);
         List<Release> resultReleasesList = extractInfoJira.extractAllReleases();
 
-        //2 Momentaneamente disabilitata il richiamo al proportion con incremental (da annullare completamente)
+        //2
         List<Ticket> resultTicketsList = extractInfoJira.getTickets(resultReleasesList);
         resultTicketsList.sort(Comparator.comparing(Ticket::getCreationDate));
 
@@ -94,11 +94,11 @@ public class CreationAndMeasurementMetrics {
 
             //calcolare propotion e fixare i ticket delle classi
 
-            float propotionFinal=CalculatePropotion.propotionFinal(UpperBoundReleaseToKeep,tmpResultListTicket);
+            Propotion propotionFinal= CalculatePropotion.propotionFinal(UpperBoundReleaseToKeep,tmpResultListTicket);
 
             for(Ticket ticket: tmpResultListTicket){
                 if(ticket.getAffectedVersions().isEmpty()){
-                    CalculatePropotion.callFixTicketWithProportionFINALCalculated(ticket,resultReleasesList,propotionFinal);
+                    CalculatePropotion.callFixTicketWithProportionFINALCalculated(ticket,resultReleasesList,propotionFinal.getProprotionNewCalculated());
                 }
             }
 
@@ -111,14 +111,11 @@ public class CreationAndMeasurementMetrics {
         }
 
 
-
-
         //calcola propotion su tutto il dataset per il testset, posso usare allProjectClasses perchè elimino incremental
-        float propotionFinal = CalculatePropotion.propotionFinal(resultReleasesList.size(), resultTicketsList);
-
+        Propotion propotionFinalTestSet= CalculatePropotion.propotionFinal(resultReleasesList.size(),resultTicketsList);
         for (Ticket ticket : resultTicketsList) {
             if (ticket.getAffectedVersions().isEmpty()) {
-                CalculatePropotion.callFixTicketWithProportionFINALCalculated(ticket, resultReleasesList, propotionFinal);
+                CalculatePropotion.callFixTicketWithProportionFINALCalculated(ticket, resultReleasesList, propotionFinalTestSet.getProprotionNewCalculated());
             }
         }
 

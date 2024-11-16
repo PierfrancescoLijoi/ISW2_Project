@@ -1,9 +1,9 @@
 package org.isw2_project.models;
 
 public class Propotion {
-    float computation;
+    float proprotionNewCalculated;
     public Propotion(float computation){
-        this.computation=computation;
+        this.proprotionNewCalculated=computation;
     }
-    public float getComputation(){return computation;}
+    public float getProprotionNewCalculated(){return proprotionNewCalculated;}
 }

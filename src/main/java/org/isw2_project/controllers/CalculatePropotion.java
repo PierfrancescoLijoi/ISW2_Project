@@ -2,6 +2,7 @@ package org.isw2_project.controllers;
 
 
 import org.isw2_project.commonFunctions.TicketOperations;
+import org.isw2_project.models.Propotion;
 import org.isw2_project.models.Release;
 import org.isw2_project.models.Ticket;
 import java.util.ArrayList;
@@ -15,14 +16,15 @@ public class CalculatePropotion {
     private  CalculatePropotion() {
         throw new IllegalStateException("Utility class");
     }
-    public static float propotionFinal(int limitTicketReleaseFix, List<Ticket> resultTicketList) {
+    public static Propotion propotionFinal(int limitTicketReleaseFix, List<Ticket> resultTicketList) {
         ArrayList<Ticket> completeTicketList = new ArrayList<>();
         for (Ticket ticket : resultTicketList) {
             if (ticket.getOpeningVersion().getReleaseId() <= limitTicketReleaseFix && !ticket.getAffectedVersions().isEmpty()) {
                 completeTicketList.add(ticket);
             }
         }
-        return calcolaNewPropotion(completeTicketList);
+        float propotionFinal = calcolaNewPropotion(completeTicketList);
+        return new Propotion(propotionFinal);
     }
 
     private static float calcolaNewPropotion(ArrayList<Ticket> ticketArrayListComplete) {

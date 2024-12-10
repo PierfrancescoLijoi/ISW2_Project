@@ -199,20 +199,13 @@ public class CreateCSVFinalResultsFile {
         }
     }
 
-    public static void writeFeaturesSelectionCSV(String projName, List<ResultOfClassifier> finalResultsList){
+    public static void writeFeaturesSelectionCSV(String projName, List<ResultOfClassifier> finalResultsList) {
         try {
-            File file = new File(outputPathGeneric + projName );
-            if (!file.exists()) {
-                boolean success = file.mkdirs();
-                if (!success) {
-                    throw new IOException();
-                }
+            File file = prepareFile(outputPathGeneric + projName, projName + "_FeaturesSelection.csv");
+            if (finalResultsList.isEmpty()) {
+                Logger.getAnonymousLogger().log(Level.INFO, "Result list is empty");
             }
-            file = new File(outputPathGeneric + projName + slash + projName + "_FeaturesSelection" + ".csv");
-            if(finalResultsList.isEmpty()){
-               Logger.getAnonymousLogger().log(Level.INFO, "Result list is empty");
-            }
-            try(FileWriter fileWriter = new FileWriter(file)) {
+            try (FileWriter fileWriter = new FileWriter(file)) {
                 fileWriter.append("DATASET," +
                         "INDEX TRAINING_RELEASES," +
                         "TRAINING_INSTANCES(%)," +
@@ -231,34 +224,32 @@ public class CreateCSVFinalResultsFile {
                         "FEATURES_9," +
                         "FEATURES_10," +
                         "FEATURES_11").append("\n");
-                for(ResultOfClassifier resultOfClassifier: finalResultsList){
-                    if(resultOfClassifier.hasFeatureSelection()) {
+                for (ResultOfClassifier resultOfClassifier : finalResultsList) {
+                    if (resultOfClassifier.hasFeatureSelection()) {
                         fileWriter.append(projName).append(",")
                                 .append(String.valueOf(resultOfClassifier.getWalkForwardIteration())).append(",")
                                 .append(String.valueOf(resultOfClassifier.getTrainingPercent())).append(",")
                                 .append(resultOfClassifier.getClassifierName()).append(",")
                                 .append(resultOfClassifier.getCustomClassifier().getFeatureSelectionFilterName()).append(",")
                                 .append(resultOfClassifier.getCustomClassifier().getSamplingFilterName()).append(",");
-                                if (resultOfClassifier.hasCostSensitive()){
-                                    fileWriter.append("SensitiveLearning").append(",");
-                                }else {
-                                    fileWriter.append("None").append(",");
-                                }
-                        // Aggiungi le features selezionate al CSV
+                        if (resultOfClassifier.hasCostSensitive()) {
+                            fileWriter.append("SensitiveLearning").append(",");
+                        } else {
+                            fileWriter.append("None").append(",");
+                        }
                         List<String> selectedFeatures = resultOfClassifier.getCustomClassifier().getSelectedFeatures();
                         for (String feature : selectedFeatures) {
                             fileWriter.append(feature).append(",");
                         }
-
                         fileWriter.append("\n");
                     }
                 }
-
             }
         } catch (IOException e) {
-            //ingore
+            e.printStackTrace();
         }
     }
+
 
     public static void createAcumeFiles(String project, List<AcumeClass> classes, String name) throws IOException {
         project = project.toLowerCase();
@@ -288,5 +279,16 @@ public class CreateCSVFinalResultsFile {
         } catch (IOException e) {
             //ignore
         }
+    }
+    private static File prepareFile(String basePath, String fileName) throws IOException {
+        File file = new File(basePath);
+        if (!file.exists()) {
+            boolean success = file.mkdirs();
+            if (!success) {
+                throw new IOException("Unable to create directories: " + basePath);
+            }
+        }
+        file = new File(basePath + slash + fileName);
+        return file;
     }
 }

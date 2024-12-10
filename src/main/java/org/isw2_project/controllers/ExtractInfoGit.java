@@ -151,21 +151,21 @@ public class ExtractInfoGit {
         }
         lastCommitList.sort(Comparator.comparing(o -> o.getRevCommit().getCommitterIdent().getWhen())); //Ordinamento di lastCommitList per data
 
-        List<ProjectClass> ListAllProjectClasses = new ArrayList<>();
+        List<ProjectClass> listAllProjectClasses = new ArrayList<>();
         for(Commit lastCommit: lastCommitList){ //itero sulla lista di commit associata a ogni release
 
             Map<String, String> nameAndContentOfClasses = getAllClassesNameAndContent(lastCommit.getRevCommit());
 
             for(Map.Entry<String,String> nameAndContentOfClass : nameAndContentOfClasses.entrySet()){
-                ListAllProjectClasses.add(new ProjectClass(nameAndContentOfClass.getKey(), nameAndContentOfClass.getValue(), lastCommit.getRelease()));
+                listAllProjectClasses.add(new ProjectClass(nameAndContentOfClass.getKey(), nameAndContentOfClass.getValue(), lastCommit.getRelease()));
             }
         }
 
-        knowWhichClassTouchedByCommit(ListAllProjectClasses, commitList); //tiene traccia dei commit che toccano la classe
+        knowWhichClassTouchedByCommit(listAllProjectClasses, commitList); //tiene traccia dei commit che toccano la classe
 
-        ListAllProjectClasses.sort(Comparator.comparing(ProjectClass::getName));
+        listAllProjectClasses.sort(Comparator.comparing(ProjectClass::getName));
 
-        return ListAllProjectClasses;
+        return listAllProjectClasses;
     }
 
     private Map<String, String> getAllClassesNameAndContent(RevCommit revCommit) throws IOException {

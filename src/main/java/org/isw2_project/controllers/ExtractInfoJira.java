@@ -1,7 +1,7 @@
 package org.isw2_project.controllers;
 
-import org.isw2_project.commonFunctions.JsonOperations;
-import org.isw2_project.commonFunctions.ReleaseOperations;
+import org.isw2_project.commonfunctions.JsonOperations;
+import org.isw2_project.commonfunctions.ReleaseOperations;
 
 import org.isw2_project.models.Release;
 import org.isw2_project.models.Ticket;
@@ -24,12 +24,12 @@ public class ExtractInfoJira {
     }
 
     public List<Release> extractAllReleases(){ //voglio estrarre TUTTE le realese e le ordino del progetto
-        List<Release> ReleasesList =new ArrayList<>();
+        List<Release> releaseList =new ArrayList<>();
         int i;
         int j=0;
 
-        String UrlProjectJira = "https://issues.apache.org/jira/rest/api/2/project/" + projName;
-        JSONObject jsonAll = JsonOperations.readJsonFromUrl(UrlProjectJira);
+        String urlProjectJira = "https://issues.apache.org/jira/rest/api/2/project/" + projName;
+        JSONObject jsonAll = JsonOperations.readJsonFromUrl(urlProjectJira);
         JSONArray versions = jsonAll.getJSONArray("versions");
 
         for ( i = 0; i < versions.length(); i++) {
@@ -37,15 +37,15 @@ public class ExtractInfoJira {
             if (jsonObject.has("releaseDate") && jsonObject.has("name")) {
                 String releaseDate = jsonObject.getString("releaseDate");
                 String releaseName = jsonObject.getString("name");
-                ReleasesList.add(new Release(releaseName, LocalDate.parse(releaseDate)) );
+                releaseList.add(new Release(releaseName, LocalDate.parse(releaseDate)) );
             }
         }
 
 
 
-        ReleasesList.sort(Comparator.comparing(Release::getReleaseDate));
+        releaseList.sort(Comparator.comparing(Release::getReleaseDate));
 
-        for (Release release : ReleasesList) {
+        for (Release release : releaseList) {
             j++;
             release.setReleaseId(j);
             String releaseId= String.valueOf(release.getReleaseId());
@@ -54,7 +54,7 @@ public class ExtractInfoJira {
             Logger.getAnonymousLogger().log(Level.INFO, "è presente: {0}, {1}, {2}", new Object[]{releaseName, releaseDate, releaseId});
         }
 
-        return ReleasesList;
+        return releaseList;
     }
 
 

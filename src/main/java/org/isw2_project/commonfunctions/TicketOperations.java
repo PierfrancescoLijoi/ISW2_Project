@@ -1,4 +1,4 @@
-package org.isw2_project.commonFunctions;
+package org.isw2_project.commonfunctions;
 
 
 import org.isw2_project.models.Release;

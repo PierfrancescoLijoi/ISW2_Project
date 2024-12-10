@@ -1,7 +1,7 @@
 package org.isw2_project.controllers;
 
 
-import org.isw2_project.commonFunctions.TicketOperations;
+import org.isw2_project.commonfunctions.TicketOperations;
 import org.isw2_project.models.Propotion;
 import org.isw2_project.models.Release;
 import org.isw2_project.models.Ticket;

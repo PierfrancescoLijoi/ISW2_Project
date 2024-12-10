@@ -1,7 +1,7 @@
 package org.isw2_project.controllers;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.isw2_project.commonFunctions.TicketOperations;
+import org.isw2_project.commonfunctions.TicketOperations;
 import org.isw2_project.models.*;
 
 import java.io.IOException;
@@ -20,11 +20,11 @@ public class CreationAndMeasurementMetrics {
 
 
 
-    public  void initializeProcessMetricsExtraction(String ProjectName,String repoURL) throws IOException, GitAPIException {
+    public  void initializeProcessMetricsExtraction(String projectName, String repoURL) throws IOException, GitAPIException {
         Logger.getAnonymousLogger().log(Level.INFO,"Inizio");
 
         //1
-        ExtractInfoJira extractInfoJira= new ExtractInfoJira(ProjectName);
+        ExtractInfoJira extractInfoJira= new ExtractInfoJira(projectName);
         List<Release> resultReleasesList = extractInfoJira.extractAllReleases();
 
         //2
@@ -34,7 +34,7 @@ public class CreationAndMeasurementMetrics {
 
 
         //3
-        ExtractInfoGit  extractInfoGit= new ExtractInfoGit(ProjectName, repoURL, resultReleasesList);
+        ExtractInfoGit  extractInfoGit= new ExtractInfoGit(projectName, repoURL, resultReleasesList);
         List<Commit> resultCommitsList = extractInfoGit.extractAllCommits();
 
         //filtraggio dei ticket
@@ -53,7 +53,7 @@ public class CreationAndMeasurementMetrics {
 
 
         resultReleasesList = extractInfoGit.getReleaseList();
-        generateReportReleaseInfo(ProjectName,resultReleasesList);
+        generateReportReleaseInfo(projectName,resultReleasesList);
 
         //5 ELIMINATO il labeling del bug or not !!!
         List<ProjectClass> allProjectClasses = extractInfoGit.extractAllProjectClasses(resultCommitsList, resultReleasesList.size());
@@ -68,10 +68,10 @@ public class CreationAndMeasurementMetrics {
         //scrittura del dataset generico .csv
         allProjectClasses.sort(Comparator.comparing(projectClass -> projectClass.getRelease().getReleaseDate()));
 
-        generateReportDataSetInfo(ProjectName,allProjectClasses,ProjectName+"_Generico");
+        generateReportDataSetInfo(projectName,allProjectClasses, projectName +"_Generico");
 
-        generateReportTicketInfo(ProjectName,resultTicketsList);
-        generateReportCommitFilteredInfo(ProjectName,filteredCommitsOfIssues);
+        generateReportTicketInfo(projectName,resultTicketsList);
+        generateReportCommitFilteredInfo(projectName,filteredCommitsOfIssues);
 
         //7 creazione dei test e train set e dopo ci sarà walk foward
 
@@ -105,7 +105,7 @@ public class CreationAndMeasurementMetrics {
             extractInfoGit.classesBuggyOrNot(tmpResultListTicket,listProjectClassesTrainingSet); //definisce quali classi erano buggy se era toccata dal commit del ticket fixed
 
 
-            generateReportDataSetInfo(ProjectName,listProjectClassesTrainingSet,ProjectName+"_Training_Set_"+ j);
+            generateReportDataSetInfo(projectName,listProjectClassesTrainingSet, projectName +"_Training_Set_"+ j);
 
             j++;
         }
@@ -137,21 +137,21 @@ public class CreationAndMeasurementMetrics {
 
             listProjectClassesTrainingSet.sort(Comparator.comparing(projectClass -> projectClass.getRelease().getReleaseDate()));
 
-            generateReportDataSetInfo(ProjectName, listProjectClassesTrainingSet,ProjectName+"_Testing_Set_"+ k);
+            generateReportDataSetInfo(projectName, listProjectClassesTrainingSet, projectName +"_Testing_Set_"+ k);
 
             k++;
         }
 
         buondTakeRelease=buondTakeRelease-1; //perchè il walkfoward iniza da 1 e non da 2
 
-        generateReportTicketInfo(ProjectName,resultTicketsList);
+        generateReportTicketInfo(projectName,resultTicketsList);
 
         // 8 walk foward da release 2 a metà+1, numerati i file da 1 a 7
         for(int walkForward = 1; walkForward < buondTakeRelease; walkForward++){
 
-            ExtractInfoWeka wekaExtractor = new ExtractInfoWeka(ProjectName, buondTakeRelease,allProjectClasses);
+            ExtractInfoWeka wekaExtractor = new ExtractInfoWeka(projectName, buondTakeRelease,allProjectClasses);
             List<ResultOfClassifier> resultsOfClassifierList = wekaExtractor.retrieveAllResultsFromClassifiers();
-            writeCsvFinalResultsFile(ProjectName, resultsOfClassifierList);
+            writeCsvFinalResultsFile(projectName, resultsOfClassifierList);
 
         }
 

@@ -170,11 +170,11 @@ public class CreateAndWriteReport {
         }
     }
 
-    public static void generateReportDataSetInfo(String projectName, List<ProjectClass> allProjectClasses, String DatasetName) {
+    public static void generateReportDataSetInfo(String projectName, List<ProjectClass> allProjectClasses, String datasetName) {
         FileWriter fileWriter = null;
-        String fileTitle = getFileTitle(projectName, DatasetName);
+        String fileTitle = getFileTitle(projectName, datasetName);
         try {
-            createDirectories(projectName, DatasetName);
+            createDirectories(projectName, datasetName);
             fileWriter = new FileWriter(fileTitle);
             writeCsvMetricsName(fileWriter);
             writeCsvMetricsData(fileWriter, allProjectClasses);
@@ -182,24 +182,24 @@ public class CreateAndWriteReport {
             Logger.getAnonymousLogger().log(Level.INFO, e.getMessage());
         }
         closeFileWriter(fileWriter);
-        generateArffDataSet(projectName, DatasetName, fileTitle);
+        generateArffDataSet(projectName, datasetName, fileTitle);
     }
 
-    private static String getFileTitle(String projectName, String DatasetName) {
-        if (DatasetName.contains(nameGeneric)) {
-            return outputPathGeneric + projectName + "/csv/" + DatasetName + ".csv";
-        } else if (DatasetName.contains(trainS)) {
-            return outputPathGeneric + projectName + "/csv/Training_Set/" + DatasetName + ".csv";
+    private static String getFileTitle(String projectName, String datasetName) {
+        if (datasetName.contains(nameGeneric)) {
+            return outputPathGeneric + projectName + "/csv/" + datasetName + ".csv";
+        } else if (datasetName.contains(trainS)) {
+            return outputPathGeneric + projectName + "/csv/Training_Set/" + datasetName + ".csv";
         } else {
-            return outputPathGeneric + projectName + "/csv/Testing_Set/" + DatasetName + ".csv";
+            return outputPathGeneric + projectName + "/csv/Testing_Set/" + datasetName + ".csv";
         }
     }
 
-    private static void createDirectories(String projectName, String DatasetName) throws IOException {
+    private static void createDirectories(String projectName, String datasetName) throws IOException {
         File file;
-        if (DatasetName.contains(nameGeneric)) {
+        if (datasetName.contains(nameGeneric)) {
             file = new File(outputPathGeneric + projectName + "/csv");
-        } else if (DatasetName.contains(trainS)) {
+        } else if (datasetName.contains(trainS)) {
             file = new File(outputPathGeneric + projectName + "/csv/Training_Set");
         } else {
             file = new File(outputPathGeneric + projectName + "/csv/Testing_Set");

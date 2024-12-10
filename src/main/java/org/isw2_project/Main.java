@@ -9,12 +9,12 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException, GitAPIException {
-        String CommonProjectName="BOOKKEEPER";
-        String InvidualProjectName="AVRO";
+        String commonProjectName ="BOOKKEEPER";
+        String invidualProjectName ="AVRO";
         CreationAndMeasurementMetrics creationAndMeasurementMetrics=new CreationAndMeasurementMetrics();
         try {
-            creationAndMeasurementMetrics.initializeProcessMetricsExtraction(CommonProjectName,"https://github.com/PierfrancescoLijoi/bookkeeper.git");
-            creationAndMeasurementMetrics.initializeProcessMetricsExtraction(InvidualProjectName,"https://github.com/PierfrancescoLijoi/avro.git");
+            creationAndMeasurementMetrics.initializeProcessMetricsExtraction(commonProjectName,"https://github.com/PierfrancescoLijoi/bookkeeper.git");
+            creationAndMeasurementMetrics.initializeProcessMetricsExtraction(invidualProjectName,"https://github.com/PierfrancescoLijoi/avro.git");
         }  catch (IOException e) {
             throw new IOException(e);
         }

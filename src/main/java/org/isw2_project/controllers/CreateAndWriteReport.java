@@ -1,6 +1,6 @@
 package org.isw2_project.controllers;
 
-import org.isw2_project.Exception.SpecialRunException;
+import org.isw2_project.exception.SpecialRunException;
 import org.isw2_project.models.*;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;

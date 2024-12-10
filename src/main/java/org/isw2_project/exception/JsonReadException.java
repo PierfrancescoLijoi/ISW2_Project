@@ -1,4 +1,4 @@
-package org.isw2_project.Exception;
+package org.isw2_project.exception;
 
 public class JsonReadException extends RuntimeException {
     public JsonReadException(Throwable cause) {

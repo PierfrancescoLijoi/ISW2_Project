@@ -1,7 +1,7 @@
 package org.isw2_project.commonFunctions;
 
-import org.isw2_project.Exception.JsonReadException;
-import org.isw2_project.Exception.SpecialRunException;
+import org.isw2_project.exception.JsonReadException;
+import org.isw2_project.exception.SpecialRunException;
 import org.json.JSONObject;
 
 

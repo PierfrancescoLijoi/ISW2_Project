@@ -48,11 +48,7 @@ public class CustomClassifier {
     }
 
     public boolean getIsCostSensitive() {
-
         return isCostSensitive;
-    }
-    public void setSelectedFeatures(List<String> selectedFeatures) {
-        this.selectedFeatures = selectedFeatures;
     }
 
     public List<String> getSelectedFeatures() {

@@ -251,15 +251,15 @@ public class CreateAndWriteReport {
     }
 
     public static void generateArffDataSet(String projectName, String dataName, String fileTitle) {
-        String DatasetName = dataName;
+        String datasetName = dataName;
         String fileTitleCSV = fileTitle;
         String fileTitleArff = null;
 
         try {
             File file;
-            if (DatasetName.contains(nameGeneric)) {
+            if (datasetName.contains(nameGeneric)) {
                 file = new File(outputPathGeneric + projectName + "/arff");
-            } else if (DatasetName.contains(trainS)) {
+            } else if (datasetName.contains(trainS)) {
                 file = new File(outputPathGeneric + projectName + "/arff" + "/Training_Set");
             } else {
                 file = new File(outputPathGeneric + projectName + "/arff" + "/Testing_Set");
@@ -271,12 +271,12 @@ public class CreateAndWriteReport {
                 }
             }
 
-            if (DatasetName.contains(nameGeneric)) {
-                fileTitleArff = outputPathGeneric + projectName + "/arff/" + DatasetName + arffType;
-            } else if (DatasetName.contains(trainS)) {
-                fileTitleArff = outputPathGeneric + projectName + "/arff" + "/Training_Set" + "/" + DatasetName + arffType;
+            if (datasetName.contains(nameGeneric)) {
+                fileTitleArff = outputPathGeneric + projectName + "/arff/" + datasetName + arffType;
+            } else if (datasetName.contains(trainS)) {
+                fileTitleArff = outputPathGeneric + projectName + "/arff" + "/Training_Set" + "/" + datasetName + arffType;
             } else {
-                fileTitleArff = outputPathGeneric + projectName + "/arff" + "/Testing_Set" + "/" + DatasetName + arffType;
+                fileTitleArff = outputPathGeneric + projectName + "/arff" + "/Testing_Set" + "/" + datasetName + arffType;
             }
 
             CSVLoader loader = new CSVLoader();

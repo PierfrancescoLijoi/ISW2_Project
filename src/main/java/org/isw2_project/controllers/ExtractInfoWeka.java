@@ -47,7 +47,7 @@ public class ExtractInfoWeka {
 
             } catch (Exception e) {
                 Logger.getAnonymousLogger().log(Level.INFO, "Errore durante la valutazione dei classificatori.");
-                e.printStackTrace();
+
             }
 
         }
@@ -108,10 +108,8 @@ public class ExtractInfoWeka {
             allResultsOfClassifiers.add(resultOfClassifier);
         } catch (ArrayIndexOutOfBoundsException e) {
             Logger.getAnonymousLogger().log(Level.INFO, String.format("ArrayIndexOutOfBoundsException durante la valutazione del classificatore: %s", customClassifier.getClassifier().getClass().getSimpleName()));
-            e.printStackTrace();
         } catch (Exception e) {
             Logger.getAnonymousLogger().log(Level.INFO, String.format("Errore durante la valutazione del classificatore: %s", customClassifier.getClassifier().getClass().getSimpleName()));
-            e.printStackTrace();
         }
 
         String name = getNameOfFile(customClassifier, walkForwardIteration);
@@ -119,7 +117,6 @@ public class ExtractInfoWeka {
             evaluateProbabilityAndCreateAcume(name, classifier, testingSetInstance, walkForwardIteration);
         } catch (Exception e) {
             Logger.getAnonymousLogger().log(Level.INFO, "Errore durante la creazione di Acume.");
-            e.printStackTrace();
         }
     }
 

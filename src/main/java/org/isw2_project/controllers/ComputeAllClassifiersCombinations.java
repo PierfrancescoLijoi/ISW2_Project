@@ -22,6 +22,8 @@ import weka.filters.supervised.instance.SMOTE;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import weka.core.Attribute;
 
@@ -233,7 +235,7 @@ public class ComputeAllClassifiersCombinations {
                 writer.write("-----------------------------------------");
             }
         } catch (Exception e) {
-          e.printStackTrace();
+            Logger.getAnonymousLogger().log(Level.INFO, "Errore durante la extractAndWriteSelectedFeaturese.");
         }
     }
 

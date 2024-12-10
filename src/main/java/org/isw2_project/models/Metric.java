@@ -144,8 +144,8 @@ public class Metric {
     }
     public int getNumberOfjavaImportCount(){return this.numberJavaImportCount;}
 
-    public void setNumberOfApiImports(int NumberImportApiCount) {
-        this.numberImportApiCount =NumberImportApiCount;
+    public void setNumberOfApiImports(int numberImportApiCount) {
+        this.numberImportApiCount = numberImportApiCount;
     }
     public int getNumberOfApiImports() {
         return this.numberImportApiCount;

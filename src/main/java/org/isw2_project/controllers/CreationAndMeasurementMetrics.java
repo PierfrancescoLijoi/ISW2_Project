@@ -83,10 +83,10 @@ public class CreationAndMeasurementMetrics {
         for (int i=startPointRealese; i < buondTakeRelease;i++ ){
 
             ArrayList<Ticket> tmpResultListTicket=new ArrayList<>(resultTicketsList);
-            int UpperBoundReleaseToKeep = i;
+            int upperBoundReleaseToKeep = i;
 
             ArrayList<ProjectClass> listProjectClassesTrainingSet =new ArrayList<>(allProjectClasses);
-            listProjectClassesTrainingSet.removeIf(projectClass -> projectClass.getRelease().getReleaseId() >= UpperBoundReleaseToKeep);
+            listProjectClassesTrainingSet.removeIf(projectClass -> projectClass.getRelease().getReleaseId() >= upperBoundReleaseToKeep);
 
             listProjectClassesTrainingSet.sort(Comparator.comparing(projectClass -> projectClass.getRelease().getReleaseId()) );
 
@@ -94,7 +94,7 @@ public class CreationAndMeasurementMetrics {
 
             //calcolare propotion e fixare i ticket delle classi
 
-            Propotion propotionFinal= CalculatePropotion.propotionFinal(UpperBoundReleaseToKeep,tmpResultListTicket);
+            Propotion propotionFinal= CalculatePropotion.propotionFinal(upperBoundReleaseToKeep,tmpResultListTicket);
 
             for(Ticket ticket: tmpResultListTicket){
                 if(ticket.getAffectedVersions().isEmpty()){
@@ -129,11 +129,11 @@ public class CreationAndMeasurementMetrics {
         //testing Set
         for (int p = 2; p < buondTakeRelease; p++ ){
 
-            int UpperBoundReleaseToKeep = p;
+            int upperBoundReleaseToKeep = p;
 
             ArrayList<ProjectClass> listProjectClassesTrainingSet =new ArrayList<>(allProjectClasses);
 
-            listProjectClassesTrainingSet.removeIf(projectClass -> projectClass.getRelease().getReleaseId() != UpperBoundReleaseToKeep);
+            listProjectClassesTrainingSet.removeIf(projectClass -> projectClass.getRelease().getReleaseId() != upperBoundReleaseToKeep);
 
             listProjectClassesTrainingSet.sort(Comparator.comparing(projectClass -> projectClass.getRelease().getReleaseDate()));
 

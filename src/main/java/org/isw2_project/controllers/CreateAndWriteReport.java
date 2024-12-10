@@ -250,8 +250,8 @@ public class CreateAndWriteReport {
         }
     }
 
-    public static void generateArffDataSet(String projectName, String DataName, String fileTitle) {
-        String DatasetName = DataName;
+    public static void generateArffDataSet(String projectName, String dataName, String fileTitle) {
+        String DatasetName = dataName;
         String fileTitleCSV = fileTitle;
         String fileTitleArff = null;
 

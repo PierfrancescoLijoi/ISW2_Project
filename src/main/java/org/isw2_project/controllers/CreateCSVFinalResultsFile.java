@@ -126,7 +126,7 @@ public class CreateCSVFinalResultsFile {
             Logger.getAnonymousLogger().log(Level.INFO, "File CSV di output generato con successo!");
 
         } catch (IOException e) {
-            e.printStackTrace();
+            //ingore
         }
     }
 
@@ -246,7 +246,7 @@ public class CreateCSVFinalResultsFile {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //ingore
         }
     }
 
